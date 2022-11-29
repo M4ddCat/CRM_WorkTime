@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using WorkTime.Data;
+using WorkTime.Models;
 
 namespace WorkTime.Web.Areas.Identity.Pages.Account
 {
@@ -29,13 +31,15 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private WorkTimeContext db;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            WorkTimeContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +47,7 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            db = context;
         }
 
         /// <summary>
@@ -97,6 +102,21 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [StringLength(50, MinimumLength =3)]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
+            [Required]
+            [StringLength(50, MinimumLength = 3)]
+            [Display(Name = "Surname")]
+            public string Surname { get; set; }
+
+            [Required]
+            [StringLength(50, MinimumLength = 3)]
+            [Display(Name = "Patronymic")]
+            public string Patronymic { get; set; }
         }
 
 
@@ -130,10 +150,18 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    db.AspNetUserInformations.Add(new AspNetUserInformation()
+                    {
+                        Id = $"{Guid.NewGuid()}",
+                        Name = Input.Name,
+                        Surname = Input.Surname,
+                        Patronymic = Input.Patronymic,
+                        UserId = await _userManager.GetUserIdAsync(user)
+                    });
+                    db.SaveChanges();
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
