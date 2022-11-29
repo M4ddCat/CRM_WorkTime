@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using WorkTime.Data;
+using WorkTime.Models;
 
 #nullable disable
 
@@ -558,6 +560,20 @@ namespace WorkTime.Web.Data.Migrations
                 name: "IX_WorkTasks_TaskStatusId",
                 table: "WorkTasks",
                 column: "TaskStatusId");
+
+            WorkTimeContext db = new WorkTimeContext();
+
+            AspNetRole adminRole = new AspNetRole();
+            adminRole.Name = "Administrator";
+            adminRole.Id = $"{Guid.NewGuid()}";
+            db.AspNetRoles.Add(adminRole);
+
+            AspNetUser user = new AspNetUser();
+            user.Id = $"{Guid.NewGuid()}";
+            user.Email = "rootuser@root.root";
+            user.UserName = "RootUser";
+
+            db.SaveChanges();
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
