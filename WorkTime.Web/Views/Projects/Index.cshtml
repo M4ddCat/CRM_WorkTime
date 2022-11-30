@@ -1,24 +1,22 @@
-﻿@model IEnumerable<WorkTime.Models.WorkTask>
+﻿@model IEnumerable<WorkTime.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
 
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTask">
-    Создать задачу
-</button>
-<partial name="_CreateEdit"/>
-
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TaskName)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaskStatus)
+                @Html.DisplayNameFor(model => model.Bonus)
             </th>
             <th></th>
         </tr>
@@ -27,10 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TaskName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TaskStatus.Name)
+                @Html.DisplayFor(modelItem => item.Bonus)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

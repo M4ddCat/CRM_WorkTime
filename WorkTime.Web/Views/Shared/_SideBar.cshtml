@@ -3,56 +3,36 @@
 *@
 @{
 }
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="position: absolute; width: 280px;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-        <span class="fs-4">Sidebar</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                Home
+
+<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light collapse" id="sideBar" style="position:absolute; top: 0; left: 0;">
+    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+        <div class="container-fluid" style="display:inline">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sideBar" aria-expanded="false" aria-controls="sideBar">
+                =
+            </button>
+            <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <span class="fs-5 d-none d-sm-inline text-dark">Menu</span>
             </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                Orders
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                Products
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                Customers
-            </a>
-        </li>
-    </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong>mdo</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </div>
+        
+        
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+            <li class="nav-item">
+                <a class="nav-link align-middle px-0" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Главная</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks" asp-action="Index">
+                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Задачи</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" asp-action="Index">
+                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Счета</span>
+                </a>
+            </li>
         </ul>
+        <hr>
     </div>
 </div>

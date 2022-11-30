@@ -1,0 +1,113 @@
+﻿@model WorkTime.Models.Invoice
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Invoice</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProjectId" class="control-label"></label>
+                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="getUsers()">
+                    <option value="0" selected>Без проекта</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="PaymentStateId" class="control-label"></label>
+                <select asp-for="PaymentStateId" class ="form-control" asp-items="ViewBag.PaymentStateId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoursWorked" class="control-label"></label>
+                <input asp-for="HoursWorked" class="form-control" />
+                <span asp-validation-for="HoursWorked" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HourlyWage" class="control-label">Почасовая оплата</label>
+                <input asp-for="HourlyWage" class="form-control" />
+                <span asp-validation-for="HourlyWage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bonus" class="control-label"></label>
+                <input asp-for="Bonus" class="form-control" />
+                <span asp-validation-for="Bonus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Issued" class="control-label"></label>
+                <input asp-for="Issued" class="form-control" />
+                <span asp-validation-for="Issued" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remainder" class="control-label"></label>
+                <input asp-for="Remainder" class="form-control" />
+                <span asp-validation-for="Remainder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Debt" class="control-label"></label>
+                <input asp-for="Debt" class="form-control" />
+                <span asp-validation-for="Debt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        getUsers();
+
+        function getUsers() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUsersInProject", "GetValue")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    ProjectID: getProject(),
+                },
+                success: function (result) {
+                    let array = $.parseJSON(result);
+                    $("#UserId").html('');
+                    for (let i = 0; i < array.data.length; i++) {
+                        $('#UserId').append('<option value="' + array.data[i].UserId + '">' + array.data[i].Surname + ' ' + array.data[i].Name + '</option>');
+                    }
+                }
+            });
+        }
+
+        function getProject() {
+            if ($("#ProjectId").val()) {
+                return $("#ProjectId").val();
+            } else {
+                return -0;
+            }
+        }
+
+        function gettoken() {
+            let token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+}

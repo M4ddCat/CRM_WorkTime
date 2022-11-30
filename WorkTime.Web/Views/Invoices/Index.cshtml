@@ -1,0 +1,113 @@
+﻿@model IEnumerable<WorkTime.Models.Invoice>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoursWorked)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HourlyWage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SumByHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bonus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Issued)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remainder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Debt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RemWdebtAndBonus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SumWithTax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoursWorked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HourlyWage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SumByHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bonus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Issued)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remainder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Debt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RemWdebtAndBonus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SumWithTax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentState.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

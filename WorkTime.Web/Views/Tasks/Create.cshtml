@@ -24,11 +24,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProjectId" class="control-label"></label>
-                <select asp-for="ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="PerformerId" class="control-label"></label>
-                <select asp-for="PerformerId" class ="form-control" asp-items="ViewBag.PerformerId"></select>
+                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="getUsers()">
+                    <option value="0" selected>Без проекта</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="CountOfHours" class="control-label"></label>
@@ -54,6 +52,45 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        getUsers();
+
+        function getUsers() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUsersInProject", "GetValue")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    ProjectID: getProject(),
+                },
+                success: function (result) {
+                    let array = $.parseJSON(result);
+                    $("#PerformerId").html('');
+                    for (let i = 0; i < array.data.length; i++) {
+                        $('#PerformerId').append('<option value="' + array.data[i].UserId + '">' + array.data[i].Surname + ' ' + array.data[i].Name + '</option>');
+                    }
+                }
+            });
+        }
+
+        function getProject() {
+            if ($("#ProjectId").val()) {
+                return $("#ProjectId").val();
+            } else {
+                return -0;
+            }
+        }
+
+        function gettoken() {
+            let token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+
 }
