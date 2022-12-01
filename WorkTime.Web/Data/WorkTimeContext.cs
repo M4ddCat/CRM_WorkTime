@@ -67,6 +67,12 @@ public partial class WorkTimeContext : DbContext
 
             entity.Property(e => e.Name).HasMaxLength(256);
             entity.Property(e => e.NormalizedName).HasMaxLength(256);
+
+            entity.HasData(
+                new AspNetRole { Id = $"{Guid.NewGuid()}", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+                new AspNetRole { Id = $"{Guid.NewGuid()}", Name = "Manager", NormalizedName = "MANAGER" },
+                new AspNetRole { Id = $"{Guid.NewGuid()}", Name = "Bookkeeper", NormalizedName = "BOOKKEEPER" }
+                );
         });
 
         modelBuilder.Entity<AspNetRoleClaim>(entity =>
@@ -197,6 +203,10 @@ public partial class WorkTimeContext : DbContext
         modelBuilder.Entity<PaymentState>(entity =>
         {
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.HasData(
+                new PaymentState { Id = 1, Name = "Сформирован" }, 
+                new PaymentState { Id = 2, Name = "Оплачен" },
+                new PaymentState { Id = 3, Name = "Подтверждён" });
         });
 
         modelBuilder.Entity<PersistedGrant>(entity =>
@@ -245,6 +255,11 @@ public partial class WorkTimeContext : DbContext
             entity.ToTable("TypeOfEmployment");
 
             entity.Property(e => e.Name).HasMaxLength(100);
+
+            entity.HasData(
+                new TypeOfEmployment { Id = "1", Name = "Устроен по ТК", Tax = 13 },
+                new TypeOfEmployment { Id = "2", Name = "Самозанятый", Tax = 13 }
+            );
         });
 
         modelBuilder.Entity<UserProject>(entity =>
@@ -303,6 +318,12 @@ public partial class WorkTimeContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK_TaskStatuses");
 
             entity.Property(e => e.Name).HasMaxLength(100);
+
+            entity.HasData(
+                new WorkTaskStatus { Id = 1, Name = "Сформирована" },
+                new WorkTaskStatus { Id = 2, Name = "Выполняется" },
+                new WorkTaskStatus { Id = 3, Name = "Ожидает проверки" },
+                new WorkTaskStatus { Id = 4, Name = "Завершена" });
         });
 
         OnModelCreatingPartial(modelBuilder);

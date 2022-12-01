@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -65,16 +66,15 @@ namespace WorkTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,ProjectId,PaymentStateId,Date,HoursWorked,HourlyWage,SumByHours,Bonus,Total,Issued,Remainder,Debt,RemWdebtAndBonus,SumWithTax")] Invoice invoice)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(invoice);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", invoice.ProjectId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", invoice.UserId);
-            return View(invoice);
+
+            _context.Add(invoice);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+            //ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
+            //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", invoice.ProjectId);
+            //ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", invoice.UserId);
+            //return View(invoice);
         }
 
         

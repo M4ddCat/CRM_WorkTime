@@ -1,0 +1,58 @@
+﻿@model WorkTime.Models.UserProject
+
+@{
+    ViewData["Title"] = "AddUserInProject";
+}
+
+<h1>Добавление пользователя в проект</h1>
+
+<h4>@ViewBag.Project.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddUserInProject">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProjectId" value="@ViewBag.Project.Id" />
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control">
+                    @{
+                        foreach (var user in ViewBag.Users)
+                        {
+                            <option value="@user.UserId">@user.Name @user.Surname</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="HourlyWage" class="control-label"></label>
+                <input asp-for="HourlyWage" class="form-control" />
+                <span asp-validation-for="HourlyWage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmpTypeId" class="control-label"></label>
+                <select asp-for="EmpTypeId" class="form-control">
+                    @{
+                        foreach (var type in ViewBag.EmpType)
+                        {
+                            <option value="@type.Id">@type.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

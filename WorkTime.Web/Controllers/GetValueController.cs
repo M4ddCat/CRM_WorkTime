@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using WorkTime.Data;
 
 namespace WorkTime.Web.Controllers
@@ -26,14 +27,53 @@ namespace WorkTime.Web.Controllers
                 .Select(p => p.UserId).AsEnumerable();
                 var users = _context.AspNetUserInformations
                     .Where(u => projectUsers.Contains(u.UserId)).AsEnumerable();
-                json = JsonConvert.SerializeObject(new { data = users.Select(u => new { u.UserId, u.Name, u.Surname }) });
+                json = JsonSerializer.Serialize(new { data = users.Select(u => new { u.UserId, u.Name, u.Surname }), 
+                    bonus = _context.Projects.Find(projectId).Bonus });
             }
             else
             {
                 var users = _context.AspNetUserInformations.AsEnumerable();
-                json = JsonConvert.SerializeObject(new { data = users.Select(u => new { u.UserId, u.Name, u.Surname }) });
+                json = JsonSerializer.Serialize(new { data = users.Select(u => new { u.UserId, u.Name, u.Surname }), bonus = 0 });
             }
             return json;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string GetUserAtributes(string userId, string projectId)
+        {
+            string json = "{HourlyWage: 0}";
+            if (!String.IsNullOrWhiteSpace(userId) && (projectId != "0" || !String.IsNullOrWhiteSpace(projectId)))
+            {
+                if (projectId == "0")
+                {
+                    //json = JsonSerializer.Serialize(_context.AspNetUserInformations.FirstOrDefault(a => a.UserId == userId).HourlyWage);
+                }
+                else
+                    json = JsonSerializer.Serialize(_context.UserProjects.Where(u => u.UserId == userId 
+                    && u.ProjectId == projectId).FirstOrDefault());
+            }
+            return json;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string GetUserTasks(string userId, string projectId)
+        {
+            var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
+            (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && t.InvoiceId == null).AsEnumerable();
+            return JsonSerializer.Serialize(new {data = tasks});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string GetUserTasks(string userId, string projectId, DateTime date)
+        {
+            var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
+            (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && 
+            t.InvoiceId == null &&
+            t.DateOfCompletion >= date).AsEnumerable();
+            return JsonSerializer.Serialize(new { data = tasks });
         }
     }
 }

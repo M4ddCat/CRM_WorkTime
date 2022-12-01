@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Новая папка\**" />
+    <Content Remove="Views\Новая папка\**" />
+    <EmbeddedResource Remove="Views\Новая папка\**" />
+    <None Remove="Views\Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
@@ -18,10 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WorkTime.Models\WorkTime.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Новая папка\" />
   </ItemGroup>
 
 </Project>

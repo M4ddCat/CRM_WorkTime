@@ -29,8 +29,7 @@ namespace WorkTime.Web.Controllers
               return View(await _context.Projects.ToListAsync());
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //GET: AddUserInProject
         public ActionResult AddUserInProject(string id)
         {
             if (id == null || _context.Projects == null)
@@ -46,24 +45,29 @@ namespace WorkTime.Web.Controllers
             {
                 return NotFound();
             }
+            var typeEmp = _context.TypeOfEmployments.AsEnumerable();
 
-            return View(users);
+            ViewBag.Project = _context.Projects.Find(id);
+            ViewBag.Users = users;
+            ViewBag.EmpType = typeEmp;
+
+            return View();
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddUserInProject(string projectId, string userId)
+        public async Task<IActionResult> AddUserInProject(UserProject userProject)
         {
             _context.UserProjects.Add(new UserProject()
             {
                 Id = $"{Guid.NewGuid()}",
-                UserId = userId,
-                ProjectId = projectId
+                UserId = userProject.UserId,
+                ProjectId = userProject.ProjectId,
+                HourlyWage = userProject.HourlyWage,
+                EmpTypeId = userProject.EmpTypeId
             });
             await _context.SaveChangesAsync();
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Projects/Details/5
@@ -95,15 +99,15 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Bonus")] Models.Project project)
+        public async Task<IActionResult> Create([Bind("Name,Bonus")] Models.Project project)
         {
-            if (ModelState.IsValid)
-            {
+            
+                project.Id = $"{Guid.NewGuid()}";
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(project);
+            
+            //return View(project);
         }
 
         // GET: Projects/Edit/5

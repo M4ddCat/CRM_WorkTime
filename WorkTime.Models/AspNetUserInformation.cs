@@ -15,6 +15,8 @@ public partial class AspNetUserInformation
 
     public string? Patronymic { get; set; }
 
+    //public float HourlyWage { get; set; }
+
     public byte[]? Photography { get; set; }
 
     public virtual AspNetUser User { get; set; } = null!;

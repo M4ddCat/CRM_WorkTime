@@ -20,50 +20,61 @@
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="PaymentStateId" class="control-label"></label>
-                <select asp-for="PaymentStateId" class ="form-control" asp-items="ViewBag.PaymentStateId"></select>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId" onchange="getAtributes()"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HoursWorked" class="control-label"></label>
-                <input asp-for="HoursWorked" class="form-control" />
-                <span asp-validation-for="HoursWorked" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HourlyWage" class="control-label">Почасовая оплата</label>
-                <input asp-for="HourlyWage" class="form-control" />
-                <span asp-validation-for="HourlyWage" class="text-danger"></span>
+                <label class="control-label">Выбрать задачи с</label>
+                <input type="date" id="dateFrom" class="form-control" />
+                <span class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Bonus" class="control-label"></label>
-                <input asp-for="Bonus" class="form-control" />
+                <input asp-for="Bonus" class="form-control" onchange="bonusChange()" />
                 <span asp-validation-for="Bonus" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Issued" class="control-label"></label>
-                <input asp-for="Issued" class="form-control" />
-                <span asp-validation-for="Issued" class="text-danger"></span>
+            <div class="">
+                <a href="#" type="button" value="Сформировать" class="btn btn-primary" onclick="getTasks()"></a>
+            </div>
+            <div class="form-group" id="Tasks" hidden>
+                <label class="control-label">Добавить задачу</label>
+                <select data-val="true" id="TasksSelect" class="form-control">
+                </select>
+                <a href="#" type="button" class="btn btn-primary" onclick="taskToTable()" value="+++"></a>
             </div>
             <div class="form-group">
-                <label asp-for="Remainder" class="control-label"></label>
-                <input asp-for="Remainder" class="form-control" />
-                <span asp-validation-for="Remainder" class="text-danger"></span>
+                <table class="table" style="width:300pt">
+                    <tr>
+                        <th>
+                            Задача
+                        </th>
+                        <th>
+                            Количество часов
+                        </th>
+                        <th>
+                            _
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <div id="sum" class="form-group">
+                <label class="row">Итого:</label>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Время</label>
+                        <h5 id="timeCount"></h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Ставка</label>
+                        <h5 id="hourlyWage"></h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>К оплате:</label>
+                        <h5 id="sumCount"></h5>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Debt" class="control-label"></label>
-                <input asp-for="Debt" class="form-control" />
-                <span asp-validation-for="Debt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -76,6 +87,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        let hours = 0, stake = 0, arrayId = [], bonus = 0;
         getUsers();
 
         function getUsers() {
@@ -84,25 +96,66 @@
                 url: '@Url.Action("GetUsersInProject", "GetValue")',
                 data: {
                     __RequestVerificationToken: gettoken(),
-                    ProjectID: getProject(),
+                    ProjectId: getProjectId(),
                 },
                 success: function (result) {
                     let array = $.parseJSON(result);
+                    console.log(array);
+                    $("#Bonus").val(array.bonus);
                     $("#UserId").html('');
                     for (let i = 0; i < array.data.length; i++) {
                         $('#UserId').append('<option value="' + array.data[i].UserId + '">' + array.data[i].Surname + ' ' + array.data[i].Name + '</option>');
                     }
+                    getAtributes();
+                    //getTasks();
                 }
             });
         }
 
-        function getProject() {
+        function getAtributes() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUserAtributes", "GetValue")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    ProjectId: getProjectId(),
+                    UserId: getUserId()
+                },
+                success: function (result) {
+                    let value = $.parseJSON(result);
+                    //console.log(value);
+                    $("#hourlyWage").html(value);
+                }
+            });
+        }
+
+        function getTasks() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUserTasks", "GetValue")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    ProjectId: getProjectId(),
+                    UserId: getUserId(),
+                },
+                success: function (result) {
+                    let array = $.parseJSON(result);
+                    console.log(array);
+                }
+            })
+        }
+
+        function getProjectId() {
             if ($("#ProjectId").val()) {
                 return $("#ProjectId").val();
             } else {
                 return -0;
             }
         }
+
+        function getUserId() {
+            return $("#UserId").val();
+        } 
 
         function gettoken() {
             let token = '@Html.AntiForgeryToken()';
