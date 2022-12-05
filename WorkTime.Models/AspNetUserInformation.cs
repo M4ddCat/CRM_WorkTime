@@ -15,7 +15,7 @@ public partial class AspNetUserInformation
 
     public string? Patronymic { get; set; }
 
-    //public float HourlyWage { get; set; }
+    public double HourlyWage { get; set; }
 
     public byte[]? Photography { get; set; }
 

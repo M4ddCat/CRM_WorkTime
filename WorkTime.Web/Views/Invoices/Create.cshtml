@@ -29,31 +29,36 @@
             </div>
             <div class="form-group">
                 <label asp-for="Bonus" class="control-label"></label>
-                <input asp-for="Bonus" class="form-control" onchange="bonusChange()" />
+                <input asp-for="Bonus" class="form-control" onchange="refreshValues()" />
                 <span asp-validation-for="Bonus" class="text-danger"></span>
             </div>
-            <div class="">
-                <a href="#" type="button" value="Сформировать" class="btn btn-primary" onclick="getTasks()"></a>
+            <div class="form-group">
+                <a href="#" type="button" value="Сформировать" class="btn btn-primary" onclick="getTasks()">Сформировать счёт</a>
             </div>
-            <div class="form-group" id="Tasks" hidden>
+            <div class="form-group" id="Tasks">
                 <label class="control-label">Добавить задачу</label>
                 <select data-val="true" id="TasksSelect" class="form-control">
                 </select>
-                <a href="#" type="button" class="btn btn-primary" onclick="taskToTable()" value="+++"></a>
+                <a href="#" type="button" class="btn btn-primary" onclick="TaskToTable()">+</a>
             </div>
             <div class="form-group">
                 <table class="table" style="width:300pt">
-                    <tr>
-                        <th>
-                            Задача
-                        </th>
-                        <th>
-                            Количество часов
-                        </th>
-                        <th>
-                            _
-                        </th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>
+                                Задача
+                            </th>
+                            <th>
+                                Количество часов
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="CompletedTasks">
+
+                    </tbody>
                 </table>
             </div>
             <div id="sum" class="form-group">
@@ -74,7 +79,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Создать" class="btn btn-primary" />
+                <a value="Создать" class="btn btn-primary" onclick="createInvoice()">Создать</a>
             </div>
         </form>
     </div>
@@ -87,7 +92,8 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        let hours = 0, stake = 0, arrayId = [], bonus = 0;
+        let hours = 0, wage = 0, tasksArray = [], bonus = 0;
+
         getUsers();
 
         function getUsers() {
@@ -100,14 +106,14 @@
                 },
                 success: function (result) {
                     let array = $.parseJSON(result);
-                    console.log(array);
+                    //console.log(array);
                     $("#Bonus").val(array.bonus);
                     $("#UserId").html('');
                     for (let i = 0; i < array.data.length; i++) {
                         $('#UserId').append('<option value="' + array.data[i].UserId + '">' + array.data[i].Surname + ' ' + array.data[i].Name + '</option>');
                     }
+                    clearTasks();
                     getAtributes();
-                    //getTasks();
                 }
             });
         }
@@ -123,8 +129,8 @@
                 },
                 success: function (result) {
                     let value = $.parseJSON(result);
-                    //console.log(value);
-                    $("#hourlyWage").html(value);
+                    $("#hourlyWage").html(value.HourlyWage);
+                    wage = Number(value.HourlyWage);
                 }
             });
         }
@@ -140,9 +146,53 @@
                 },
                 success: function (result) {
                     let array = $.parseJSON(result);
-                    console.log(array);
+                    hours = 0;
+                    clearTasks();
+                    for (let i = 0; i < array.data.length; i++) {
+                        if (array.data[i].TaskStatusId == 1 || array.data[i].TaskStatusId == 2){
+                            $("#TasksSelect").append("<option value='" + array.data[i].CountOfHours + ","+ array.data[i].Id +"'>" 
+                            + array.data[i].TaskName + "</option>");
+                        }
+                        else {
+                            $("#CompletedTasks").append("<tr><td>" + array.data[i].TaskName + "</td><td>" + array.data[i].CountOfHours + "</td><td></td></tr>");
+                            hours += array.data[i].CountOfHours;
+                            tasksArray.push(array.data[i].Id)
+                        }
+                    }
+                    
+                    refreshValues();
                 }
-            })
+            });
+        }
+
+        function createInvoice() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "Invoices")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    projectId: getProjectId(),
+                    userId: getUserId(),
+                    tasksId: tasksArray,
+                    bonus: bonus,
+                    hourlyWage : wage
+                },
+                success: function (result) {
+                    alert("success");
+                }
+            });
+        }
+
+        function TaskToTable() {
+            let hourTask = $("#TasksSelect option:selected").val().split(',')
+            if (hourTask){
+                $("#CompletedTasks").append("<tr><td>" + $("#TasksSelect option:selected").text() 
+                + "</td><td>" + hourTask[0] + "</td><td></td></tr>");
+                $("#TasksSelect option:selected").remove();
+                tasksArray.push(hourTask[1])
+                hours += parseInt(hourTask[0]);
+                refreshValues();
+            }
         }
 
         function getProjectId() {
@@ -151,6 +201,17 @@
             } else {
                 return -0;
             }
+        }
+
+        function clearTasks() {
+            $("#TasksSelect").html("");
+            $("#CompletedTasks").html("");
+        }
+
+        function refreshValues() {
+            bonus = $("#Bonus").val();
+            $("#timeCount").html(hours);
+            $("#sumCount").html(Number(hours) * Number(wage) + Number(bonus))
         }
 
         function getUserId() {

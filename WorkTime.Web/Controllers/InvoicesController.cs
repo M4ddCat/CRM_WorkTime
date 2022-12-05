@@ -54,7 +54,7 @@ namespace WorkTime.Web.Controllers
         public IActionResult Create()
         {
             ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name");
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }
@@ -64,12 +64,51 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,ProjectId,PaymentStateId,Date,HoursWorked,HourlyWage,SumByHours,Bonus,Total,Issued,Remainder,Debt,RemWdebtAndBonus,SumWithTax")] Invoice invoice)
+        //Task<IActionResult>
+        public string Create(string userId, string projectId, string[] tasksId, double bonus, double hourlyWage)
         {
-
+            if(!_context.AspNetUsers.Any(u => u.Id == userId))
+            {
+                return "0";
+            }
+            double countHours = 0;
+            foreach (string id in tasksId)
+            {
+                countHours += _context.WorkTasks.Find(id).CountOfHours;
+            }
+            double sumByHoursWithBonus = hourlyWage * countHours + bonus;
+            int percents = 6;
+            if (projectId != "0")
+            {
+                string up = _context.UserProjects.Where(u => u.UserId == userId && u.ProjectId == projectId).FirstOrDefault().EmpTypeId;
+                percents = _context.TypeOfEmployments.Find(up).Tax;
+            }
+            Invoice invoice = new Invoice() {
+                Id = $"{Guid.NewGuid()}",
+                UserId = userId,
+                ProjectId = projectId == "0" ? null : projectId,
+                Bonus = bonus,
+                HourlyWage = hourlyWage,
+                HoursWorked = countHours,
+                Date = DateTime.Now,
+                PaymentStateId = 4,
+                SumByHours = hourlyWage * countHours,
+                RemWdebtAndBonus = sumByHoursWithBonus,
+                Debt = 0,
+                Issued = 0,
+                Remainder = sumByHoursWithBonus,
+                SumWithTax = sumByHoursWithBonus + (sumByHoursWithBonus * percents / (100 - percents))
+            };
             _context.Add(invoice);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            foreach (string id in tasksId)
+            {
+                WorkTask task = _context.WorkTasks.Find(id);
+                task.InvoiceId = invoice.Id;
+                _context.Entry(task).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return "1";
 
             //ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
             //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", invoice.ProjectId);

@@ -42,12 +42,12 @@ namespace WorkTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public string GetUserAtributes(string userId, string projectId)
         {
-            string json = "{HourlyWage: 0}";
+            string json = "";
             if (!String.IsNullOrWhiteSpace(userId) && (projectId != "0" || !String.IsNullOrWhiteSpace(projectId)))
             {
                 if (projectId == "0")
                 {
-                    //json = JsonSerializer.Serialize(_context.AspNetUserInformations.FirstOrDefault(a => a.UserId == userId).HourlyWage);
+                    json = JsonSerializer.Serialize(new { HourlyWage = _context.AspNetUserInformations.FirstOrDefault(a => a.UserId == userId).HourlyWage });
                 }
                 else
                     json = JsonSerializer.Serialize(_context.UserProjects.Where(u => u.UserId == userId 
@@ -61,19 +61,20 @@ namespace WorkTime.Web.Controllers
         public string GetUserTasks(string userId, string projectId)
         {
             var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
-            (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && t.InvoiceId == null).AsEnumerable();
+            (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && t.InvoiceId == null)
+                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable();
             return JsonSerializer.Serialize(new {data = tasks});
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public string GetUserTasks(string userId, string projectId, DateTime date)
-        {
-            var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
-            (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && 
-            t.InvoiceId == null &&
-            t.DateOfCompletion >= date).AsEnumerable();
-            return JsonSerializer.Serialize(new { data = tasks });
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public string GetUserTasks(string userId, string projectId, DateTime date)
+        //{
+        //    var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
+        //    (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) &&
+        //    t.InvoiceId == null &&
+        //    t.DateOfCompletion >= date).AsEnumerable();
+        //    return JsonSerializer.Serialize(new { data = tasks });
+        //}
     }
 }

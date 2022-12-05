@@ -55,7 +55,7 @@ namespace WorkTime.Web.Controllers
         // GET: Tasks/Create
         public IActionResult Create()
         {
-            ViewData["IssuerId"] = new SelectList(db.AspNetUsers, "Id", "Id");
+            ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id");
             ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name");
             ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name");
             return View();
@@ -76,7 +76,7 @@ namespace WorkTime.Web.Controllers
         public async Task<IActionResult> Create([Bind("TaskName,TaskText,PerformerId,CountOfHours,TaskStatusId,IssuerId")] WorkTask workTask)
         {
             workTask.Id = $"{Guid.NewGuid()}";
-            workTask.PerformerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             db.Add(workTask);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
