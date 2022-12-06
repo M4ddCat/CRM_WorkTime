@@ -77,14 +77,10 @@ namespace WorkTime.Web.Controllers
         {
             workTask.Id = $"{Guid.NewGuid()}";
             workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            workTask.TaskStatusId = 1;
             db.Add(workTask);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-            //ViewData["IssuerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.IssuerId);
-            //ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.PerformerId);
-            //ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Id", workTask.ProjectId);
-            //ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name", workTask.TaskStatusId);
-            //return View(workTask);
         }
 
         // GET: Tasks/Edit/5

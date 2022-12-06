@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<WorkTime.Models.Invoice>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -103,9 +105,13 @@
                 @Html.DisplayFor(modelItem => item.User.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (User.IsInRole("Manager") || User.IsInRole("Manager") || User.IsInRole("Manager"))
+                {
+                    <a type="button" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" > Details </a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id"> Delete </a>
+                }
+                    
             </td>
         </tr>
 }

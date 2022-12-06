@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
@@ -7,6 +8,7 @@ using WorkTime.Data;
 
 namespace WorkTime.Web.Controllers
 {
+    [Authorize]
     public class GetValueController : Controller
     {
         private readonly WorkTimeContext _context;
@@ -14,6 +16,13 @@ namespace WorkTime.Web.Controllers
         public GetValueController()
         {
             _context = new WorkTimeContext();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string GetProjects()
+        {
+            return JsonSerializer.Serialize(new { data = _context.Projects.Select(p => new { p.Id, p.Name })});
         }
 
         [HttpPost]

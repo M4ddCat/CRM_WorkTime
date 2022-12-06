@@ -12,7 +12,7 @@ using WorkTime.Data;
 namespace WorkTime.Web.Data.Migrations
 {
     [DbContext(typeof(WorkTimeContext))]
-    [Migration("20221128144758_InitialCreate")]
+    [Migration("20221206074035_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,26 @@ namespace WorkTime.Web.Data.Migrations
                         .HasFilter("([NormalizedName] IS NOT NULL)");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6859dd41-f209-42d6-b981-98c053216394",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "a4b6fc8f-e4ef-4e83-870f-b09d1e4a6913",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = "4d9127e5-a033-4678-ba0b-1a56a2ab8040",
+                            Name = "Bookkeeper",
+                            NormalizedName = "BOOKKEEPER"
+                        });
                 });
 
             modelBuilder.Entity("WorkTime.Models.AspNetRoleClaim", b =>
@@ -180,6 +200,9 @@ namespace WorkTime.Web.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("HourlyWage")
+                        .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -419,6 +442,23 @@ namespace WorkTime.Web.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentStates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Сформирован"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Оплачен"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Подтверждён"
+                        });
                 });
 
             modelBuilder.Entity("WorkTime.Models.PersistedGrant", b =>
@@ -540,6 +580,20 @@ namespace WorkTime.Web.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TypeOfEmployment", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Name = "Устроен по ТК",
+                            Tax = 13
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Name = "Самозанятый",
+                            Tax = 13
+                        });
                 });
 
             modelBuilder.Entity("WorkTime.Models.UserProject", b =>
@@ -645,6 +699,28 @@ namespace WorkTime.Web.Data.Migrations
                         .HasName("PK_TaskStatuses");
 
                     b.ToTable("WorkTaskStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Сформирована"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Выполняется"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Ожидает проверки"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Завершена"
+                        });
                 });
 
             modelBuilder.Entity("AspNetUserRole", b =>

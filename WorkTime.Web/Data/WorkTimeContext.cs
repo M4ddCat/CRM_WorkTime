@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 using WorkTime.Models;
 
 namespace WorkTime.Data;
@@ -34,6 +35,8 @@ public partial class WorkTimeContext : DbContext
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
+    public virtual DbSet<InvoiceFile> InvoiceFiles { get; set; }
+
     public virtual DbSet<Key> Keys { get; set; }
 
     public virtual DbSet<PaymentState> PaymentStates { get; set; }
@@ -54,7 +57,7 @@ public partial class WorkTimeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("workstation id=worktime.mssql.somee.com;packet size=4096;user id=AndreyIgonin_SQLLogin_1;pwd=i5dd84ogox;data source=worktime.mssql.somee.com;persist security info=False;initial catalog=worktime");
+        => optionsBuilder.UseSqlServer("workstation id=tesett1111.mssql.somee.com;packet size=4096;user id=AndreyIgonin_SQLLogin_1;pwd=kvixvd614a;data source=tesett1111.mssql.somee.com;persist security info=False;initial catalog=tesett1111");
     //Server=DESKTOP-OCA11UA;Database=WT_TwinTech3;Trusted_Connection=True;TrustServerCertificate=True
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -190,6 +193,19 @@ public partial class WorkTimeContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Invoices_AspNetUsers");
+        });
+
+        modelBuilder.Entity<InvoiceFile>(entity =>
+        {
+            entity.Property(e => e.Id).HasMaxLength(450);
+            entity.Property(e => e.InvoiceId).HasMaxLength(450);
+            entity.Property(e => e.Name).HasMaxLength(100);
+
+            entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceFiles)
+                .HasForeignKey(d => d.InvoiceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_InvoiceFiles_Invoices");
+
         });
 
         modelBuilder.Entity<Key>(entity =>

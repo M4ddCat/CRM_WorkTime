@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using WorkTime.Data;
-using WorkTime.Models;
 
 #nullable disable
 
@@ -210,6 +208,7 @@ namespace WorkTime.Web.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Patronymic = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    HourlyWage = table.Column<double>(type: "float", nullable: false),
                     Photography = table.Column<byte[]>(type: "image", nullable: true)
                 },
                 constraints: table =>
@@ -419,6 +418,46 @@ namespace WorkTime.Web.Data.Migrations
                         column: x => x.TaskId,
                         principalTable: "WorkTasks",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "4d9127e5-a033-4678-ba0b-1a56a2ab8040", null, "Bookkeeper", "BOOKKEEPER" },
+                    { "6859dd41-f209-42d6-b981-98c053216394", null, "Administrator", "ADMINISTRATOR" },
+                    { "a4b6fc8f-e4ef-4e83-870f-b09d1e4a6913", null, "Manager", "MANAGER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PaymentStates",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Сформирован" },
+                    { 2, "Оплачен" },
+                    { 3, "Подтверждён" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TypeOfEmployment",
+                columns: new[] { "Id", "Name", "Tax" },
+                values: new object[,]
+                {
+                    { "1", "Устроен по ТК", 13 },
+                    { "2", "Самозанятый", 13 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "WorkTaskStatuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Сформирована" },
+                    { 2, "Выполняется" },
+                    { 3, "Ожидает проверки" },
+                    { 4, "Завершена" }
                 });
 
             migrationBuilder.CreateIndex(

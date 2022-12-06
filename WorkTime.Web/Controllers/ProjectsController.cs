@@ -70,6 +70,11 @@ namespace WorkTime.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> UsersInProject(string id)
+        {
+            return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
+        }
+
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(string id)
         {

@@ -13,6 +13,7 @@ using WorkTime.Models;
 
 namespace WorkTime.Web.Controllers
 {
+    [Authorize]
     public class InvoicesController : Controller
     {
         private readonly WorkTimeContext _context;
@@ -97,7 +98,7 @@ namespace WorkTime.Web.Controllers
                 Debt = 0,
                 Issued = 0,
                 Remainder = sumByHoursWithBonus,
-                SumWithTax = sumByHoursWithBonus + (sumByHoursWithBonus * percents / (100 - percents))
+                SumWithTax = Math.Round(sumByHoursWithBonus + (sumByHoursWithBonus * percents / (100 - percents)), 2)
             };
             _context.Add(invoice);
 
@@ -116,7 +117,19 @@ namespace WorkTime.Web.Controllers
             //return View(invoice);
         }
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string UploadFile(string invoiceId, byte[] file, string name)
+        {
+            _context.Add(new InvoiceFile() 
+            { 
+                Id = $"{Guid.NewGuid()}",
+                InvoiceId = invoiceId,
+                Name = name,
+                File = file
+            });
+            return View();
+        }
 
         // GET: Invoices/Edit/5
         public async Task<IActionResult> Edit(string id)

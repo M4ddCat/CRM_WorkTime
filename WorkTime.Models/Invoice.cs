@@ -40,4 +40,6 @@ public partial class Invoice
     public virtual Project? Project { get; set; }
 
     public virtual AspNetUser User { get; set; } = null!;
+
+    public virtual ICollection<InvoiceFile> InvoiceFiles { get; } = new List<InvoiceFile>();
 }

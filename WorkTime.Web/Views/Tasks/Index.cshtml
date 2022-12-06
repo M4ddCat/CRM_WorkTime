@@ -1,15 +1,10 @@
 ﻿@model IEnumerable<WorkTime.Models.WorkTask>
 
-<h1>Index</h1>
+<h1>Задачи</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a type="button" class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
-
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTask">
-    Создать задачу
-</button>
-<partial name="_CreateEdit"/>
 
 <table class="table">
     <thead>
