@@ -128,7 +128,7 @@ namespace WorkTime.Web.Controllers
                 Name = name,
                 File = file
             });
-            return View();
+            return ":)";
         }
 
         // GET: Invoices/Edit/5

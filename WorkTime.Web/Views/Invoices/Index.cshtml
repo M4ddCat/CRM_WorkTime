@@ -60,60 +60,61 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoursWorked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HourlyWage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SumByHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bonus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Issued)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remainder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Debt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RemWdebtAndBonus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SumWithTax)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentState.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @if (User.IsInRole("Manager") || User.IsInRole("Manager") || User.IsInRole("Manager"))
-                {
-                    <a type="button" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" > Details </a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id"> Delete </a>
-                }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoursWorked)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HourlyWage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SumByHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bonus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Issued)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remainder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Debt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RemWdebtAndBonus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SumWithTax)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentState.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Id)
+                </td>
+                <td>
+                    @if (User.IsInRole("Manager") || User.IsInRole("Manager") || User.IsInRole("Manager"))
+                    {
+                        <a type="button" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> <b>|</b>
+                        <a asp-action="Details" asp-route-id="@item.Id"> Details </a> <b>|</b>
+                        <a asp-action="Delete" asp-route-id="@item.Id"> Delete </a> <b>|</b>
+                    }
                     
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
