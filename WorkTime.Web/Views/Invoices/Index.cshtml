@@ -109,10 +109,9 @@
                     @if (User.IsInRole("Manager") || User.IsInRole("Manager") || User.IsInRole("Manager"))
                     {
                         <a type="button" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> <b>|</b>
-                        <a asp-action="Details" asp-route-id="@item.Id"> Details </a> <b>|</b>
                         <a asp-action="Delete" asp-route-id="@item.Id"> Delete </a> <b>|</b>
                     }
-                    
+                    <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> <b>|</b>
                 </td>
             </tr>
         }

@@ -92,7 +92,7 @@ namespace WorkTime.Web.Controllers
                 HourlyWage = hourlyWage,
                 HoursWorked = countHours,
                 Date = DateTime.Now,
-                PaymentStateId = 4,
+                PaymentStateId = 1,
                 SumByHours = hourlyWage * countHours,
                 RemWdebtAndBonus = sumByHoursWithBonus,
                 Debt = 0,
@@ -110,25 +110,39 @@ namespace WorkTime.Web.Controllers
             }
             _context.SaveChanges();
             return "1";
+        }
 
-            //ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
-            //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", invoice.ProjectId);
-            //ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", invoice.UserId);
-            //return View(invoice);
+        public async Task<IActionResult> UploadFile(string id)
+        {
+            if (id == null || _context.Invoices == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.InvoiceId = _context.Invoices.FirstOrDefault(m => m.Id == id).Id;
+
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string UploadFile(string invoiceId, byte[] file, string name)
+        public async Task<IActionResult> UploadFile(string invoiceId, IFormFile file, string name)
         {
-            _context.Add(new InvoiceFile() 
+            byte[] fileBytes;
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                fileBytes = ms.ToArray();
+            }
+                _context.Add(new InvoiceFile() 
             { 
                 Id = $"{Guid.NewGuid()}",
                 InvoiceId = invoiceId,
-                Name = name,
-                File = file
+                File = fileBytes,
+                Name = name
             });
-            return ":)";
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Invoices/Edit/5

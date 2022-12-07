@@ -28,7 +28,7 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -38,7 +38,7 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
-            //RoleManager<IdentityRole> roleManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
@@ -46,7 +46,7 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
             _userStore = userStore;
-            //_roleManager = roleManager;
+            _roleManager = roleManager;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
@@ -157,11 +157,11 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    //if (_context.AspNetUsers.Count() == 1)
-                    //{
+                    if (_context.AspNetUsers.Count() == 1)
+                    {
                         
-                        //var roleresult = await _userManager.AddToRolesAsync(user, new[] {"Administrator", "Manager", "Bookkeeper"});
-                    //}
+                        var roleresult = await _userManager.AddToRolesAsync(user, new[] {"Administrator", "Manager", "Bookkeeper"});
+                    }
 
                     _context.AspNetUserInformations.Add(new AspNetUserInformation()
                     {

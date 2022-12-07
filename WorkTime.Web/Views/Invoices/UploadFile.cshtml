@@ -1,0 +1,29 @@
+﻿@model WorkTime.Models.InvoiceFile
+
+@{
+    ViewData["Title"] = "Загрузить файл";
+}
+
+<h1>Загрузить файл</h1>
+<form enctype="multipart/form-data" method="post">
+    <div>
+        <h4>Счёт № @ViewBag.InvoiceId </h4>
+        <hr />
+        <input type="hidden" asp-for="InvoiceId" value="@ViewBag.InvoiceId" />
+        <div class="form-group">
+            <label class="control-label">Загрузить файл</label>
+            <input type="file" name="upload" asp-for="File" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Название</label>
+            <input asp-for="Name" />
+        </div>
+    
+        <br>
+        <input asp-page-handler="Upload" class="btn" type="submit" value="Загрузить" />
+
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
