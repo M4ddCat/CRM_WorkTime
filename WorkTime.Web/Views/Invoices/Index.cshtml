@@ -1,33 +1,40 @@
 ﻿@model IEnumerable<WorkTime.Models.Invoice>
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
+@using WorkTime.Web.Services
+@inject UserInformation UserInfo
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Счета";
 }
 
-<h1>Index</h1>
+
+
+<h1>Счета</h1>
+
+@if (ViewBag.Project != null)
+{
+    <p>В проекте @ViewBag.Project.Name</p>
+}
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a type="button" class="btn btn-primary" asp-action="Create">Создать счёт</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                Дата
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HoursWorked)
+                Кол-во часов
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HourlyWage)
+                Почасовая оплата
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SumByHours)
+                Сумма по часам
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Bonus)
+                Бонус
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Total)
@@ -39,22 +46,25 @@
                 @Html.DisplayNameFor(model => model.Remainder)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Debt)
+                Долг
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RemWdebtAndBonus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SumWithTax)
+                Сумма с налогом
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentState)
+                Статус оплаты
             </th>
+            @if (ViewBag.Project == null)
+            {
+                <th>
+                    Проект
+                </th>
+            }
             <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
+                Работник
             </th>
             <th></th>
         </tr>
@@ -64,7 +74,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @item.Date.Value.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.HoursWorked)
@@ -99,11 +109,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PaymentState.Name)
                 </td>
+                @if (ViewBag.Project == null)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.Name)
+                    </td>
+                }
                 <td>
-                    @Html.DisplayFor(modelItem => item.Project.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Id)
+                    @UserInfo.GetName(item.User.Id)
                 </td>
                 <td>
                     @if (User.IsInRole("Manager") || User.IsInRole("Manager") || User.IsInRole("Manager"))

@@ -30,7 +30,7 @@ namespace WorkTime.Web.Controllers
         }
 
         //GET: AddUserInProject
-        public ActionResult AddUserInProject(string id)
+        public async Task<IActionResult> AddUserInProject(string id)
         {
             if (id == null || _context.Projects == null)
             {
@@ -39,6 +39,10 @@ namespace WorkTime.Web.Controllers
 
             var projectUsers = _context.UserProjects.Where(p => p.ProjectId == id)
                 .Select(p => p.UserId).AsEnumerable();
+            if (projectUsers == null)
+            {
+                throw new ArgumentNullException(nameof(projectUsers));
+            }
             var users = _context.AspNetUserInformations
                 .Where(u => !projectUsers.Contains(u.UserId)).AsEnumerable();
             if (users == null)
@@ -47,7 +51,7 @@ namespace WorkTime.Web.Controllers
             }
             var typeEmp = _context.TypeOfEmployments.AsEnumerable();
 
-            ViewBag.Project = _context.Projects.Find(id);
+            ViewBag.Project = await _context.Projects.FindAsync(id);
             ViewBag.Users = users;
             ViewBag.EmpType = typeEmp;
 
@@ -58,9 +62,8 @@ namespace WorkTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddUserInProject(UserProject userProject)
         {
-            _context.UserProjects.Add(new UserProject()
+            await _context.UserProjects.AddAsync(new UserProject()
             {
-                Id = $"{Guid.NewGuid()}",
                 UserId = userProject.UserId,
                 ProjectId = userProject.ProjectId,
                 HourlyWage = userProject.HourlyWage,
@@ -72,6 +75,7 @@ namespace WorkTime.Web.Controllers
 
         public async Task<IActionResult> UsersInProject(string id)
         {
+            ViewBag.Project = await _context.Projects.FindAsync(id);
             return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
         }
 

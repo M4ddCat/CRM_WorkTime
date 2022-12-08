@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WorkTime.Data;
 using WorkTime.Models;
+using WorkTime.Web.Services;
 
 namespace WorkTime.Web.Areas.Identity.Pages.Account
 {
@@ -34,6 +36,7 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private WorkTimeContext _context;
+        private UserInformation _userInfo;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -159,19 +162,19 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
 
                     if (_context.AspNetUsers.Count() == 1)
                     {
-                        
                         var roleresult = await _userManager.AddToRolesAsync(user, new[] {"Administrator", "Manager", "Bookkeeper"});
                     }
 
-                    _context.AspNetUserInformations.Add(new AspNetUserInformation()
+                    await _context.AspNetUserInformations.AddAsync(new AspNetUserInformation()
                     {
-                        Id = $"{Guid.NewGuid()}",
                         Name = Input.Name,
                         Surname = Input.Surname,
                         Patronymic = Input.Patronymic,
+                        HourlyWage = 0,
                         UserId = await _userManager.GetUserIdAsync(user)
                     });
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

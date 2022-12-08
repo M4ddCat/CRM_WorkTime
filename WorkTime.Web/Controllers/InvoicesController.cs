@@ -29,6 +29,14 @@ namespace WorkTime.Web.Controllers
             return View(await workTimeContext.ToListAsync());
         }
 
+        // GET: Invoices
+        public async Task<IActionResult> Index(string id)
+        {
+            var workTimeContext = _context.Invoices.Where(i => i.ProjectId == id).Include(i => i.PaymentState).Include(i => i.Project).Include(i => i.User);
+            ViewBag.Project = _context.Projects.Find(id);
+            return View(await workTimeContext.ToListAsync());
+        }
+
         // GET: Invoices/Details/5
         public async Task<IActionResult> Details(string id)
         {

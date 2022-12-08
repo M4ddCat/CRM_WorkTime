@@ -1,13 +1,17 @@
-﻿@model IEnumerable<WorkTime.Models.UserProject>
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+@model IEnumerable<WorkTime.Models.UserProject>
+
 
 @{
     ViewData["Title"] = "UsersInProject";
 }
 
-<h1>UsersInProject</h1>
+<h1>Пользователи в проекте</h1>
+<h2>@ViewBag.Project.Name</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a type="button" class="btn btn-primary" asp-action="AddUserInProject" asp-route-id="@ViewBag.Project.Id">Добавить пользователя в проект</a>
 </p>
 <table class="table">
     <thead>
@@ -31,15 +35,13 @@
                 @Html.DisplayFor(modelItem => item.HourlyWage)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EmpTypeId)
+                @Html.DisplayFor(modelItem => item.EmpType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @UserInfo.GetName(item.UserId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
