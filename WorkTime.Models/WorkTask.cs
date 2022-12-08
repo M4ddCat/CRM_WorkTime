@@ -34,4 +34,9 @@ public partial class WorkTask
     public virtual ICollection<TaskCommentary> TaskCommentaries { get; } = new List<TaskCommentary>();
 
     public virtual WorkTaskStatus TaskStatus { get; set; } = null!;
+
+    public WorkTask() 
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

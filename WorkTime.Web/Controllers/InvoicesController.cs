@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using WorkTime.Data;
 using WorkTime.Models;
 
@@ -85,7 +84,6 @@ namespace WorkTime.Web.Controllers
                 percents = _context.TypeOfEmployments.Find(up).Tax;
             }
             Invoice invoice = new Invoice() {
-                Id = $"{Guid.NewGuid()}",
                 UserId = userId,
                 ProjectId = projectId == "0" ? null : projectId,
                 Bonus = bonus,
@@ -136,7 +134,6 @@ namespace WorkTime.Web.Controllers
             }
                 _context.Add(new InvoiceFile() 
             { 
-                Id = $"{Guid.NewGuid()}",
                 InvoiceId = invoiceId,
                 File = fileBytes,
                 Name = name

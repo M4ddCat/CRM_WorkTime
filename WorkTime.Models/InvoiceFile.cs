@@ -12,5 +12,9 @@ public partial class InvoiceFile
     public string Name { get; set; } = null!;
     public byte[]? File { get; set; } = null!;
     public virtual Invoice Invoice { get; set; } = null!;
+    public InvoiceFile()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }
 

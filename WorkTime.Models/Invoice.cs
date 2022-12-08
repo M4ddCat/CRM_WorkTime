@@ -42,4 +42,9 @@ public partial class Invoice
     public virtual AspNetUser User { get; set; } = null!;
 
     public virtual ICollection<InvoiceFile> InvoiceFiles { get; } = new List<InvoiceFile>();
+
+    public Invoice()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

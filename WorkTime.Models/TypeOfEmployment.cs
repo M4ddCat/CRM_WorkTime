@@ -12,4 +12,9 @@ public partial class TypeOfEmployment
     public int Tax { get; set; }
 
     public virtual ICollection<UserProject> UserProjects { get; } = new List<UserProject>();
+
+    public TypeOfEmployment()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

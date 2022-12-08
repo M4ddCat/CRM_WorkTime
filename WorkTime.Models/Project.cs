@@ -16,4 +16,10 @@ public partial class Project
     public virtual ICollection<UserProject> UserProjects { get; } = new List<UserProject>();
 
     public virtual ICollection<WorkTask> WorkTasks { get; } = new List<WorkTask>();
+
+    public Project()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
+
 }

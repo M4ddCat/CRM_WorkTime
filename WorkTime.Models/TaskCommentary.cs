@@ -18,4 +18,9 @@ public partial class TaskCommentary
     public virtual WorkTask Task { get; set; } = null!;
 
     public virtual AspNetUser User { get; set; } = null!;
+
+    public TaskCommentary()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

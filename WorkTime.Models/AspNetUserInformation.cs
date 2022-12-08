@@ -20,4 +20,9 @@ public partial class AspNetUserInformation
     public byte[]? Photography { get; set; }
 
     public virtual AspNetUser User { get; set; } = null!;
+
+    public AspNetUserInformation()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

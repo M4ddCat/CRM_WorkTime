@@ -104,13 +104,9 @@ namespace WorkTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Bonus")] Models.Project project)
         {
-            
-                project.Id = $"{Guid.NewGuid()}";
-                _context.Add(project);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            
-            //return View(project);
+            _context.Add(project);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Projects/Edit/5

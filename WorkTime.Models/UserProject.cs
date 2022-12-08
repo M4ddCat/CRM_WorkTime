@@ -20,4 +20,9 @@ public partial class UserProject
     public virtual Project? Project { get; set; }
 
     public virtual AspNetUser User { get; set; } = null!;
+
+    public UserProject()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

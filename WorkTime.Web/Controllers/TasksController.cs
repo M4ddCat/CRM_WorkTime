@@ -75,7 +75,6 @@ namespace WorkTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TaskName,TaskText,PerformerId,CountOfHours,TaskStatusId,IssuerId")] WorkTask workTask)
         {
-            workTask.Id = $"{Guid.NewGuid()}";
             workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workTask.TaskStatusId = 1;
             db.Add(workTask);
