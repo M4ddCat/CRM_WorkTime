@@ -1,0 +1,42 @@
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+@inject ProjectInformation ProjectInfo
+@model IEnumerable<WorkTime.Models.WorkTask>
+
+<h1>Задачи</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название задачи
+            </th>
+            <th>
+                Статус задачи
+            </th>
+            <th>
+                Проект
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskStatus.Name)
+                </td>
+                <td>
+                    @ProjectInfo.GetName(item.ProjectId)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

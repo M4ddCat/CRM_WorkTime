@@ -27,4 +27,8 @@
     <ProjectReference Include="..\WorkTime.Models\WorkTime.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Temp\" />
+  </ItemGroup>
+
 </Project>

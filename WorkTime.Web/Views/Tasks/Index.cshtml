@@ -1,19 +1,28 @@
-﻿@model IEnumerable<WorkTime.Models.WorkTask>
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+@inject ProjectInformation ProjectInfo
+@model IEnumerable<WorkTime.Models.WorkTask>
 
 <h1>Задачи</h1>
 
 <p>
-    <a type="button" class="btn btn-primary" asp-action="Create">Create New</a>
+    <a type="button" class="btn btn-primary" asp-action="Create">Создать задачу</a>
 </p>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TaskName)
+                Название задачи
+            </th>
+            <td>
+                Исполнитель
+            </td>
+            <th>
+                Статус задачи
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaskStatus)
+                Проект
             </th>
             <th></th>
         </tr>
@@ -25,7 +34,13 @@
                 @Html.DisplayFor(modelItem => item.TaskName)
             </td>
             <td>
+                @UserInfo.GetName(item.PerformerId)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.TaskStatus.Name)
+            </td>
+            <td>
+                    @ProjectInfo.GetName(item.ProjectId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

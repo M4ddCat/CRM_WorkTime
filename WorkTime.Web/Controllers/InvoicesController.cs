@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WorkTime.Data;
 using WorkTime.Models;
+using System.IO.Compression;
 
 namespace WorkTime.Web.Controllers
 {
@@ -23,21 +25,20 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Invoices
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> Index()
         {
             var workTimeContext = _context.Invoices.Include(i => i.PaymentState).Include(i => i.Project).Include(i => i.User);
             return View(await workTimeContext.ToListAsync());
         }
 
-        // GET: Invoices
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> MyInvoices(string id)
         {
-            var workTimeContext = _context.Invoices.Where(i => i.ProjectId == id).Include(i => i.PaymentState).Include(i => i.Project).Include(i => i.User);
-            ViewBag.Project = _context.Projects.Find(id);
+            var workTimeContext = _context.Invoices.Where(i => i.UserId == id).Include(i => i.PaymentState).Include(i => i.Project).Include(i => i.User);
             return View(await workTimeContext.ToListAsync());
         }
 
-        // GET: Invoices/Details/5
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Invoices == null)
@@ -59,6 +60,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Invoices/Create
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public IActionResult Create()
         {
             ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name");
@@ -73,9 +75,10 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //Task<IActionResult>
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public string Create(string userId, string projectId, string[] tasksId, double bonus, double hourlyWage)
         {
-            if(!_context.AspNetUsers.Any(u => u.Id == userId))
+            if (!_context.AspNetUsers.Any(u => u.Id == userId))
             {
                 return "0";
             }
@@ -91,7 +94,8 @@ namespace WorkTime.Web.Controllers
                 string up = _context.UserProjects.Where(u => u.UserId == userId && u.ProjectId == projectId).FirstOrDefault().EmpTypeId;
                 percents = _context.TypeOfEmployments.Find(up).Tax;
             }
-            Invoice invoice = new Invoice() {
+            Invoice invoice = new Invoice()
+            {
                 UserId = userId,
                 ProjectId = projectId == "0" ? null : projectId,
                 Bonus = bonus,
@@ -132,25 +136,50 @@ namespace WorkTime.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadFile(string invoiceId, IFormFile file, string name)
+        public async Task<IActionResult> UploadFile(string invoiceId, IFormFile uploadedFile)
         {
             byte[] fileBytes;
             using (var ms = new MemoryStream())
             {
-                file.CopyTo(ms);
+                uploadedFile.CopyTo(ms);
                 fileBytes = ms.ToArray();
             }
-                _context.Add(new InvoiceFile() 
-            { 
+            _context.Add(new InvoiceFile()
+            {
                 InvoiceId = invoiceId,
                 File = fileBytes,
-                Name = name
+                Name = uploadedFile.FileName
             });
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
+        public async Task<FileResult> GetInvoiceFiles(string id)
+        {
+            List<InvoiceFile> files = _context.InvoiceFiles.Where(i => i.InvoiceId == id).ToList();
+
+            string path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/{id}";
+
+            Directory.CreateDirectory(path);
+
+            foreach (InvoiceFile file in files)
+            {
+                System.IO.File.WriteAllBytes($"{path}/{file.Name}", file.File);
+            }
+
+            ZipFile.CreateFromDirectory(path, $"{path}.zip");
+
+            byte[] archive = System.IO.File.ReadAllBytes($"{path}.zip");
+
+            Directory.Delete(path, true);
+            System.IO.File.Delete($"{path}.zip");
+
+            return File(archive, "application/zip");
+        }
+
         // GET: Invoices/Edit/5
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Invoices == null)
@@ -174,6 +203,7 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,UserId,ProjectId,PaymentStateId,Date,HoursWorked,HourlyWage,SumByHours,Bonus,Total,Issued,Remainder,Debt,RemWdebtAndBonus,SumWithTax")] Invoice invoice)
         {
             if (id != invoice.Id)
@@ -208,6 +238,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Invoices/Delete/5
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Invoices == null)
@@ -231,6 +262,7 @@ namespace WorkTime.Web.Controllers
         // POST: Invoices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Invoices == null)
@@ -242,14 +274,14 @@ namespace WorkTime.Web.Controllers
             {
                 _context.Invoices.Remove(invoice);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool InvoiceExists(string id)
         {
-          return _context.Invoices.Any(e => e.Id == id);
+            return _context.Invoices.Any(e => e.Id == id);
         }
     }
 }

@@ -26,7 +26,15 @@ namespace WorkTime.Web.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var workTimeContext = db.WorkTasks.Where(t => t.PerformerId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var workTimeContext = db.WorkTasks.Include(w => w.TaskStatus).Include(w => w.Project);
+            //Where(t => t.PerformerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            return View(await workTimeContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> MyTasks(string id)
+        {
+            var workTimeContext = db.WorkTasks.Where(t => t.PerformerId == id).Include(w => w.TaskStatus).Include(w => w.Project);
+            //Where(t => t.PerformerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             return View(await workTimeContext.ToListAsync());
         }
 
@@ -52,7 +60,9 @@ namespace WorkTime.Web.Controllers
             return View(workTask);
         }
 
+
         // GET: Tasks/Create
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Create()
         {
             ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id");
@@ -61,18 +71,12 @@ namespace WorkTime.Web.Controllers
             return View();
         }
 
-        //Get: Tasks/CreateStatus
-        [Authorize(Roles = "Administrator")]
-        public IActionResult CreateStatus()
-        {
-            return View();
-        }
-
         // POST: Tasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Create([Bind("TaskName,TaskText,PerformerId,CountOfHours,TaskStatusId,IssuerId")] WorkTask workTask)
         {
             workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -83,6 +87,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Tasks/Edit/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || db.WorkTasks == null)
@@ -97,7 +102,7 @@ namespace WorkTime.Web.Controllers
             }
             ViewData["IssuerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.IssuerId);
             ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.PerformerId);
-            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Id", workTask.ProjectId);
+            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name", workTask.ProjectId);
             ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name", workTask.TaskStatusId);
             return View(workTask);
         }
@@ -105,6 +110,7 @@ namespace WorkTime.Web.Controllers
         // POST: Tasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator,Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,TaskName,TaskText,ProjectId,PerformerId,CountOfHours,TaskStatusId,DateOfCompletion,InvoiceId,IssuerId")] WorkTask workTask)
@@ -142,6 +148,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Tasks/Delete/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || db.WorkTasks == null)
@@ -164,6 +171,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // POST: Tasks/Delete/5
+        [Authorize(Roles = "Administrator,Manager")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

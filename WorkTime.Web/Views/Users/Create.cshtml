@@ -1,0 +1,59 @@
+﻿@model WorkTime.Models.AspNetUser
+
+@{
+    ViewData["Title"] = "Создание нового пользователя";
+}
+
+<h1>Создание нового пользователя</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mt-2">
+                <input asp-for="Email" class="form-control" />
+                <label asp-for="Email" class="control-label"></label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="Name" aria-required="true" name="name" />
+                <label>Имя</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="Surname" aria-required="true" name="surname" />
+                <label>Фамилия</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="Patronymic" name="patronymic" />
+                <label>Отчество</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" name="hourlyWage" />
+                <label>Почасовая ставка</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input name="password" class="form-control" />
+                <label class="control-label">Пароль</label>
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

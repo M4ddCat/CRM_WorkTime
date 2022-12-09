@@ -12,13 +12,8 @@
         <input type="hidden" asp-for="InvoiceId" value="@ViewBag.InvoiceId" />
         <div class="form-group">
             <label class="control-label">Загрузить файл</label>
-            <input type="file" name="upload" asp-for="File" />
+            <input type="file" name="uploadedFile" />
         </div>
-        <div class="form-group">
-            <label class="control-label">Название</label>
-            <input asp-for="Name" />
-        </div>
-    
         <br>
         <input asp-page-handler="Upload" class="btn" type="submit" value="Загрузить" />
 

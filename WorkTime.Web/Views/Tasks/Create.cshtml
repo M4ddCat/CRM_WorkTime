@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TaskText" class="control-label">Текст задачи</label>
-                <input asp-for="TaskText" class="form-control" />
+                <textarea asp-for="TaskText" rows="3" class="form-control"></textarea>
                 <span asp-validation-for="TaskText" class="text-danger"></span>
             </div>
             <div class="form-group">

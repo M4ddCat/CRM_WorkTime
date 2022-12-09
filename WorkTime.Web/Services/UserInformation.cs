@@ -25,5 +25,11 @@ namespace WorkTime.Web.Services
             var userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == id);
             return $"{userInfo.Name} {userInfo.Surname}";
         }
+
+        public string GetMyId()
+        {
+            string userName = _httpContext.HttpContext?.User.Identity.Name;
+            return _context.AspNetUsers.FirstOrDefault(u => u.UserName == userName)?.Id;
+        }
     }
 }

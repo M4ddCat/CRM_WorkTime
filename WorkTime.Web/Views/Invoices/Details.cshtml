@@ -1,4 +1,6 @@
-﻿@model WorkTime.Models.Invoice
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+@model WorkTime.Models.Invoice
 
 @{
     ViewData["Title"] = "Details";
@@ -11,88 +13,88 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
+            Дата
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Date)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoursWorked)
+            Часов отработао
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.HoursWorked)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HourlyWage)
+            Почасовая оплата
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.HourlyWage)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SumByHours)
+            Сумма по часам
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SumByHours)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bonus)
+            Бонус
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Bonus)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Total)
+            Итого
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Total)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Issued)
+            Выдано
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Issued)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remainder)
+            Остаток
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Remainder)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Debt)
+            Долг
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Debt)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RemWdebtAndBonus)
+            Остаток с учётом долга и бонуса
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RemWdebtAndBonus)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SumWithTax)
+            Итоговая сумма с учётом налога
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SumWithTax)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentState)
+            Статус оплаты
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PaymentState.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
+            Проект
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.Id)
+            @Html.DisplayFor(model => model.Project.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            Работник
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+            @UserInfo.GetName(Model.UserId)
         </dd>
     </dl>
 </div>

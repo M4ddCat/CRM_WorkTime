@@ -30,6 +30,7 @@ namespace WorkTime.Web.Controllers
         }
 
         //GET: AddUserInProject
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> AddUserInProject(string id)
         {
             if (id == null || _context.Projects == null)
@@ -60,6 +61,7 @@ namespace WorkTime.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> AddUserInProject(UserProject userProject)
         {
             await _context.UserProjects.AddAsync(new UserProject()
@@ -98,6 +100,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Create()
         {
             return View();
@@ -106,6 +109,7 @@ namespace WorkTime.Web.Controllers
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Create([Bind("Name,Bonus")] Models.Project project)
         {
             _context.Add(project);
@@ -114,6 +118,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Projects == null)
@@ -132,6 +137,7 @@ namespace WorkTime.Web.Controllers
         // POST: Projects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Bonus")] Models.Project project)
         {
             if (id != project.Id)
@@ -163,6 +169,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Projects == null)
@@ -183,6 +190,7 @@ namespace WorkTime.Web.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Projects == null)

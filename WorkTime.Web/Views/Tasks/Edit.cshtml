@@ -1,12 +1,11 @@
 ﻿@model WorkTime.Models.WorkTask
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование задачи";
 }
 
-<h1>Edit</h1>
+<h1>Редактирование задачи</h1>
 
-<h4>WorkTask</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,52 +13,52 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="TaskName" class="control-label"></label>
+                <label asp-for="TaskName" class="control-label">Название задачи</label>
                 <input asp-for="TaskName" class="form-control" />
                 <span asp-validation-for="TaskName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TaskText" class="control-label"></label>
-                <input asp-for="TaskText" class="form-control" />
+                <label asp-for="TaskText" class="control-label">Текст задачи</label>
+                <textarea asp-for="TaskText" rows="3" class="form-control"></textarea>
                 <span asp-validation-for="TaskText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProjectId" class="control-label"></label>
+                <label asp-for="ProjectId" class="control-label">Проект</label>
                 <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
                 <span asp-validation-for="ProjectId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PerformerId" class="control-label"></label>
+                <label asp-for="PerformerId" class="control-label">Исполнитель</label>
                 <select asp-for="PerformerId" class="form-control" asp-items="ViewBag.PerformerId"></select>
                 <span asp-validation-for="PerformerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CountOfHours" class="control-label"></label>
+                <label asp-for="CountOfHours" class="control-label">Количество часов</label>
                 <input asp-for="CountOfHours" class="form-control" />
                 <span asp-validation-for="CountOfHours" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TaskStatusId" class="control-label"></label>
+                <label asp-for="TaskStatusId" class="control-label">Статус задачи</label>
                 <select asp-for="TaskStatusId" class="form-control" asp-items="ViewBag.TaskStatusId"></select>
                 <span asp-validation-for="TaskStatusId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateOfCompletion" class="control-label"></label>
+                <label asp-for="DateOfCompletion" class="control-label">Дата завершения</label>
                 <input asp-for="DateOfCompletion" class="form-control" />
                 <span asp-validation-for="DateOfCompletion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="InvoiceId" class="control-label"></label>
+                <label asp-for="InvoiceId" class="control-label">Номер счёта</label>
                 <input asp-for="InvoiceId" class="form-control" />
                 <span asp-validation-for="InvoiceId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IssuerId" class="control-label"></label>
+                <label asp-for="IssuerId" class="control-label">Назначил</label>
                 <select asp-for="IssuerId" class="form-control" asp-items="ViewBag.IssuerId"></select>
                 <span asp-validation-for="IssuerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>

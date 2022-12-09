@@ -4,27 +4,21 @@
 @inject ProjectInformation ProjectInfo
 
 @{
-    ViewData["Title"] = "Счета";
+    ViewData["Title"] = "Мои счета";
 }
 
 
 
-<h1>Счета</h1>
+<h1>Мои счета</h1>
 
 @if (ViewBag.Project != null)
 {
     <p>В проекте @ViewBag.Project.Name</p>
 }
 
-<p>
-    <a type="button" class="btn btn-primary" asp-action="Create">Создать счёт</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Работник
-            </th>
             @if (ViewBag.Project == null)
             {
                 <th>
@@ -47,9 +41,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @UserInfo.GetName(item.User.Id)
-                </td>
                 @if (ViewBag.Project == null)
                 {
                     <td>
@@ -82,9 +73,9 @@
                         </a>
                         <b>|</b>
                         <a type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id">
-                                <i class="fa fa-download"></i>
-                            </a>
-                            <b>|</b>
+                            <i class="fa fa-download"></i>
+                        </a>
+                        <b>|</b>
                     }
                     <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class="fa fa-upload"></i></a>
                 </td>
