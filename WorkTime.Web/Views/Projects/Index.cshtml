@@ -18,13 +18,16 @@
             <th>
                 Бонус проекта
             </th>
+            <th>
+                Сроки проекта
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="@item.Id">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -32,12 +35,59 @@
                     @Html.DisplayFor(modelItem => item.Bonus)
                 </td>
                 <td>
+                    @if (item.EndDate != null)
+                    {
+                        <table>
+                            <tr>
+                                <td>
+                                    С @item.StartDate.ToShortDateString()
+                                </td>
+                                <td>
+                                    По @item.EndDate?.ToShortDateString()
+                                </td>
+                            </tr>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>Бессрочный проект</p>
+                    }
+                </td>
+                <td>
                     <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> |
-                    <a type="button" title="Список пользователей в проекте" asp-action="UsersInProject" asp-route-id="@item.Id"><i class="fa fa-id-card"></i></a> |
-                    <a type="button" title="Информация о проекте" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-book"></i></a> |
-                    <a type="button" title="Удалить" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                    <a type="button" title="Информация о проекте" asp-action="ProjectDetails" asp-route-id="@item.Id"><i class="fa fa-book"></i></a> |
+                    <a type="button" title="Удалить" onclick="deleteProject('@item.Id', '@item.Name')" href="#"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@section Scripts {
+    <script>
+
+
+        function deleteProject(id, name) {
+            if (confirm('Вы хотите удалить проект ' + name + '?')) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteConfirmed", "Projects")',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                        id: id
+                    },
+                    success: function (result) {
+                        $('#' + id).remove();
+                    }
+                });
+            }
+        }
+
+        function gettoken() {
+            let token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+    </script>
+}

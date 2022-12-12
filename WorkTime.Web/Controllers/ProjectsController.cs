@@ -24,6 +24,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Projects
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Index()
         {
               return View(await _context.Projects.ToListAsync());
@@ -75,13 +76,15 @@ namespace WorkTime.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> UsersInProject(string id)
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<IActionResult> ProjectDetails(string id)
         {
             ViewBag.Project = await _context.Projects.FindAsync(id);
             return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
         }
 
         // GET: Projects/Details/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Projects == null)
@@ -110,7 +113,7 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> Create([Bind("Name,Bonus")] Models.Project project)
+        public async Task<IActionResult> Create(Models.Project project)
         {
             _context.Add(project);
             await _context.SaveChangesAsync();
@@ -138,7 +141,7 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Bonus")] Models.Project project)
+        public async Task<IActionResult> Edit(string id, Models.Project project)
         {
             if (id != project.Id)
             {
@@ -188,7 +191,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -200,6 +203,7 @@ namespace WorkTime.Web.Controllers
             var project = await _context.Projects.FindAsync(id);
             if (project != null)
             {
+                _context.UserProjects.RemoveRange(_context.UserProjects.Where(p => p.ProjectId == id));
                 _context.Projects.Remove(project);
             }
             

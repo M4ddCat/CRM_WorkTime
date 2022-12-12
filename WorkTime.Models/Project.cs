@@ -11,6 +11,10 @@ public partial class Project
 
     public double? Bonus { get; set; }
 
+    public DateTime StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
     public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();
 
     public virtual ICollection<UserProject> UserProjects { get; } = new List<UserProject>();

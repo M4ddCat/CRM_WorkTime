@@ -4,12 +4,25 @@
 
 
 @{
-    ViewData["Title"] = "UsersInProject";
+    ViewData["Title"] = "Детали проекта";
 }
 
-<h1>Пользователи в проекте</h1>
-<h2>@ViewBag.Project.Name</h2>
+<h1>Детали проекта</h1>
 
+<h4>Название: @ViewBag.Project.Name</h4>
+<h4>Бонус проекта: @ViewBag.Project.Bonus</h4>
+<h4>
+    Сроки проекта: @if (ViewBag.Project.EndDate != null)
+    {
+        <span>С @ViewBag.Project.StartDate.ToShortDateString() по @ViewBag.Project.EndDate.ToShortDateString()</span>
+    }
+    else
+    {
+        <span>Бессрочный</span>
+    }
+</h4>
+<br/>
+<h4>Список пользователей в проекте</h4>
 <p>
     <a type="button" class="btn btn-primary" asp-action="AddUserInProject" asp-route-id="@ViewBag.Project.Id">Добавить пользователя в проект</a>
 </p>
@@ -17,13 +30,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.HourlyWage)
+                Ставка
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmpType)
+                Вид занятости
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                Сотрудник
             </th>
             <th></th>
         </tr>

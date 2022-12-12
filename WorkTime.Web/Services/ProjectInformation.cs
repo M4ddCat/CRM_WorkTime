@@ -11,6 +11,10 @@ namespace WorkTime.Web.Services
         }
         public string GetName(string id)
         {
+            if (id == null)
+            {
+                return "";
+            }
             return _context.Projects.FirstOrDefault(u => u.Id == id).Name;
         }
     }

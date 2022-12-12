@@ -53,11 +53,16 @@
                 @if (ViewBag.Project == null)
                 {
                     <td>
-                        @ProjectInfo.GetName(item.ProjectId)
+                        if (item.ProjectId != null){
+                            @ProjectInfo.GetName(item.ProjectId)
+                        }
+                        else {
+                            <p>Без проекта</p>
+                        }
                     </td>
                 }
                 <td>
-                    @item.Date.Value.ToShortDateString()
+                    @item.Date?.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SumWithTax)

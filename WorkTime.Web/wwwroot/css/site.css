@@ -63,3 +63,28 @@ body {
     border-radius: 8px;
     padding: 48px 40px 36px;
 }
+
+#sideBarLinks {
+    width: 100%;
+}
+
+header {
+    background: rgb(39,30,177);
+    background: linear-gradient(193deg, rgba(39,30,177,1) 0%, rgba(52,208,240,1) 100%);
+}
+
+    #sideBarLinks > .nav-item > a {
+        width: 100%;
+        transition: 0.5s;
+    }
+
+    #sideBarLinks > .nav-item > a > i {
+        color: black;
+    }
+
+    #sideBarLinks > .nav-item {
+        width: 100%;
+    }
+        #sideBarLinks > .nav-item > a:hover {
+            background-color: #ffffff;
+        }

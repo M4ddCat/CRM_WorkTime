@@ -1,48 +1,48 @@
 ﻿@using WorkTime.Web.Services
 @inject UserInformation UserInfo
 
+
 <div id="sideBar" class="collapse dark-background" data-bs-toggle="collapse" data-bs-target="#sideBar" aria-expanded="false" aria-controls="sideBar">
-    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light collapse" id="sideBar" style="position:absolute; top: 0; left: 0;">
-        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-            <div style="padding-top: 0.1rem;">
+    <div class="col-auto col-md-3 col-xl-2 px-0 bg-light collapse" id="sideBar" style="position:absolute; top: 0; left: 0;">
+        <div class="d-flex flex-column align-items-center align-items-sm-start pt-2 text-white min-vh-100">
+            <div class="ps-3" style="padding-top: 0.4rem; margin-left: -0.25rem">
                 <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#sideBar" aria-expanded="false" aria-controls="sideBar">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </button>
                 <a class="navbar-brand" style="color: rgba(0,0,0,.9);" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
             </div>
 
-
-            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="sideBarLinks">
                 <li class="nav-item">
-                    <a class="nav-link align-middle px-0" asp-area="" asp-controller="Home" asp-action="Index">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Главная</span>
+                    <a type="button" class="nav-link align-middle px-0" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="my-2 ms-3 fa fa-home"></i> <span class="ms-2 d-none d-sm-inline text-dark">Главная</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link align-middle px-0" asp-area="" asp-controller="Projects" asp-action="Index">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Проекты</span>
+                        <i class="my-2 ms-3 fa fa-home"></i> <span class="ms-2 d-none d-sm-inline text-dark">Проекты</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks" asp-action="Index">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Задачи</span>
+                        <i class="my-2 ms-3 fa fa-home"></i> <span class="ms-2 d-none d-sm-inline text-dark">Задачи</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" asp-action="Index">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Счета</span>
+                        <i class="my-2 ms-3 fa fa-home"></i> <span class="ms-2 d-none d-sm-inline text-dark">Счета</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" 
                     asp-action="MyInvoices" asp-route-id="@UserInfo.GetMyId()">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Мои счета</span>
+                        <i class="my-2 ms-3 fa fa-home"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои счета</span>
                     </a>
                 </li>
                 @if (User.IsInRole("Administrator") || User.IsInRole("Manager")){
                         <li class="nav-item">
                         <a class="nav-link align-middle px-0" asp-area="" asp-controller="Users" asp-action="Index">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Пользователи</span>
+                            <i class="my-2 ms-3 fa fa-user-circle-o"></i> <span class="ms-2 d-none d-sm-inline text-dark">Пользователи</span>
                         </a>
                     </li>
                 }

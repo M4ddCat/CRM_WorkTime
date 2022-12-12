@@ -124,12 +124,12 @@ namespace WorkTime.Web.Controllers
 
         public async Task<IActionResult> UploadFile(string id)
         {
-            if (id == null || _context.Invoices == null)
+            if (id == null || _context.Invoices == null || !(await  _context.Invoices.AnyAsync(i => i.Id == id)))
             {
                 return NotFound();
             }
 
-            ViewBag.InvoiceId = _context.Invoices.FirstOrDefault(m => m.Id == id).Id;
+            ViewBag.InvoiceId = id;
 
             return View();
         }

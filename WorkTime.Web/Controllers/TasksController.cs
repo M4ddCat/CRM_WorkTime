@@ -24,6 +24,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // GET: Tasks
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Index()
         {
             var workTimeContext = db.WorkTasks.Include(w => w.TaskStatus).Include(w => w.Project);
@@ -77,7 +78,7 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> Create([Bind("TaskName,TaskText,PerformerId,CountOfHours,TaskStatusId,IssuerId")] WorkTask workTask)
+        public async Task<IActionResult> Create(WorkTask workTask)
         {
             workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workTask.TaskStatusId = 1;

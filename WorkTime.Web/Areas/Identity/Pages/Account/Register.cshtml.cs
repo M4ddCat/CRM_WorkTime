@@ -36,7 +36,6 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private WorkTimeContext _context;
-        private UserInformation _userInfo;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,

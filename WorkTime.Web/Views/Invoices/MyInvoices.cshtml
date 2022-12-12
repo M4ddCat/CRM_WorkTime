@@ -48,7 +48,7 @@
                     </td>
                 }
                 <td>
-                    @item.Date.Value.ToShortDateString()
+                    @item.Date?.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SumWithTax)
