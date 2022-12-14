@@ -67,7 +67,7 @@ namespace WorkTime.Web.Controllers
         public IActionResult Create()
         {
             ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name");
+            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name", "Без проекта");
             ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name");
             return View();
         }

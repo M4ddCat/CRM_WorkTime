@@ -9,31 +9,33 @@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
             <div>
-                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#sideBar" aria-expanded="false" aria-controls="sideBar">
+                <button class="btn" type="button" onclick="toggleSideBar()">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </button>
-                <a class="navbar-brand " asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
+                <a class="navbar-brand align-middle" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            @{/*
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks" 
-                    asp-action="MyTasks" asp-route-id="@UserInfo.GetMyId()">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Мои задачи</span>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" 
-                    asp-action="MyInvoices" asp-route-id="@UserInfo.GetMyId()">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Мои счета</span>
-                    </a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+            <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks"
+            asp-action="MyTasks" asp-route-id="@UserInfo.GetMyId()">
+            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Мои задачи</span>
+            </a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices"
+            asp-action="MyInvoices" asp-route-id="@UserInfo.GetMyId()">
+            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Мои счета</span>
+            </a>
+            </li>
+            </ul>
+                </div>*/
+            }
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     

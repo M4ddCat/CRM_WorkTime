@@ -2,11 +2,12 @@
 @inject UserInformation UserInfo
 
 
-<div id="sideBar" class="collapse dark-background" data-bs-toggle="collapse" data-bs-target="#sideBar" aria-expanded="false" aria-controls="sideBar">
-    <div class="col-auto col-md-3 col-xl-2 px-0 bg-light collapse" id="sideBar" style="position:absolute; top: 0; left: 0;">
+<div id="sideBar" hidden>
+    <div id="scrim" class="dark-background" style="transition-duration: 200ms" onclick="toggleSideBar()"></div>
+    <div id="sideBarMenu" class="px-0 bg-light slide">
         <div class="d-flex flex-column align-items-center align-items-sm-start pt-2 text-white min-vh-100">
-            <div class="ps-3" style="padding-top: 0.4rem; margin-left: -0.25rem">
-                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#sideBar" aria-expanded="false" aria-controls="sideBar">
+            <div class="ps-3 pb-3" style="padding-top: 0.4rem; margin-left: -0.25rem">
+                <button class="btn" type="button" onclick="toggleSideBar()">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </button>
                 <a class="navbar-brand" style="color: rgba(0,0,0,.9);" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>

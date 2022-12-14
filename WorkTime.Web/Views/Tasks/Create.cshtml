@@ -23,8 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProjectId" class="control-label">Проект</label>
-                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="getUsers()">
-                    <option value="0" selected>Без проекта</option>
+                <select asp-for="ProjectId" class="form-control" value="Без проекта" asp-items="ViewBag.ProjectId" onchange="getUsers()">
                 </select>
             </div>
             <div class="form-group">

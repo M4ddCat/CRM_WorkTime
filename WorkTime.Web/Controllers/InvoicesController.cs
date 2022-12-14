@@ -64,7 +64,7 @@ namespace WorkTime.Web.Controllers
         public IActionResult Create()
         {
             ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name");
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", "Без проекта");
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }

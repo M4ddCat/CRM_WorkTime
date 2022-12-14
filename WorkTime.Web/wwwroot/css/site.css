@@ -26,10 +26,6 @@ body {
   margin-bottom: 60px;
 }
 
-.transition-2s {
-    transition: 0.5s;
-}
-
 .bd-toc-link {
     display: block;
     padding: 0.25rem 1.5rem;
@@ -42,20 +38,56 @@ body {
 }
 
 #sideBar {
-    height: 100%;
-}
-
-.dark-background {
-    position: fixed;
     z-index: 9999999;
     position: absolute;
-    width: 100%;
     height: 100%;
+    width: 100%;
     overflow: hidden;
     margin: 0;
     top: 0;
     left: 0;
+}
+
+#sideBarMenu {
+    position: absolute;
+    width: 256px;
+    top: 0;
+    left: 0;
+    transition: all 0.2s;
+}
+/*
+    #sideBarMenu.slide:before {
+        opacity: 1;
+        -webkit-transform: translate3d(-100%, 0, 0) !important;
+        transform: translate3d(-100%, 0, 0) !important;
+    }
+
+    #sideBarMenu.slideOpen + #sideBarMenu.slide {
+        visibility: visible;
+        -webkit-transition: -webkit-transform 0.5s !important;
+        transition: transform 0.2s !important;
+        -webkit-transform: translate3d(0, 0, 0) !important;
+        transform: translate3d(0, 0, 0) !important;
+    }*/
+
+.dark-background {
+    transition-property: opacity;
+    height: 100%;
+    width: 100%;
     background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s linear 0.2s;
+    transform: translateZ(0);
+}
+
+.transition-2s {
+    transition: 0.5s;
+}
+
+.dark-background.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 .background_login {
@@ -73,18 +105,21 @@ header {
     background: linear-gradient(193deg, rgba(39,30,177,1) 0%, rgba(52,208,240,1) 100%);
 }
 
-    #sideBarLinks > .nav-item > a {
-        width: 100%;
-        transition: 0.5s;
-    }
+#sideBarLinks > .nav-item > a {
+    width: 100%;
+    transition: 0.5s;
+}
 
-    #sideBarLinks > .nav-item > a > i {
-        color: black;
-    }
+#sideBarLinks > .nav-item > a > i {
+    color: black;
+}
 
-    #sideBarLinks > .nav-item {
-        width: 100%;
-    }
-        #sideBarLinks > .nav-item > a:hover {
-            background-color: #ffffff;
-        }
+#sideBarLinks > .nav-item {
+    width: 100%;
+}
+#sideBarLinks > .nav-item > a:hover {
+    background-color: #ffffff;
+}
+
+
+
