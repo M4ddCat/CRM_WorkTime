@@ -41,12 +41,16 @@
         @foreach (var item in Model)
         {
             <tr>
-                @if (ViewBag.Project == null)
-                {
-                    <td>
+                <td>
+                    @if (item.ProjectId != null)
+                    {
                         @ProjectInfo.GetName(item.ProjectId)
-                    </td>
-                }
+                    }
+                    else
+                    {
+                        <p>Без проекта</p>
+                    }
+                </td>
                 <td>
                     @item.Date?.ToShortDateString()
                 </td>

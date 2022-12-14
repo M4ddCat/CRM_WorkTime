@@ -43,7 +43,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.HourlyWage)
             </td>
@@ -54,9 +54,38 @@
                 @UserInfo.GetName(item.UserId)
             </td>
             <td>
-                <a asp-action="" asp-route-id="@item.Id">Delete</a>
+                    <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetName(item.UserId))"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+
+        function deleteUser(id, name) {
+            if (confirm('Вы хотите удалить пользователя "' + name + '" из проекта?')) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("RemoveUserFromProject", "Projects")',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                        id: id
+                    },
+                    success: function (result) {
+                        $('#' + id).remove();
+                    }
+                });
+            }
+        }
+
+        function gettoken() {
+            let token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+    </script>
+}

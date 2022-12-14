@@ -55,8 +55,8 @@ body {
     left: 0;
     transition: all 0.2s;
 }
-/*
-    #sideBarMenu.slide:before {
+
+    #sideBarMenu.slide {
         opacity: 1;
         -webkit-transform: translate3d(-100%, 0, 0) !important;
         transform: translate3d(-100%, 0, 0) !important;
@@ -68,16 +68,12 @@ body {
         transition: transform 0.2s !important;
         -webkit-transform: translate3d(0, 0, 0) !important;
         transform: translate3d(0, 0, 0) !important;
-    }*/
+    }
 
 .dark-background {
-    transition-property: opacity;
     height: 100%;
     width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s linear 0.2s;
+    transition: 0.2s;
     transform: translateZ(0);
 }
 
@@ -85,9 +81,8 @@ body {
     transition: 0.5s;
 }
 
-.dark-background.visible {
-    opacity: 1;
-    visibility: visible;
+.dark-background.showed {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .background_login {

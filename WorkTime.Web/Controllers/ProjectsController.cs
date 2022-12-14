@@ -63,6 +63,16 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
+        public async Task<IActionResult> RemoveUserFromProject(string id)
+        {
+            _context.UserProjects.Remove(_context.UserProjects.Find(id));
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"Index", "Projects");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> AddUserInProject(UserProject userProject)
         {
             await _context.UserProjects.AddAsync(new UserProject()
@@ -73,7 +83,7 @@ namespace WorkTime.Web.Controllers
                 EmpTypeId = userProject.EmpTypeId
             });
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction($"ProjectDetails/{userProject.ProjectId}", "Projects");
         }
 
         [Authorize(Roles = "Administrator,Manager")]

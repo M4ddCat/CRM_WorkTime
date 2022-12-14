@@ -23,7 +23,7 @@
     <thead>
         <tr>
             <th>
-                Работник
+                Сотрудник
             </th>
             @if (ViewBag.Project == null)
             {
@@ -50,17 +50,16 @@
                 <td>
                     @UserInfo.GetName(item.User.Id)
                 </td>
-                @if (ViewBag.Project == null)
-                {
-                    <td>
-                        if (item.ProjectId != null){
-                            @ProjectInfo.GetName(item.ProjectId)
-                        }
-                        else {
-                            <p>Без проекта</p>
-                        }
-                    </td>
-                }
+                <td>
+                    @if (item.ProjectId != null)
+                    {
+                        @ProjectInfo.GetName(item.ProjectId)
+                    }
+                    else
+                    {
+                        <p>Без проекта</p>
+                    }
+                </td>
                 <td>
                     @item.Date?.ToShortDateString()
                 </td>
@@ -82,14 +81,14 @@
                             <i class="fa fa-exclamation-circle"></i>
                         </a>
                         <b>|</b>
-                        <a type="button" title="Удалить" asp-action="Delete" asp-route-id="@item.Id">
+                        <a type="button" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
                             <i class="fa fa-trash"></i>
                         </a>
                         <b>|</b>
                         <a type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id">
-                                <i class="fa fa-download"></i>
-                            </a>
-                            <b>|</b>
+                            <i class="fa fa-download"></i>
+                        </a>
+                        <b>|</b>
                     }
                     <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class="fa fa-upload"></i></a>
                 </td>
@@ -97,3 +96,33 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+
+
+        function deleteInvoice(id, name) {
+            if (confirm('Вы хотите удалить счёт ' + name + '?')) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteConfirmed", "Invoices")',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                        id: id
+                    },
+                    success: function (result) {
+                        $('#' + id).remove();
+                    }
+                });
+            }
+        }
+
+        function gettoken() {
+            let token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+    </script>
+}

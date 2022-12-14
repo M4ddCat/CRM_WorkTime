@@ -19,17 +19,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="UserRole" asp-route-id="@item.Id">UserRole</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> |
+                    <a type="button" title="Детали" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-exclamation-circle"></i></a> |
+                    <a type="button" title="Редактирование ролей" asp-action="UserRole" asp-route-id="@item.Id"><i class="fa fa-cubes"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

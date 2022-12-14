@@ -192,9 +192,14 @@ namespace WorkTime.Web.Controllers
             {
                 return NotFound();
             }
+            var users = _context.AspNetUserInformations.Select(u => new
+            {
+                Id = u.UserId,
+                Name = $"{u.Name} {u.Surname}"
+            });
             ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", invoice.ProjectId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", invoice.UserId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invoice.ProjectId);
+            ViewData["UserId"] = new SelectList(users, "Id", "Name", invoice.UserId);
             return View(invoice);
         }
 
@@ -204,7 +209,7 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,UserId,ProjectId,PaymentStateId,Date,HoursWorked,HourlyWage,SumByHours,Bonus,Total,Issued,Remainder,Debt,RemWdebtAndBonus,SumWithTax")] Invoice invoice)
+        public async Task<IActionResult> Edit(string id, Invoice invoice)
         {
             if (id != invoice.Id)
             {
@@ -231,9 +236,14 @@ namespace WorkTime.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            var users = _context.AspNetUserInformations.Select(u => new
+            {
+                Id = u.UserId,
+                Name = $"{u.Name} {u.Surname}"
+            });
             ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", invoice.ProjectId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", invoice.UserId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invoice.ProjectId);
+            ViewData["UserId"] = new SelectList(users, "Id", "Name", invoice.UserId);
             return View(invoice);
         }
 

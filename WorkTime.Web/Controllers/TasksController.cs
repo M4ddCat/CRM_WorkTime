@@ -67,7 +67,7 @@ namespace WorkTime.Web.Controllers
         public IActionResult Create()
         {
             ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name", "Без проекта");
+            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name");
             ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name");
             return View();
         }
@@ -82,6 +82,7 @@ namespace WorkTime.Web.Controllers
         {
             workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workTask.TaskStatusId = 1;
+            workTask.ProjectId = workTask.ProjectId == "0" ? null : workTask.ProjectId;
             db.Add(workTask);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -101,8 +102,13 @@ namespace WorkTime.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["IssuerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.IssuerId);
-            ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.PerformerId);
+            var users = db.AspNetUserInformations.Select(u => new
+            {
+                Id = u.UserId,
+                Name = $"{u.Name} {u.Surname}"
+            });
+            ViewData["IssuerId"] = new SelectList(users, "Id", "Name", workTask.IssuerId);
+            ViewData["PerformerId"] = new SelectList(users, "Id", "Name", workTask.PerformerId);
             ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name", workTask.ProjectId);
             ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name", workTask.TaskStatusId);
             return View(workTask);
@@ -114,38 +120,32 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,TaskName,TaskText,ProjectId,PerformerId,CountOfHours,TaskStatusId,DateOfCompletion,InvoiceId,IssuerId")] WorkTask workTask)
+        public async Task<IActionResult> Edit(string id, WorkTask workTask)
         {
             if (id != workTask.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    db.Update(workTask);
-                    await db.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WorkTaskExists(workTask.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                workTask.ProjectId = workTask.ProjectId == "null" ? null : workTask.ProjectId;
+                db.Update(workTask);
+                await db.SaveChangesAsync();
             }
-            ViewData["IssuerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.IssuerId);
-            ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id", workTask.PerformerId);
-            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Id", workTask.ProjectId);
-            ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name", workTask.TaskStatusId);
-            return View(workTask);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!WorkTaskExists(workTask.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Tasks/Delete/5
@@ -186,14 +186,14 @@ namespace WorkTime.Web.Controllers
             {
                 db.WorkTasks.Remove(workTask);
             }
-            
+
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool WorkTaskExists(string id)
         {
-          return db.WorkTasks.Any(e => e.Id == id);
+            return db.WorkTasks.Any(e => e.Id == id);
         }
     }
 }

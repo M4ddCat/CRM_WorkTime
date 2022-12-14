@@ -1,30 +1,48 @@
 ﻿@model WorkTime.Models.Invoice
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Создание счёта";
 }
 
-<h1>Create</h1>
+<h1>Создание счёта</h1>
 
-<h4>Invoice</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ProjectId" class="control-label"></label> 
+                <label asp-for="ProjectId" class="control-label">Проект</label>
                 <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="getUsers()">
+                    <option value="0">Без проекта</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId" onchange="getAtributes()"></select>
+                <label asp-for="UserId" class="control-label">Сотрудник</label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId" onchange="getAtributes()"></select>
             </div>
-            <div class="form-group">
-                <label class="control-label">Выбрать задачи с</label>
-                <input type="date" id="dateFrom" class="form-control" />
-                <span class="text-danger"></span>
+            <div class="form-grooup">
+                <label>Отобрать задачи по определённым датам</label>
+                <input onchange="useDates()" type="checkbox" />
+            </div>
+            <div id="dateInput" class="form-group" hidden>
+                <label class="control-label">Период дат для отбора задач</label>
+                <table>
+                    <tr>
+                        <td>
+                            C
+                        </td>
+                        <td>
+                            <input type="date" id="dateFrom" class="form-control" />
+                        </td>
+                        <td>
+                            По
+                        </td>
+                        <td>
+                            <input type="date" id="dateTo" class="form-control" />
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="form-group">
                 <label asp-for="Bonus" class="control-label"></label>
@@ -34,51 +52,52 @@
             <div class="form-group">
                 <a href="#" type="button" value="Сформировать" class="btn btn-primary" onclick="getTasks()">Сформировать счёт</a>
             </div>
-            <div class="form-group" id="Tasks">
-                <label class="control-label">Добавить задачу</label>
-                <select data-val="true" id="TasksSelect" class="form-control">
-                </select>
-                <a href="#" type="button" class="btn btn-primary" onclick="TaskToTable()">+</a>
-            </div>
-            <div class="form-group">
-                <table class="table" style="width:300pt">
-                    <thead>
-                        <tr>
-                            <th>
-                                Задача
-                            </th>
-                            <th>
-                                Количество часов
-                            </th>
-                            <th>
+            <div id="invoiceAttributes" hidden>
+                <div class="form-group" id="Tasks">
+                    <label class="control-label">Добавить задачу</label>
+                    <select data-val="true" id="TasksSelect" class="form-control">
+                    </select>
+                    <a href="#" type="button" class="btn btn-primary" onclick="TaskToTable()">+</a>
+                </div>
+                <div class="form-group">
+                    <table class="table" style="width:300pt">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Задача
+                                </th>
+                                <th>
+                                    Количество часов
+                                </th>
+                                <th>
 
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="CompletedTasks">
-
-                    </tbody>
-                </table>
-            </div>
-            <div id="sum" class="form-group">
-                <label class="row">Итого:</label>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label>Время</label>
-                        <h5 id="timeCount"></h5>
-                    </div>
-                    <div class="col-lg-4">
-                        <label>Ставка</label>
-                        <h5 id="hourlyWage"></h5>
-                    </div>
-                    <div class="col-lg-4">
-                        <label>К оплате:</label>
-                        <h5 id="sumCount"></h5>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="CompletedTasks">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="sum" class="form-group">
+                    <label class="row">Итого:</label>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label>Время</label>
+                            <h5 id="timeCount"></h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Ставка</label>
+                            <h5 id="hourlyWage"></h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>К оплате:</label>
+                            <h5 id="sumCount"></h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <a value="Создать" class="btn btn-primary" onclick="createInvoice()">Создать</a>
+                <div class="form-group">
+                    <a id="createBtn" value="Создать" class="btn btn-primary" onclick="createInvoice()">Создать</a>
+                </div>
             </div>
         </form>
     </div>
@@ -89,11 +108,35 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         let hours = 0, wage = 0, tasksArray = [], bonus = 0;
 
         getUsers();
+
+        function useDates() {
+            const inputBlock = document.getElementById('dateInput')
+
+            disableCreate();
+
+            $("#dateFrom").val('');
+            $("#dateTo").val('');
+
+            if (inputBlock.hidden){
+                inputBlock.hidden = false;
+                $(inputBlock).slideDown(200);
+            } else {
+                $(inputBlock).slideUp(200, function () {
+                    inputBlock.hidden = true;
+                });
+            }
+        }
+
+        function disableCreate() {
+            document.getElementById('invoiceAttributes').hidden = true;
+        }
 
         function getUsers() {
             $.ajax({
@@ -105,12 +148,12 @@
                 },
                 success: function (result) {
                     let array = $.parseJSON(result);
-                    //console.log(array);
                     $("#Bonus").val(array.bonus);
                     $("#UserId").html('');
                     for (let i = 0; i < array.data.length; i++) {
                         $('#UserId').append('<option value="' + array.data[i].UserId + '">' + array.data[i].Surname + ' ' + array.data[i].Name + '</option>');
                     }
+                    disableCreate();
                     clearTasks();
                     getAtributes();
                 }
@@ -128,6 +171,7 @@
                 },
                 success: function (result) {
                     let value = $.parseJSON(result);
+                    disableCreate();
                     $("#hourlyWage").html(value.HourlyWage);
                     wage = Number(value.HourlyWage);
                 }
@@ -142,15 +186,17 @@
                     __RequestVerificationToken: gettoken(),
                     ProjectId: getProjectId(),
                     UserId: getUserId(),
+                    dateFrom: getDateFrom(), 
+                    dateTo: getDateTo()
                 },
                 success: function (result) {
                     let array = $.parseJSON(result);
                     hours = 0;
                     clearTasks();
                     for (let i = 0; i < array.data.length; i++) {
-                        if (array.data[i].TaskStatusId == 1 || array.data[i].TaskStatusId == 2){
-                            $("#TasksSelect").append("<option value='" + array.data[i].CountOfHours + ","+ array.data[i].Id +"'>" 
-                            + array.data[i].TaskName + "</option>");
+                        if (array.data[i].TaskStatusId == 1 || array.data[i].TaskStatusId == 2) {
+                            $("#TasksSelect").append("<option value='" + array.data[i].CountOfHours + "," + array.data[i].Id + "'>"
+                                + array.data[i].TaskName + "</option>");
                         }
                         else {
                             $("#CompletedTasks").append("<tr><td>" + array.data[i].TaskName + "</td><td>" + array.data[i].CountOfHours + "</td><td></td></tr>");
@@ -158,7 +204,9 @@
                             tasksArray.push(array.data[i].Id)
                         }
                     }
-                    
+
+                    document.getElementById('invoiceAttributes').hidden = false;
+
                     refreshValues();
                 }
             });
@@ -174,7 +222,7 @@
                     userId: getUserId(),
                     tasksId: tasksArray,
                     bonus: bonus,
-                    hourlyWage : wage
+                    hourlyWage: wage
                 },
                 success: function (result) {
                     location.href = "/Invoices/";
@@ -184,9 +232,9 @@
 
         function TaskToTable() {
             let hourTask = $("#TasksSelect option:selected").val().split(',')
-            if (hourTask){
-                $("#CompletedTasks").append("<tr><td>" + $("#TasksSelect option:selected").text() 
-                + "</td><td>" + hourTask[0] + "</td><td></td></tr>");
+            if (hourTask) {
+                $("#CompletedTasks").append("<tr><td>" + $("#TasksSelect option:selected").text()
+                    + "</td><td>" + hourTask[0] + "</td><td></td></tr>");
                 $("#TasksSelect option:selected").remove();
                 tasksArray.push(hourTask[1])
                 hours += parseInt(hourTask[0]);
@@ -199,6 +247,22 @@
                 return $("#ProjectId").val();
             } else {
                 return -0;
+            }
+        }
+
+        function getDateFrom() {
+            if ($("#dateFrom").val()) {
+                return $("#dateFrom").val();
+            } else {
+                return null;
+            }
+        }
+
+        function getDateTo() {
+            if ($("#dateTo").val()) {
+                return $("#dateTo").val();
+            } else {
+                return null
             }
         }
 
@@ -215,7 +279,7 @@
 
         function getUserId() {
             return $("#UserId").val();
-        } 
+        }
 
         function gettoken() {
             let token = '@Html.AntiForgeryToken()';

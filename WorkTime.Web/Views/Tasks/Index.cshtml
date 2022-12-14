@@ -46,7 +46,7 @@
                 <td>
                     <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> |
                     <a type="button" title="Информация о задаче" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-book"></i></a> |
-                    <a type="button" title="Удалить" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                    <a type="button" title="Удалить" onclick="deleteTask('@item.Id', '@item.TaskName')" href="#"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         }
@@ -56,13 +56,12 @@
 @section Scripts {
     <script>
 
-
         function deleteTask(id, name) {
-            if (confirm('Вы хотите удалить задачу ' + name + '?')) {
+            if (confirm('Вы хотите удалить задачу "' + name + '"?')) {
 
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("DeleteConfirmed", "Projects")',
+                    url: '@Url.Action("DeleteConfirmed", "Tasks")',
                     data: {
                         __RequestVerificationToken: gettoken(),
                         id: id

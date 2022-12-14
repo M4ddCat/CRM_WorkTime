@@ -66,13 +66,45 @@ namespace WorkTime.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string GetUserTasks(string userId, string projectId)
+        public string GetUserTasks(string userId, string projectId, DateTime? dateFrom, DateTime? dateTo)
         {
-            var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
+            if (dateFrom == null && dateTo == null)
+            {
+                return JsonSerializer.Serialize(new { data = 
+                     _context.WorkTasks.Where(t => t.IssuerId == userId &&
             (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && t.InvoiceId == null)
-                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable();
-            return JsonSerializer.Serialize(new {data = tasks});
+                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
+            });
+            }
+            if (dateFrom != null && dateTo == null)
+            {
+                return JsonSerializer.Serialize(new
+                {
+                    data =
+                     _context.WorkTasks.Where(t => 
+                        t.IssuerId == userId &&
+                        (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && 
+                        t.InvoiceId == null &&
+                        t.DateOfCompletion >= dateFrom)
+                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
+                });
+            }
+            if (dateFrom != null && dateTo != null)
+            {
+                return JsonSerializer.Serialize(new
+                {
+                    data =
+                     _context.WorkTasks.Where(t => 
+                        t.IssuerId == userId &&
+                        (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && 
+                        t.InvoiceId == null &&
+                        t.DateOfCompletion >= dateFrom && t.DateOfCompletion <= dateTo)
+                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
+                });
+            }
+            return JsonSerializer.Serialize(":(");
         }
+
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
