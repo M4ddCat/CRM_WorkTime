@@ -23,8 +23,9 @@ namespace WorkTime.Web.Controllers
         {
             var commentaries = _context.TaskCommentaries.Where(t => t.TaskId == id);
             var usersId = commentaries.Select(c => c.UserId);
-            var users = _context.AspNetUserInformations.Where(t => usersId.Contains(t.UserId));
-            return JsonSerializer.Serialize(new { data = _context.Projects.Select(p => new { p.Id, p.Name }) });
+            var users = _context.AspNetUserInformations.Where(t => usersId.Contains(t.UserId))
+                .Select(u => new { UserId = u.UserId, Name = $"{u.Name} {u.Surname}" });
+            return JsonSerializer.Serialize(new { data = commentaries.Select(c => new { users.FirstOrDefault(u => u.UserId == c.UserId).Name, c.Text }) });
         }
 
     }
