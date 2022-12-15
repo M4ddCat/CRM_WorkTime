@@ -3,6 +3,10 @@
 @inject ProjectInformation ProjectInfo
 @model IEnumerable<WorkTime.Models.WorkTask>
 
+@{
+    ViewData["Title"] = "Задачи";
+}
+
 <h1>Задачи</h1>
 
 <p>
@@ -44,9 +48,9 @@
                     @ProjectInfo.GetName(item.ProjectId)
                 </td>
                 <td>
-                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> |
-                    <a type="button" title="Информация о задаче" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-book"></i></a> |
-                    <a type="button" title="Удалить" onclick="deleteTask('@item.Id', '@item.TaskName')" href="#"><i class="fa fa-trash"></i></a>
+                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class='bx bxs-edit'></i></a> |
+                    <a type="button" title="Информация о задаче" asp-action="Details" asp-route-id="@item.Id"><i class='bx bxs-detail'></i></a> |
+                    <a type="button" title="Удалить" onclick="deleteTask('@item.Id', '@item.TaskName')" href="#"><i class='bx bxs-trash'></i></a>
                 </td>
             </tr>
         }

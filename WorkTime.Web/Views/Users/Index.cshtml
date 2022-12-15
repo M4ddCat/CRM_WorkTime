@@ -26,9 +26,9 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> |
-                    <a type="button" title="Детали" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-exclamation-circle"></i></a> |
-                    <a type="button" title="Редактирование ролей" asp-action="UserRole" asp-route-id="@item.Id"><i class="fa fa-cubes"></i></a>
+                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class='bx bxs-edit'></i></a> |
+                    <a type="button" title="Детали" asp-action="Details" asp-route-id="@item.Id"><i class='bx bxs-detail'></i></a> |
+                    <a type="button" title="Редактирование ролей" asp-action="UserRole" asp-route-id="@item.Id"><i class='bx bxs-component'></i></a>
                 </td>
             </tr>
         }

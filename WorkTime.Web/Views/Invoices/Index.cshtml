@@ -74,23 +74,23 @@
                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Bookkeeper"))
                     {
                         <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
-                            <i class="fa fa-pencil"></i>
+                            <i class='bx bxs-edit-alt'></i>
                         </a>
                         <b>|</b>
                         <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
-                            <i class="fa fa-exclamation-circle"></i>
+                            <i class='bx bxs-detail'></i>
                         </a>
                         <b>|</b>
                         <a type="button" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
-                            <i class="fa fa-trash"></i>
+                            <i class='bx bxs-trash'></i>
                         </a>
                         <b>|</b>
                         <a type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id">
-                            <i class="fa fa-download"></i>
+                            <i class='fa fa-download'></i>
                         </a>
                         <b>|</b>
                     }
-                    <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class="fa fa-upload"></i></a>
+                    <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class='fa fa-upload'></i></a>
                 </td>
             </tr>
         }

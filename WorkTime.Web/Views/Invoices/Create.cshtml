@@ -22,7 +22,7 @@
                 <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId" onchange="getAtributes()"></select>
             </div>
             <div class="form-grooup">
-                <label>Отобрать задачи по определённым датам</label>
+                <label>Отобрать задачи в диапазоне дат</label>
                 <input onchange="useDates()" type="checkbox" />
             </div>
             <div id="dateInput" class="form-group" hidden>
@@ -55,9 +55,21 @@
             <div id="invoiceAttributes" hidden>
                 <div class="form-group" id="Tasks">
                     <label class="control-label">Добавить задачу</label>
-                    <select data-val="true" id="TasksSelect" class="form-control">
-                    </select>
-                    <a href="#" type="button" class="btn btn-primary" onclick="TaskToTable()">+</a>
+                    <table>
+                        <tr>
+                            <td>
+                                <select style="width: 250px;" onchange="showHoursTask()" data-val="true" id="TasksSelect" class="form-control">
+                                </select>
+                            </td>
+                            <td>
+                                <label id="taskHoursSelect">
+                                </label>
+                            </td>
+                            <td>
+                                <a href="#" type="button" class="btn btn-primary" onclick="TaskToTable()">+</a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="form-group">
                     <table class="table" style="width:300pt">
@@ -206,7 +218,7 @@
                     }
 
                     document.getElementById('invoiceAttributes').hidden = false;
-
+                    showHoursTask();
                     refreshValues();
                 }
             });
@@ -269,6 +281,12 @@
         function clearTasks() {
             $("#TasksSelect").html("");
             $("#CompletedTasks").html("");
+            $("#taskHoursSelect").html("");
+        }
+
+        function showHoursTask() {
+            let hourTask = $("#TasksSelect option:selected").val().split(',');
+            $('#taskHoursSelect').html(hourTask[0] + 'ч');
         }
 
         function refreshValues() {

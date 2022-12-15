@@ -181,25 +181,6 @@ namespace WorkTime.Web.Controllers
             return View(project);
         }
 
-        // GET: Projects/Delete/5
-        [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
-
-            var project = await _context.Projects
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            return View(project);
-        }
-
         // POST: Projects/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]

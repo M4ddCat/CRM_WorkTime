@@ -154,24 +154,6 @@ namespace WorkTime.Web.Controllers
             return View(aspNetUser);
         }
 
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.AspNetUsers == null)
-            {
-                return NotFound();
-            }
-
-            var aspNetUser = await _context.AspNetUsers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (aspNetUser == null)
-            {
-                return NotFound();
-            }
-
-            return View(aspNetUser);
-        }
-
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -6,6 +6,7 @@ html {
 @media (min-width: 768px) {
   html {
     font-size: 16px;
+
   }
 }
 
@@ -24,6 +25,7 @@ html {
 
 body {
   margin-bottom: 60px;
+  overflow: auto;
 }
 
 .bd-toc-link {
@@ -35,6 +37,15 @@ body {
 
 .height92pt {
     max-height: 92pt;
+}
+
+.blue-bg-head {
+    background: rgb(155,226,255,1);
+}
+
+.blue-bg-head-gradient {
+    background: rgb(214,210,255);
+    background: linear-gradient(5deg, rgba(214,210,255,1) 0%, rgba(127,217,251,1) 100%);
 }
 
 #sideBar {
@@ -50,24 +61,20 @@ body {
 
 #sideBarMenu {
     position: absolute;
+    background-color: rgb(252, 254, 255);
     width: 256px;
     top: 0;
-    left: 0;
-    transition: all 0.2s;
+    left: -256px;
+    transition: all 0.2s ease;
 }
 
-    #sideBarMenu.slide {
-        opacity: 1;
-        -webkit-transform: translate3d(-100%, 0, 0) !important;
-        transform: translate3d(-100%, 0, 0) !important;
+    #sideBarMenu.show {
+        left: 0px !important;
+        transition: left 0.2s ease;
     }
 
-    #sideBarMenu.slideOpen + #sideBarMenu.slide {
-        visibility: visible;
-        -webkit-transition: -webkit-transform 0.5s !important;
-        transition: transform 0.2s !important;
-        -webkit-transform: translate3d(0, 0, 0) !important;
-        transform: translate3d(0, 0, 0) !important;
+    .hidden {
+        display: none;
     }
 
 .dark-background {
@@ -82,7 +89,7 @@ body {
 }
 
 .dark-background.showed {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .background_login {
@@ -95,26 +102,40 @@ body {
     width: 100%;
 }
 
-header {
-    background: rgb(39,30,177);
-    background: linear-gradient(193deg, rgba(39,30,177,1) 0%, rgba(52,208,240,1) 100%);
+    #sideBarLinks > .nav-item > a {
+        width: 100%;
+        font-size: 13.5pt;
+        font-weight: 500;
+        transition: 0.5s;
+        border-radius: 7px;
+        
+    }
+
+        #sideBarLinks > .nav-item > a > i {
+            color: #0B1216;
+        }
+
+        #sideBarLinks > .nav-item > a > span {
+            color: #0B1216;
+        }
+
+    #sideBarLinks > .nav-item {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        
+        width: 100%;
+    }
+    #sideBarLinks > .nav-item > a:hover {
+        background-color: #DCF2FF;
+    }
+
+#mainContainer {
 }
 
-#sideBarLinks > .nav-item > a {
+#sideBarLogo {
     width: 100%;
-    transition: 0.5s;
 }
 
-#sideBarLinks > .nav-item > a > i {
-    color: black;
+.noscroll {
+    overflow: hidden;
 }
-
-#sideBarLinks > .nav-item {
-    width: 100%;
-}
-#sideBarLinks > .nav-item > a:hover {
-    background-color: #ffffff;
-}
-
-
-

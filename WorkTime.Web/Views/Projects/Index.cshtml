@@ -54,9 +54,9 @@
                     }
                 </td>
                 <td>
-                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a> |
-                    <a type="button" title="Информация о проекте" asp-action="ProjectDetails" asp-route-id="@item.Id"><i class="fa fa-book"></i></a> |
-                    <a type="button" title="Удалить" onclick="deleteProject('@item.Id', '@item.Name')" href="#"><i class="fa fa-trash"></i></a>
+                    <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id"><i class='bx bxs-edit'></i></a> |
+                    <a type="button" title="Информация о проекте" asp-action="ProjectDetails" asp-route-id="@item.Id"><i class='bx bxs-detail'></i></a> |
+                    <a type="button" title="Удалить" onclick="deleteProject('@item.Id', '@item.Name')" href="#"><i class='bx bxs-trash'></i></a>
                 </td>
             </tr>
         }

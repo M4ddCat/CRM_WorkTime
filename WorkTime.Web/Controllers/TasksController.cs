@@ -148,29 +148,6 @@ namespace WorkTime.Web.Controllers
 
         }
 
-        // GET: Tasks/Delete/5
-        [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || db.WorkTasks == null)
-            {
-                return NotFound();
-            }
-
-            var workTask = await db.WorkTasks
-                .Include(w => w.Issuer)
-                .Include(w => w.Performer)
-                .Include(w => w.Project)
-                .Include(w => w.TaskStatus)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (workTask == null)
-            {
-                return NotFound();
-            }
-
-            return View(workTask);
-        }
-
         // POST: Tasks/Delete/5
         [Authorize(Roles = "Administrator,Manager")]
         [HttpPost, ActionName("Delete")]

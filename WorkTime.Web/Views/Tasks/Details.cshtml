@@ -6,19 +6,28 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Детали задачи</h1>
-
-@Model.TaskName
+<h4>Задача: @Model.TaskName</h4>
 
 <div>
-    <h4>WorkTask</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            Статус задачи
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TaskStatus.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Проект
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Project.Name)
+        </dd>
         <dt class = "col-sm-2">
             Текст задачи
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TaskText)
+        <dd >
+            <textarea readonly rows="7" class="form-control">@Model.TaskText</textarea>
         </dd>
         <dt class = "col-sm-2">
             Количество часов
@@ -33,12 +42,6 @@
             @Html.DisplayFor(model => model.DateOfCompletion)
         </dd>
         <dt class = "col-sm-2">
-            ID счёта (появляется после формирования счёта)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InvoiceId)
-        </dd>
-        <dt class = "col-sm-2">
             Выдал задачу
         </dt>
         <dd class = "col-sm-10">
@@ -50,21 +53,21 @@
         <dd class = "col-sm-10">
             @UserInfo.GetName(Model.Performer.Id)
         </dd>
-        <dt class = "col-sm-2">
-            Проект
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Статус задачи
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TaskStatus.Name)
-        </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Редактировать</a> |
     <a asp-action="Index">Вернуться к списку</a>
+</div>
+<hr />
+
+<h1 style="color: red" >In dev!</h1>
+
+<div>
+    <h4>Комментарии</h4>
+    <hr />
+    <div id="taskCommentaries">
+
+    </div>
+    <textarea rows="2" class="form-control"></textarea><button>Subm</button>
 </div>

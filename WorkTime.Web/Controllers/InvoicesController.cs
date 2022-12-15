@@ -159,6 +159,11 @@ namespace WorkTime.Web.Controllers
         {
             List<InvoiceFile> files = _context.InvoiceFiles.Where(i => i.InvoiceId == id).ToList();
 
+            if (!Directory.Exists($"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/"))
+            {
+                Directory.CreateDirectory($"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/");
+            }
+
             string path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/{id}";
 
             Directory.CreateDirectory(path);
@@ -244,28 +249,6 @@ namespace WorkTime.Web.Controllers
             ViewData["PaymentStateId"] = new SelectList(_context.PaymentStates, "Id", "Name", invoice.PaymentStateId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invoice.ProjectId);
             ViewData["UserId"] = new SelectList(users, "Id", "Name", invoice.UserId);
-            return View(invoice);
-        }
-
-        // GET: Invoices/Delete/5
-        [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.Invoices == null)
-            {
-                return NotFound();
-            }
-
-            var invoice = await _context.Invoices
-                .Include(i => i.PaymentState)
-                .Include(i => i.Project)
-                .Include(i => i.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (invoice == null)
-            {
-                return NotFound();
-            }
-
             return View(invoice);
         }
 

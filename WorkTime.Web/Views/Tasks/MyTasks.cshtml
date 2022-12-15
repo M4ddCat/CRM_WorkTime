@@ -34,7 +34,7 @@
                     @ProjectInfo.GetName(item.ProjectId)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a type="button" asp-action="Details" title="Информация о задаче" asp-route-id="@item.Id"><i class='bx bxs-detail'></i></a>
                 </td>
             </tr>
         }
