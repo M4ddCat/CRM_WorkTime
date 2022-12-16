@@ -6,13 +6,13 @@
 @if (SignInManager.IsSignedIn(User))
 {
 
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow">
         <div class="container-fluid">
             <div>
-                <button class="btn" type="button" onclick="toggleSideBar()">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
+                <button class="btn light-element-hover" type="button" onclick="toggleSideBar()">
+                    <i class="fa fa-bars light-element" aria-hidden="true"></i>
                 </button>
-                <a class="navbar-brand align-middle" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
+                <a class="navbar-brand align-middle light-element" style="font-weight: 500;" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">

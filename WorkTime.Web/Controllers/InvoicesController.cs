@@ -122,6 +122,83 @@ namespace WorkTime.Web.Controllers
             return "1";
         }
 
+        public async Task<IActionResult> InvoicePay(string id)
+        {
+            if (id == null || _context.Invoices == null || !(await _context.Invoices.AnyAsync(i => i.Id == id)))
+            {
+                return NotFound();
+            }
+            var inv = await _context.Invoices.FindAsync(id);
+            var user = await _context.AspNetUserInformations.Where(u => u.UserId == inv.UserId).FirstOrDefaultAsync();
+            ViewBag.UserName = $"{user.Name} {user.Surname} {user.Patronymic}";
+            ViewBag.InvoiceId = id;
+            ViewBag.ToPay = _context.Invoices.FindAsync(id).Result.SumWithTax;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> InvoicePay(string invoiceId, double issued, IFormFile uploadedFile)
+        {
+            if (invoiceId == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            byte[] fileBytes;
+            using (var ms = new MemoryStream())
+            {
+                uploadedFile.CopyTo(ms);
+                fileBytes = ms.ToArray();
+            }
+            _context.Add(new InvoiceFile()
+            {
+                InvoiceId = invoiceId,
+                File = fileBytes,
+                Name = uploadedFile.FileName
+            });
+            var inv = await _context.Invoices.FindAsync(invoiceId);
+            inv.Issued = issued;
+            inv.Remainder = inv.SumWithTax - issued;
+            inv.PaymentStateId = 2;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> InvoiceConfirm(string id)
+        {
+            if (id == null || _context.Invoices == null || !(await _context.Invoices.AnyAsync(i => i.Id == id)))
+            {
+                return NotFound();
+            }
+
+            ViewBag.InvoiceId = id;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> InvoiceConfirm(string invoiceId, IFormFile uploadedFile)
+        {
+            byte[] fileBytes;
+            using (var ms = new MemoryStream())
+            {
+                uploadedFile.CopyTo(ms);
+                fileBytes = ms.ToArray();
+            }
+            _context.Add(new InvoiceFile()
+            {
+                InvoiceId = invoiceId,
+                File = fileBytes,
+                Name = uploadedFile.FileName
+            });
+            var inv = await _context.Invoices.FindAsync(invoiceId);
+            inv.PaymentStateId = 3;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> UploadFile(string id)
         {
             if (id == null || _context.Invoices == null || !(await  _context.Invoices.AnyAsync(i => i.Id == id)))

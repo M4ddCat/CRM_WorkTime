@@ -1,0 +1,24 @@
+﻿@model WorkTime.Models.InvoiceFile
+
+@{
+    ViewData["Title"] = "Подтверждение счёта";
+}
+
+<h1>Подтверждение счёта</h1>
+<form enctype="multipart/form-data" method="post">
+    <div>
+        <h4>Счёт № @ViewBag.InvoiceId </h4>
+        <h4>Выплачено @ViewBag.ToPay </h4>
+        <hr />
+        <input type="hidden" asp-for="InvoiceId" value="@ViewBag.InvoiceId" />
+        <div class="form-group">
+            <label class="control-label">Загрузите чек</label>
+            <input class="" type="file" name="uploadedFile" />
+        </div>
+        <br>
+        <input asp-page-handler="Upload" class="btn" type="submit" value="Подтвердить" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Вернуться к списку счетов</a>
+</div>

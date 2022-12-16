@@ -28,6 +28,23 @@ body {
   overflow: auto;
 }
 
+header {
+    background-color: #549ff0;
+}
+
+
+
+.light-element {
+    color: #fff !important;
+    transition: 0.2s;
+}
+
+.light-element-hover:hover {
+    background-color: rgba(255,255,255,.1);
+    border-radius: 5px;
+    
+}
+
 .bd-toc-link {
     display: block;
     padding: 0.25rem 1.5rem;
@@ -39,15 +56,6 @@ body {
     max-height: 92pt;
 }
 
-.blue-bg-head {
-    background: rgb(155,226,255,1);
-}
-
-.blue-bg-head-gradient {
-    background: rgb(214,210,255);
-    background: linear-gradient(5deg, rgba(214,210,255,1) 0%, rgba(127,217,251,1) 100%);
-}
-
 #sideBar {
     z-index: 9999999;
     position: absolute;
@@ -55,13 +63,12 @@ body {
     width: 100%;
     overflow: hidden;
     margin: 0;
-    top: 0;
     left: 0;
 }
 
 #sideBarMenu {
     position: absolute;
-    background-color: rgb(252, 254, 255);
+    background-color: #fbfaff;
     width: 256px;
     top: 0;
     left: -256px;
@@ -125,9 +132,9 @@ body {
         
         width: 100%;
     }
-    #sideBarLinks > .nav-item > a:hover {
-        background-color: #DCF2FF;
-    }
+        #sideBarLinks > .nav-item > a:hover {
+            background-color: #e3eaf8;
+        }
 
 #mainContainer {
 }
@@ -138,4 +145,12 @@ body {
 
 .noscroll {
     overflow: hidden;
+}
+
+.column-content > .card > .row > dd {
+    margin-bottom: 0;
+}
+
+.torightside {
+    float: right;
 }

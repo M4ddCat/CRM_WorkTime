@@ -19,83 +19,244 @@
 <p>
     <a type="button" class="btn btn-primary" asp-action="Create">Создать счёт</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Сотрудник
-            </th>
-            @if (ViewBag.Project == null)
-            {
-                <th>
-                    Проект
-                </th>
-            }
-            <th>
-                Дата создания
-            </th>
-            <th>
-                Сумма к оплате
-            </th>
-            <th>
-                Статус оплаты
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @UserInfo.GetName(item.User.Id)
-                </td>
-                <td>
-                    @if (item.ProjectId != null)
-                    {
-                        @ProjectInfo.GetName(item.ProjectId)
-                    }
-                    else
-                    {
-                        <p>Без проекта</p>
-                    }
-                </td>
-                <td>
-                    @item.Date?.ToShortDateString()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SumWithTax)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentState.Name)
-                </td>
 
-                <td>
-                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Bookkeeper"))
-                    {
-                        <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
-                            <i class='bx bxs-edit-alt'></i>
-                        </a>
-                        <b>|</b>
-                        <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
-                            <i class='bx bxs-detail'></i>
-                        </a>
-                        <b>|</b>
-                        <a type="button" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
-                            <i class='bx bxs-trash'></i>
-                        </a>
-                        <b>|</b>
-                        <a type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id">
-                            <i class='fa fa-download'></i>
-                        </a>
-                        <b>|</b>
-                    }
-                    <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class='fa fa-upload'></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@{
+                          /*
+
+
+
+                      <table class="table">
+                      <thead>
+                      <tr>
+                          <th>
+                      Сотрудник
+                      </th>
+                      @if (ViewBag.Project == null)
+              {
+              <th>
+                  Проект
+                  </th>
+                  }
+                      <th>
+                          Дата создания
+                              </th>
+                              <th>
+                              Сумма к оплате
+                              </th>
+                          <th>
+                              Статус оплаты
+                              </th>
+                              <th></th>
+                              </tr>
+                                  </thead>
+                                  <tbody>
+                                  @foreach (var item in Model)
+                                  {
+                              <tr>
+                              <td>
+                                  @UserInfo.GetName(item.User.Id)
+                              </td>
+                              <td>
+                          @if (item.ProjectId != null)
+                              {
+                              @ProjectInfo.GetName(item.ProjectId)
+                          }
+                              else
+                              {
+                              <p>Без проекта</p>
+                              }
+                          </td>
+                              <td>
+                              @item.Date?.ToShortDateString()
+                              </td>
+                          <td>
+                              @Html.DisplayFor(modelItem => item.SumWithTax)
+                              </td>
+                              <td>
+                              @Html.DisplayFor(modelItem => item.PaymentState.Name)
+                                  </td>
+
+                                  <td>
+                                  @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Bookkeeper"))
+                                  {
+                                  <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                  <i class='bx bxs-edit-alt'></i>
+                                      </a>
+                                      <b>|</b>
+                                  <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
+                                  <i class='bx bxs-detail'></i>
+                                  </a>
+                                      <b>|</b>
+                                      <a type="button" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                  <i class='bx bxs-trash'></i>
+                                  </a>
+                                  <b>|</b>
+                                      <a type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id">
+                              <i class='fa fa-download'></i>
+                              </a>
+                              <b>|</b>
+                              }
+                              <a type="button" asp-action="UploadFile" asp-route-id="@item.Id"><i class='fa fa-upload'></i></a>
+                          </td>
+                      </tr>
+              }
+              </tbody>
+              </table>
+    */
+}
+<div class="container row">
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Счета, ожидающие оплаты</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.PaymentStateId == 1))
+            {
+                <div class="card card-wp">
+                    <dl class="row mx-2 mt-3">
+                        <dd>
+                            <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                <i class='bx bxs-edit-alt'></i>
+                            </a>
+                            <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
+                                <i class='bx bxs-detail'></i>
+                            </a>
+                            <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                <i class='bx bxs-trash'></i>
+                            </a>
+                        </dd>
+                        <dt class="col-4">
+                            <span>На имя:</span>
+                        </dt>
+                        <dd class="col-6">
+                            @UserInfo.GetName(item.User.Id)
+                        </dd>
+                        <dt class="col-4">
+                            <span>Проект:</span>
+                        </dt>
+                        <dd class="col-6">
+                            @if (item.ProjectId != null)
+                            {
+                                @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                        <dd class="mt-2">
+                            <span class="torightside">К оплате: @item.SumWithTax р.</span>
+                        </dd>
+                        <dd>
+                            <a class="torightside btn btn-primary" type="button" asp-action="InvoicePay" asp-route-id="@item.Id"><span>Оплатить</span></a>
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Счета, ожидающие подтверждения</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.PaymentStateId == 2))
+            {
+                <div class="card card-ws">
+                    <dl class="row mx-2 mt-3">
+                        <dt>№@item.Id</dt>
+                        <dd>
+                            <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                <i class='bx bxs-edit-alt'></i>
+                            </a>
+                            <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
+                                <i class='bx bxs-detail'></i>
+                            </a>
+                            <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                <i class='bx bxs-trash'></i>
+                            </a>
+                        </dd>
+                        <dt class="col-4">
+                            <span>На имя:</span>
+                        </dt>
+                        <dd class="col-6">
+                            @UserInfo.GetName(item.User.Id)
+                        </dd>
+                        <dt class="col-4">
+                            <span>Проект:</span>
+                        </dt>
+                        <dd class="col-6">
+                            @if (item.ProjectId != null)
+                            {
+                                @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                        <dd class="mt-2">
+                            <span class="torightside">Выплачено: @item.Issued р.</span>
+                        </dd>
+                        <dd>
+                            <a class="torightside btn btn-primary" type="button" asp-action="InvoiceConfirm" asp-route-id="@item.Id"><span>Подтвердить</span></a>
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Подтверждённые счета</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.PaymentStateId == 3))
+            {
+                <div class="card card-s">
+                    <dl class="row mx-2 mt-3">
+                        <dd>
+                            <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                <i class='bx bxs-edit-alt'></i>
+                            </a>
+                            <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
+                                <i class='bx bxs-detail'></i>
+                            </a>
+                            <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                <i class='bx bxs-trash'></i>
+                            </a>
+                        </dd>
+                        <dt class="col-4">
+                            <span>На имя:</span>
+                        </dt>
+                        <dd class="col-6">
+                            @UserInfo.GetName(item.User.Id)
+                        </dd>
+                        <dt class="col-4">
+                            <span>Проект:</span>
+                        </dt>
+                        <dd class="col-6">
+                            @if (item.ProjectId != null)
+                            {
+                                @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                        <dd class="mt-2">
+                            <span class="torightside">Выплачено: @item.Issued р.</span>
+                        </dd>
+                        <dd>
+                            <a class="torightside btn btn-primary" type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id"><span>Скачать файлы</span></a>
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>

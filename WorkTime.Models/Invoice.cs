@@ -45,6 +45,6 @@ public partial class Invoice
 
     public Invoice()
     {
-        Id = Guid.NewGuid().ToString();
+        Id = (DateTime.Now.Ticks - new DateTime(2021, 4, 29).Ticks).ToString();
     }
 }
