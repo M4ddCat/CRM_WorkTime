@@ -10,6 +10,7 @@
 
 <div>
     <hr />
+    <input type="hidden" asp-for="Id" />
     <dl class="row">
         <dt class="col-sm-2">
             Статус задачи
@@ -61,13 +62,65 @@
 </div>
 <hr />
 
-<h1 style="color: red" >In dev!</h1>
-
 <div>
     <h4>Комментарии</h4>
     <hr />
-    <div id="taskCommentaries">
+    <div>
+        <dl id="taskCommentaries">
 
+        </dl>
     </div>
-    <textarea rows="2" class="form-control"></textarea><button>Subm</button>
+    <textarea id="comTextSend" rows="2" class="form-control"></textarea><button class="btn btn-primary" onclick="sendComment()">Отправить</button>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+          getComments()  
+        })
+
+        function getComments() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCommentaries", "Tasks")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    id: $("#Id").val()
+                },
+                success: function (result) {
+                    let array = $.parseJSON(result);
+                    $("#taskCommentaries").html("");
+                    for (let i = 0; i < array.data.length; i++) {
+                        $('#taskCommentaries').append('<dt>' + array.data[i].Name + '</dt> <dd>' + array.data[i].Text + '</dd>');
+                    }
+                }
+            })
+        }
+        
+        function sendComment() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendCommentary", "Tasks")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    taskId: $("#Id").val(),
+                    text: $("#comTextSend").val()
+                },
+                success: function (result) {
+                    $('#taskCommentaries').append('<dt>@UserInfo.GetName()</dt> <dd>' + $("#comTextSend").val() + '</dd>');
+                    $("#comTextSend").val('');
+                }
+            });
+        }
+
+        function gettoken() {
+            let token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+
+}

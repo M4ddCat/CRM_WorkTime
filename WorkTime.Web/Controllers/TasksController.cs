@@ -10,31 +10,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WorkTime.Data;
 using WorkTime.Models;
+using System.Text.Json;
 
 namespace WorkTime.Web.Controllers
 {
     [Authorize]
     public class TasksController : Controller
     {
-        private readonly WorkTimeContext db;
+        private readonly WorkTimeContext _context;
 
         public TasksController(WorkTimeContext context)
         {
-            db = new WorkTimeContext();
+            _context = new WorkTimeContext();
         }
 
         // GET: Tasks
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Index()
         {
-            var workTimeContext = db.WorkTasks.Include(w => w.TaskStatus).Include(w => w.Project);
+            var workTimeContext = _context.WorkTasks.Include(w => w.TaskStatus).Include(w => w.Project);
             //Where(t => t.PerformerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             return View(await workTimeContext.ToListAsync());
         }
 
         public async Task<IActionResult> MyTasks(string id)
         {
-            var workTimeContext = db.WorkTasks.Where(t => t.PerformerId == id).Include(w => w.TaskStatus).Include(w => w.Project);
+            var workTimeContext = _context.WorkTasks.Where(t => t.PerformerId == id).Include(w => w.TaskStatus).Include(w => w.Project);
             //Where(t => t.PerformerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             return View(await workTimeContext.ToListAsync());
         }
@@ -42,12 +43,12 @@ namespace WorkTime.Web.Controllers
         // GET: Tasks/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || db.WorkTasks == null)
+            if (id == null || _context.WorkTasks == null)
             {
                 return NotFound();
             }
 
-            var workTask = await db.WorkTasks
+            var workTask = await _context.WorkTasks
                 .Include(w => w.Issuer)
                 .Include(w => w.Performer)
                 .Include(w => w.Project)
@@ -66,9 +67,9 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Create()
         {
-            ViewData["PerformerId"] = new SelectList(db.AspNetUsers, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name");
-            ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name");
+            ViewData["PerformerId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name");
+            ViewData["TaskStatusId"] = new SelectList(_context.WorkTaskStatuses, "Id", "Name");
             return View();
         }
 
@@ -83,8 +84,8 @@ namespace WorkTime.Web.Controllers
             workTask.IssuerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             workTask.TaskStatusId = 1;
             workTask.ProjectId = workTask.ProjectId == "0" ? null : workTask.ProjectId;
-            db.Add(workTask);
-            await db.SaveChangesAsync();
+            _context.Add(workTask);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -92,25 +93,25 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || db.WorkTasks == null)
+            if (id == null || _context.WorkTasks == null)
             {
                 return NotFound();
             }
 
-            var workTask = await db.WorkTasks.FindAsync(id);
+            var workTask = await _context.WorkTasks.FindAsync(id);
             if (workTask == null)
             {
                 return NotFound();
             }
-            var users = db.AspNetUserInformations.Select(u => new
+            var users = _context.AspNetUserInformations.Select(u => new
             {
                 Id = u.UserId,
                 Name = $"{u.Name} {u.Surname}"
             });
             ViewData["IssuerId"] = new SelectList(users, "Id", "Name", workTask.IssuerId);
             ViewData["PerformerId"] = new SelectList(users, "Id", "Name", workTask.PerformerId);
-            ViewData["ProjectId"] = new SelectList(db.Projects, "Id", "Name", workTask.ProjectId);
-            ViewData["TaskStatusId"] = new SelectList(db.WorkTaskStatuses, "Id", "Name", workTask.TaskStatusId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", workTask.ProjectId);
+            ViewData["TaskStatusId"] = new SelectList(_context.WorkTaskStatuses, "Id", "Name", workTask.TaskStatusId);
             return View(workTask);
         }
 
@@ -130,8 +131,8 @@ namespace WorkTime.Web.Controllers
             try
             {
                 workTask.ProjectId = workTask.ProjectId == "null" ? null : workTask.ProjectId;
-                db.Update(workTask);
-                await db.SaveChangesAsync();
+                _context.Update(workTask);
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -154,23 +155,59 @@ namespace WorkTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (db.WorkTasks == null)
+            if (_context.WorkTasks == null)
             {
                 return Problem("Entity set 'WorkTimeContext.WorkTasks'  is null.");
             }
-            var workTask = await db.WorkTasks.FindAsync(id);
+            var workTask = await _context.WorkTasks.FindAsync(id);
             if (workTask != null)
             {
-                db.WorkTasks.Remove(workTask);
+                _context.WorkTasks.Remove(workTask);
             }
 
-            await db.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string GetCommentaries(string id)
+        {
+            if (!_context.WorkTasks.Any(a => a.Id == id))
+            {
+                return "";
+            }
+            var commentaries = _context.TaskCommentaries.Where(t => t.TaskId == id);
+            var usersId = commentaries.Select(c => c.UserId);
+            var users = _context.AspNetUserInformations.Where(t => usersId.Contains(t.UserId))
+                .Select(u => new { UserId = u.UserId, Name = $"{u.Name} {u.Surname}" });
+            return JsonSerializer.Serialize(new { data = commentaries.Select(c => new 
+                { users.FirstOrDefault(u => u.UserId == c.UserId).Name, c.Text }
+            ) });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendCommentary(string taskId, string text)
+        {
+            if (!_context.WorkTasks.Any(a => a.Id == taskId) || String.IsNullOrWhiteSpace(text))
+            {
+                return BadRequest();
+            }
+            _context.TaskCommentaries.Add(
+                new TaskCommentary()
+                {
+                    TaskId = taskId,
+                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    Text = text
+                });
+            _context.SaveChanges();
+            return Ok();
         }
 
         private bool WorkTaskExists(string id)
         {
-            return db.WorkTasks.Any(e => e.Id == id);
+            return _context.WorkTasks.Any(e => e.Id == id);
         }
     }
 }
