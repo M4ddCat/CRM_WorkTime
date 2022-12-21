@@ -7,16 +7,23 @@
 }
 
 .task-column {
-    width: 240pt;
+    width: 250pt;
     vertical-align: top;
-    border: initial;
-    border-width: 1px;
-    border-color: black;
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+}
+
+.column-content {
+    margin: 5pt 5pt;
+}
+
+.column-content > .card {
+    border-radius: 6pt;
 }
 
 .column-head {
     background-color: #d8f1ff;
-    border-radius: 5pt 5pt 0 0;
+    border-radius: 8pt 8pt 0 0;
     text-align: center;
 }
 

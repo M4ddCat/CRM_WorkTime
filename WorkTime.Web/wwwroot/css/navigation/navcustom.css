@@ -12,6 +12,12 @@
     border-radius: 5px;
 }
 
-#navLogo {
-    height: 30pt;
+.navbar-brand {
+    font-weight: 500;
+    margin-left: 10pt;
 }
+
+#navLogo {
+    height: 26pt;
+}
+
