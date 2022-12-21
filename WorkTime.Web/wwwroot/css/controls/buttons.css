@@ -1,0 +1,9 @@
+﻿.btn-primary {
+    background-color: #2182ea;
+}
+
+.btn {
+    border-radius: 5pt;
+    transition: 0.4s;
+    box-shadow: none !important;
+}

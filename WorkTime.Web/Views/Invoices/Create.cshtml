@@ -193,6 +193,9 @@
                     disableCreate();
                     $("#hourlyWage").html(value.HourlyWage);
                     wage = Number(value.HourlyWage);
+                    if (getProjectId() != -0) {
+                        $("#Bonus").val(value.Bonus);
+                    }
                 }
             });
         }

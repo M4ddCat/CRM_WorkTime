@@ -1,156 +1,46 @@
+@import 'navigation/sidebar.css';
+@import 'navigation/navcustom.css';
+@import 'objects/columns.css';
+@import 'objects/login-form.css';
+@import 'controls/buttons.css';
+
 html {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     font-size: 1rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+main {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-top: 2rem !important;
+}
 
-  }
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+
+    main {
+        padding-left: 4rem !important;
+        padding-right: 4rem !important;
+        padding-top: 3rem !important;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
-.bd-sidebar {
-    top: 0px;
-    position: absolute;
-    border-right: 1px solid rgba(0,0,0,.1);
-    background-color: #e2e2e2;
-    width: 200pt;
+a {
+    color: #2182ea;
 }
 
 body {
-  margin-bottom: 60px;
-  overflow: auto;
+    margin-bottom: 60px;
+    overflow: auto;
 }
 
-header {
-    background-color: #549ff0;
-}
-
-
-
-.light-element {
-    color: #fff !important;
-    transition: 0.2s;
-}
-
-.light-element-hover:hover {
-    background-color: rgba(255,255,255,.1);
-    border-radius: 5px;
-    
-}
-
-.bd-toc-link {
-    display: block;
-    padding: 0.25rem 1.5rem;
-    font-weight: 500;
-    color: rgba(0,0,0,.65);
-}
-
-.height92pt {
-    max-height: 92pt;
-}
-
-#sideBar {
-    z-index: 9999999;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    margin: 0;
-    left: 0;
-}
-
-#sideBarMenu {
-    position: absolute;
-    background-color: #fbfaff;
-    width: 256px;
-    top: 0;
-    left: -256px;
-    transition: all 0.2s ease;
-}
-
-    #sideBarMenu.show {
-        left: 0px !important;
-        transition: left 0.2s ease;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-.dark-background {
-    height: 100%;
-    width: 100%;
-    transition: 0.2s;
-    transform: translateZ(0);
-}
-
-.transition-2s {
-    transition: 0.5s;
-}
-
-.dark-background.showed {
-    background: rgba(0, 0, 0, 0.35);
-}
-
-.background_login {
-    border: 1px solid #dadce0;
-    border-radius: 8px;
-    padding: 48px 40px 36px;
-}
-
-#sideBarLinks {
-    width: 100%;
-}
-
-    #sideBarLinks > .nav-item > a {
-        width: 100%;
-        font-size: 13.5pt;
-        font-weight: 500;
-        transition: 0.5s;
-        border-radius: 7px;
-        
-    }
-
-        #sideBarLinks > .nav-item > a > i {
-            color: #0B1216;
-        }
-
-        #sideBarLinks > .nav-item > a > span {
-            color: #0B1216;
-        }
-
-    #sideBarLinks > .nav-item {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        
-        width: 100%;
-    }
-        #sideBarLinks > .nav-item > a:hover {
-            background-color: #e3eaf8;
-        }
-
-#mainContainer {
-}
-
-#sideBarLogo {
-    width: 100%;
-}
-
-.noscroll {
-    overflow: hidden;
-}
-
-.column-content > .card > .row > dd {
-    margin-bottom: 0;
-}
-
-.torightside {
-    float: right;
+.hidden {
+    display: none;
 }

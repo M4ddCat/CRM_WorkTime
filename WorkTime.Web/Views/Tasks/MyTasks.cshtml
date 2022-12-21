@@ -5,38 +5,157 @@
 
 <h1>Задачи</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Название задачи
-            </th>
-            <th>
-                Статус задачи
-            </th>
-            <th>
-                Проект
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskStatus.Name)
-                </td>
-                <td>
-                    @ProjectInfo.GetName(item.ProjectId)
-                </td>
-                <td>
-                    <a type="button" asp-action="Details" title="Информация о задаче" asp-route-id="@item.Id"><i class='bx bxs-detail'></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container row" style="white-space: nowrap; overflow-x: auto;">
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Сформированы</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.TaskStatusId == 1))
+            {
+                <div class="card card-s">
+                    <dl class="row mx-2 mt-3">
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <dd>
+                                <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class='bx bxs-edit-alt'></i>
+                                </a>
+                                <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                    <i class='bx bxs-trash'></i>
+                                </a>
+                            </dd>
+                        }
+                        <dd>
+                            <a asp-action="Details" asp-route-id="@item.Id">@item.TaskName</a>
+                        </dd>
+                        <dd class="">
+                            @if (item.ProjectId != null)
+                            {
+                                <span style="font-weight: 700;">Проект:</span> @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Выполняются</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.TaskStatusId == 2))
+            {
+                <div class="card card-s">
+                    <dl class="row mx-2 mt-3">
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <dd>
+                                <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class='bx bxs-edit-alt'></i>
+                                </a>
+                                <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                    <i class='bx bxs-trash'></i>
+                                </a>
+                            </dd>
+                        }
+                        <dd>
+                            <a asp-action="Details" asp-route-id="@item.Id">@item.TaskName</a>
+                        </dd>
+                        <dd class="">
+                            @if (item.ProjectId != null)
+                            {
+                                <span style="font-weight: 700;">Проект:</span> @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Ожидают проверки</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.TaskStatusId == 3))
+            {
+                <div class="card card-s">
+                    <dl class="row mx-2 mt-3">
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <dd>
+                                <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class='bx bxs-edit-alt'></i>
+                                </a>
+                                <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                    <i class='bx bxs-trash'></i>
+                                </a>
+                            </dd>
+                        }
+                        <dd>
+                            <a asp-action="Details" asp-route-id="@item.Id">@item.TaskName</a>
+                        </dd>
+                        <dd class="">
+                            @if (item.ProjectId != null)
+                            {
+                                <span style="font-weight: 700;">Проект:</span> @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col mx-3">
+        <div class="column-head">
+            <p>Завершены</p>
+        </div>
+        <div class="column-content">
+            @foreach (var item in Model.Where(m => m.TaskStatusId == 4))
+            {
+                <div class="card card-s">
+                    <dl class="row mx-2 mt-3">
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <dd>
+                                <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class='bx bxs-edit-alt'></i>
+                                </a>
+                                <a type="button" class="torightside" title="Удалить" href="#" onclick="deleteInvoice('@item.Id', '@item.Id')">
+                                    <i class='bx bxs-trash'></i>
+                                </a>
+                            </dd>
+                        }
+                        <dd>
+                            <a asp-action="Details" asp-route-id="@item.Id">@item.TaskName</a>
+                        </dd>
+                        <dd class="">
+                            @if (item.ProjectId != null)
+                            {
+                                <span style="font-weight: 700;">Проект:</span> @ProjectInfo.GetName(item.ProjectId)
+                            }
+                            else
+                            {
+                                <span>Без проекта</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+</div>

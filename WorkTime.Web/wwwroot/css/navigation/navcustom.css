@@ -1,0 +1,13 @@
+﻿header {
+    background-color: #549ff0;
+}
+
+.light-element {
+    color: #fff !important;
+    transition: 0.2s;
+}
+
+.light-element-hover:hover {
+    background-color: rgba(255,255,255,.1);
+    border-radius: 5px;
+}

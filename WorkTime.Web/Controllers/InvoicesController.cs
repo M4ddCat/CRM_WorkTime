@@ -330,7 +330,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // POST: Invoices/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> DeleteConfirmed(string id)

@@ -1,0 +1,27 @@
+﻿.column-content > .card > .row > dd {
+    margin-bottom: 0;
+}
+
+.torightside {
+    float: right;
+}
+
+.task-column {
+    width: 240pt;
+    vertical-align: top;
+    border: initial;
+    border-width: 1px;
+    border-color: black;
+}
+
+.column-head {
+    background-color: #d8f1ff;
+    border-radius: 5pt 5pt 0 0;
+    text-align: center;
+}
+
+    .column-head > p {
+        padding-top: 5pt;
+        padding-bottom: 5pt;
+        font-weight: 600;
+    }

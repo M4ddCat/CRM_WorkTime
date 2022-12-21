@@ -151,7 +151,7 @@ namespace WorkTime.Web.Controllers
 
         // POST: Tasks/Delete/5
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

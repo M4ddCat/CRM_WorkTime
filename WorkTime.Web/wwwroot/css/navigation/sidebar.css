@@ -1,0 +1,72 @@
+﻿.bd-sidebar {
+    top: 0px;
+    position: absolute;
+    border-right: 1px solid rgba(0,0,0,.1);
+    background-color: #e2e2e2;
+    width: 200pt;
+}
+
+#sideBar {
+    z-index: 9999999;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    left: 0;
+}
+
+.dark-background {
+    height: 100%;
+    width: 100%;
+    transition: 0.2s;
+    transform: translateZ(0);
+}
+
+    .dark-background.showed {
+        background: rgba(0, 0, 0, 0.35);
+    }
+
+#sideBarMenu {
+    position: absolute;
+    background-color: #fbfaff;
+    width: 256px;
+    top: 0;
+    left: -256px;
+    transition: all 0.2s ease;
+}
+
+    #sideBarMenu.show {
+        left: 0px !important;
+        transition: left 0.2s ease;
+    }
+
+#sideBarLinks {
+    width: 100%;
+}
+
+    #sideBarLinks > .nav-item > a {
+        width: 100%;
+        font-size: 13.5pt;
+        font-weight: 500;
+        transition: 0.5s;
+        border-radius: 7px;
+    }
+
+        #sideBarLinks > .nav-item > a > i {
+            color: #0B1216;
+        }
+
+        #sideBarLinks > .nav-item > a > span {
+            color: #0B1216;
+        }
+
+    #sideBarLinks > .nav-item {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        width: 100%;
+    }
+
+        #sideBarLinks > .nav-item > a:hover {
+            background-color: #e3eaf8;
+        }

@@ -112,7 +112,7 @@
         <div class="column-content">
             @foreach (var item in Model.Where(m => m.PaymentStateId == 1))
             {
-                <div class="card card-wp">
+                <div id="@item.Id" class="card card-wp">
                     <dl class="row mx-2 mt-3">
                         <dd>
                             <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
@@ -162,7 +162,7 @@
         <div class="column-content">
             @foreach (var item in Model.Where(m => m.PaymentStateId == 2))
             {
-                <div class="card card-ws">
+                <div id="@item.Id" class="card card-ws">
                     <dl class="row mx-2 mt-3">
                         <dt>№@item.Id</dt>
                         <dd>
@@ -213,7 +213,7 @@
         <div class="column-content">
             @foreach (var item in Model.Where(m => m.PaymentStateId == 3))
             {
-                <div class="card card-s">
+                <div id="@item.Id" class="card card-s">
                     <dl class="row mx-2 mt-3">
                         <dd>
                             <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
