@@ -1,9 +1,10 @@
 ﻿header {
-    background-color: #549ff0;
+    /*background-color: #549ff0;*/
+    background-color: #FFF;
 }
 
 .light-element {
-    color: #fff !important;
+    color: #1CAAE7 !important;
     transition: 0.2s;
 }
 

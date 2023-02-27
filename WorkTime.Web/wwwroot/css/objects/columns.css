@@ -6,6 +6,33 @@
     float: right;
 }
 
+.start-screen-card {
+    background-color: #A8F489;
+    border-radius: 10px;
+}
+
+    .start-screen-card a {
+        text-decoration: none;
+        color: #232E36;
+        font-size: 26px;
+        float: right;
+    }
+
+    .start-screen-card b {
+        color: #232E36;
+    }
+
+    .start-screen-card img {
+        height: 130px; 
+        position:relative; 
+        right: 0;
+    }
+
+    .start-screen-card .card-text {
+        font-size: 48px;
+        color: #232E36;
+    }
+
 .task-column {
     width: 250pt;
     vertical-align: top;
@@ -17,9 +44,9 @@
     margin: 5pt 5pt;
 }
 
-.column-content > .card {
-    border-radius: 6pt;
-}
+    .column-content > .card {
+        border-radius: 6pt;
+    }
 
 .column-head {
     background-color: #d8f1ff;

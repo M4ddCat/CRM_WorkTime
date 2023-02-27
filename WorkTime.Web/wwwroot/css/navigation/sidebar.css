@@ -2,7 +2,7 @@
     top: 0px;
     position: absolute;
     border-right: 1px solid rgba(0,0,0,.1);
-    background-color: #e2e2e2;
+    background-color: #EFF2EF;
     width: 200pt;
 }
 
@@ -29,7 +29,7 @@
 
 #sideBarMenu {
     position: absolute;
-    background-color: #fbfaff;
+    background-color: #f8faf8;
     width: 256px;
     top: 0;
     left: -256px;
