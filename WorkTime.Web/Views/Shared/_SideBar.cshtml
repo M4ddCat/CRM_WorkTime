@@ -23,14 +23,14 @@
 
                 <li class="nav-item">
                     <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" 
-                    asp-action="MyInvoices" asp-route-id="@UserInfo.GetMyId()">
+                    asp-action="MyInvoices" asp-route-id="@UserInfo.GetUserId()">
                         <i class="my-2 ms-3 bx bxs-food-menu"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои счета</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks"
-                       asp-action="MyTasks" asp-route-id="@UserInfo.GetMyId()">
+                       asp-action="MyTasks" asp-route-id="@UserInfo.GetUserId()">
                         <i class="my-2 ms-3 bx bx-code"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои задачи</span>
                     </a>
                 </li>

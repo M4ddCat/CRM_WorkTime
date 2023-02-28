@@ -2,6 +2,7 @@
 @import 'navigation/navcustom.css';
 @import 'objects/columns.css';
 @import 'objects/login-form.css';
+@import 'objects/chart.css';
 @import 'controls/buttons.css';
 
 html {
@@ -43,4 +44,8 @@ body {
 
 .hidden {
     display: none;
+}
+
+.no-scroll {
+    overflow: hidden;
 }

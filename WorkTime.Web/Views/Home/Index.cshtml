@@ -1,43 +1,21 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
+@using WorkTime.Web.Services
+@inject UserInformation UserInfo
 
 @{
-    ViewData["Title"] = "Начальная страница";
+    ViewData["Title"] = "Главная";
 }
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <!--
-        hello, what do you looking for?
-        ⠀⠀⠀⠀⠀._⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀__.
-    ⠀⠀⠀⠀⠀⠀⠀⠀/ \"-.⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀,-",'/⠀
-    ⠀⠀⠀⠀⠀⠀⠀(⠀⠀⠀\⠀,"--.__.--".,'⠀/⠀⠀
-    ⠀⠀⠀⠀⠀⠀⠀=---Y(_i.-'⠀⠀|-.i_)---=
-    ⠀⠀⠀⠀⠀⠀f⠀,⠀⠀"..'/\\v/|/|/\⠀⠀,⠀l
-    ⠀⠀⠀⠀⠀⠀l//⠀⠀,'|/⠀⠀⠀V⠀/⠀/||⠀⠀\\j
-    ⠀⠀⠀⠀⠀⠀⠀"--;⠀/⠀db⠀⠀⠀⠀⠀db|/---"
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀|⠀\⠀YY⠀⠀⠀,⠀YY//
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀'.\>_⠀⠀⠀(_),"'⠀__
-    ⠀⠀⠀⠀⠀⠀⠀⠀.-"⠀⠀⠀⠀"-.-."⠀I,"⠀⠀`.
-    ⠀⠀⠀⠀⠀⠀⠀⠀\.-""-.⠀(⠀,⠀)⠀(⠀\⠀⠀⠀|
-    ⠀⠀⠀⠀⠀⠀⠀⠀(⠀⠀⠀⠀⠀l⠀⠀`"'⠀⠀-'-._j
-    ⠀__,---_⠀'._."⠀.⠀⠀.⠀⠀⠀⠀\
-    (__.--_-'.⠀⠀,⠀⠀:⠀⠀'⠀⠀\⠀⠀'-.
-    ⠀⠀⠀⠀,'⠀.'⠀⠀/⠀⠀⠀|⠀⠀⠀\⠀⠀\⠀⠀\⠀"-
-    ⠀⠀⠀⠀⠀"--.._____t____.--'-""'
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀/⠀⠀/⠀⠀`.⠀".
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀/⠀":⠀⠀⠀⠀⠀\'⠀'.
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀.'⠀⠀(⠀⠀⠀⠀⠀⠀⠀\⠀⠀⠀:⠀
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀|⠀⠀⠀⠀l⠀⠀⠀⠀⠀⠀j⠀⠀⠀⠀"-.
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀l_;_;I⠀⠀⠀⠀⠀⠀l____;_I
-    -->
     <div class="container row" id="start-screen-container" style="position: relative">
-        <div class="w-25 p-0 m-0">
-            <div class="w-75 h-100 p-4 start-screen-card">
-                <img class="float-end" src="~/resources/ruble.png">
+        <div class="w-50 p-10 m-10">
+            <div class="w-100 h-100 p-4 start-screen-card">
+                <img style="height: 115px;" class="float-end" src="~/resources/ruble.svg">
                 <b class="h2 fs-1">За этот месяц <br> Вы заработали</b>
                 <br>
-                <b class="h1 h1 card-text">11111</b> <b class="ps-3 h1 card-text">₽</b>
+                <b class="h1 h1 card-text">@UserInfo.GetUserMounthlyMoney()</b> <b class="ps-3 h1 card-text">₽</b>
                 <div>
                     <a class="float-end text-decoration-none" href="#"><b class="h3" style="color: #47522c;">Перейти к счетам</b></a>
                     <br>
@@ -45,20 +23,72 @@
                 
             </div>
         </div>
-        <div class="w-75 p-0 m-0">
-            <div class="w-75 h-100 p-4 start-screen-card">
-                <img class="float-end" src="~/resources/ruble.png">
+        <div class="w-50 p-10 m-10">
+            <div style="background-color: #97dae3" class="w-100 h-100 p-4 start-screen-card">
+                <img class="float-end" src="~/resources/laptop.svg">
                 <b class="h2 fs-1">Для Вас доступно <br> к выполнению</b>
                 <br>
-                <b class="h1 h1 card-text">5</b> <b class="ps-3 h1 card-text">задач</b>
+                @{
+                    int c = @UserInfo.GetUserCountOfTasks();
+                    string task = "задач";
+                    if (c == 1)
+                        task = "задача";
+                    else if (c > 1 && c <= 4)
+                        task = "задачи";
+                }
+                <b class="h1 h1 card-text">@c</b><b class="ps-3 h1 card-text">@task</b>
                 <div>
-                    <a class="float-end text-decoration-none" href="#"><b class="h3" style="color: #47522c;">Перейти к задачам</b></a>
+                    <a class="float-end text-decoration-none" href="#"><b class="h3" style="color: #2f425e;">Перейти к задачам</b></a>
                     <br>
                 </div>
-
             </div>
         </div>
+        <div class="w-100 h-100 start-screen-card p-10 m-10">
+            <canvas class="w-50 h-50 p-10" id="line-chart" width="200"></canvas>
+        </div>
     </div>
+    @section Scripts {
+        <script src="~/js/chart.js"></script>
+        <script>
+        @{
+            var wt = UserInfo.GetUserTasksByMonths();
+        }
+        Chart.defaults.font.size = 16;
+        Chart.defaults.font.weight = 'bold';
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: [@{
+                for(int i = 5; i != -1; i--)
+                {
+                    if (i != 0)
+                    {
+                        @Html.Raw($"\"{wt[i].month}\", ")
+                    }
+                    else
+                    {
+                        @Html.Raw($"\"{wt[i].month}\"")
+                    }
+                }
+            }],
+                datasets: [{
+                    data: [@wt[5].tasks, @wt[4].tasks, @wt[3].tasks, @wt[2].tasks, @wt[1].tasks, @wt[0].tasks],
+                    label: "Количество выполненных задач",
+                    borderColor: "#3e95cd",
+                    fill: false
+                }
+                ]
+            },
+            options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+            }
+        });
+        </script>
+    }
 }
 else
 {

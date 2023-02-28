@@ -51,10 +51,10 @@
                 @Html.DisplayFor(modelItem => item.EmpType.Name)
             </td>
             <td>
-                @UserInfo.GetName(item.UserId)
+                @UserInfo.GetUserName(item.UserId)
             </td>
             <td>
-                    <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetName(item.UserId))"><i class="bx bxs-trash"></i></a>
+                    <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetUserName(item.UserId))"><i class="bx bxs-trash"></i></a>
             </td>
         </tr>
 }

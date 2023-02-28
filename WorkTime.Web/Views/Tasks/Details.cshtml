@@ -46,13 +46,13 @@
             Выдал задачу
         </dt>
         <dd class = "col-sm-10">
-            @UserInfo.GetName(Model.Issuer.Id)
+            @UserInfo.GetUserName(Model.Issuer.Id)
         </dd>
         <dt class = "col-sm-2">
             Исполнитель
         </dt>
         <dd class = "col-sm-10">
-            @UserInfo.GetName(Model.Performer.Id)
+            @UserInfo.GetUserName(Model.Performer.Id)
         </dd>
     </dl>
 </div>
@@ -110,7 +110,7 @@
                     text: $("#comTextSend").val()
                 },
                 success: function (result) {
-                    $('#taskCommentaries').append('<dt>@UserInfo.GetName()</dt> <dd>' + $("#comTextSend").val() + '</dd>');
+                    $('#taskCommentaries').append('<dt>@UserInfo.GetUserName()</dt> <dd>' + $("#comTextSend").val() + '</dd>');
                     $("#comTextSend").val('');
                 }
             });
