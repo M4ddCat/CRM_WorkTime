@@ -22,6 +22,13 @@ namespace WorkTime.Web.Services
             return $"{userInfo.Name} {userInfo.Surname}";
         }
 
+        public bool CurUserIsSignedIn()
+        {
+            string? uName = _httpContext.HttpContext?.User.Identity?.Name;
+            if (uName == null) return false;
+            return true;
+        }
+
         public string GetUserName(string id)
         {
             AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == id);

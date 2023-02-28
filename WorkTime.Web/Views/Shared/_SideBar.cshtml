@@ -1,71 +1,74 @@
 ﻿@using WorkTime.Web.Services
 @inject UserInformation UserInfo
 
+@if (UserInfo.CurUserIsSignedIn())
+{
+    <div id="sideBar" class="hidden">
+        <div id="scrim" class="dark-background" onclick="toggleSideBar()"></div>
+        <div id="sideBarMenu" class="px-0">
+            <div class="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-100">
+                <!--
+                <div class="ps-3 pb-3 pt-3" id="sideBarLogo">
+                    <button class="btn" type="button" onclick="toggleSideBar()" style="margin-top: -0.7rem">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </button>
+                    <a class="navbar-brand" style="color: rgba(0,0,0,.9);" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
+                </div>-->
 
-<div id="sideBar" class="hidden">
-    <div id="scrim" class="dark-background" onclick="toggleSideBar()"></div>
-    <div id="sideBarMenu" class="px-0">
-        <div class="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-100">
-            <!--
-            <div class="ps-3 pb-3 pt-3" id="sideBarLogo">
-                <button class="btn" type="button" onclick="toggleSideBar()" style="margin-top: -0.7rem">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                </button>
-                <a class="navbar-brand" style="color: rgba(0,0,0,.9);" asp-area="" asp-controller="Home" asp-action="Index">WorkTime</a>
-            </div>-->
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="sideBarLinks">
+                    <li class="nav-item">
+                        <a type="button" class="nav-link align-middle px-0" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="my-2 ms-3 bx bxs-home-alt-2"></i> <span class="ms-2 d-none d-sm-inline text-dark">Главная</span>
+                        </a>
+                    </li>
 
-            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="sideBarLinks">
-                <li class="nav-item">
-                    <a type="button" class="nav-link align-middle px-0" asp-area="" asp-controller="Home" asp-action="Index">
-                        <i class="my-2 ms-3 bx bxs-home-alt-2"></i> <span class="ms-2 d-none d-sm-inline text-dark">Главная</span>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices"
+                       asp-action="MyInvoices" asp-route-id="@UserInfo.GetUserId()">
+                            <i class="my-2 ms-3 bx bxs-food-menu"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои счета</span>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" 
-                    asp-action="MyInvoices" asp-route-id="@UserInfo.GetUserId()">
-                        <i class="my-2 ms-3 bx bxs-food-menu"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои счета</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks"
+                    <li class="nav-item">
+                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks"
                        asp-action="MyTasks" asp-route-id="@UserInfo.GetUserId()">
-                        <i class="my-2 ms-3 bx bx-code"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои задачи</span>
-                    </a>
-                </li>
-                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Projects" asp-action="Index">
-                            <i class="my-2 ms-3 bx bx-folder"></i> <span class="ms-2 d-none d-sm-inline text-dark">Проекты</span>
+                            <i class="my-2 ms-3 bx bx-code"></i> <span class="ms-2 d-none d-sm-inline text-dark">Мои задачи</span>
                         </a>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks" asp-action="Index">
-                            <i class="my-2 ms-3 bx bx-clipboard"></i> <span class="ms-2 d-none d-sm-inline text-dark">Задачи</span>
-                        </a>
-                    </li>
-                }
-                @if (User.IsInRole("Administrator") || User.IsInRole("Bookkeeper"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" asp-action="Index">
-                            <i class="my-2 ms-3 bx bxs-food-menu"></i> <span class="ms-2 d-none d-sm-inline text-dark">Счета</span>
-                        </a>
-                    </li>
-                }
-                @if (User.IsInRole("Administrator") || User.IsInRole("Manager")){
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                    {
                         <li class="nav-item">
-                        <a class="nav-link align-middle px-0" asp-area="" asp-controller="Users" asp-action="Index">
-                            <i class="my-2 ms-3 bx bxs-user-account"></i> <span class="ms-2 d-none d-sm-inline text-dark">Пользователи</span>
-                        </a>
-                    </li>
-                }
-                    
-            </ul>
-            <hr>
+                            <a class="nav-link align-middle px-0" asp-area="" asp-controller="Projects" asp-action="Index">
+                                <i class="my-2 ms-3 bx bx-folder"></i> <span class="ms-2 d-none d-sm-inline text-dark">Проекты</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link align-middle px-0" asp-area="" asp-controller="Tasks" asp-action="Index">
+                                <i class="my-2 ms-3 bx bx-clipboard"></i> <span class="ms-2 d-none d-sm-inline text-dark">Задачи</span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Bookkeeper"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link align-middle px-0" asp-area="" asp-controller="Invoices" asp-action="Index">
+                                <i class="my-2 ms-3 bx bxs-food-menu"></i> <span class="ms-2 d-none d-sm-inline text-dark">Счета</span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link align-middle px-0" asp-area="" asp-controller="Users" asp-action="Index">
+                                <i class="my-2 ms-3 bx bxs-user-account"></i> <span class="ms-2 d-none d-sm-inline text-dark">Пользователи</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+                <hr>
+            </div>
         </div>
     </div>
-</div>
+}

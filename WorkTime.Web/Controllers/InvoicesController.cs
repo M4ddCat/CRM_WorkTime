@@ -28,7 +28,9 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager,Bookkeeper")]
         public async Task<IActionResult> Index()
         {
-            var workTimeContext = _context.Invoices.Include(i => i.PaymentState).Include(i => i.Project).Include(i => i.User);
+            var workTimeContext = _context.Invoices.Include(i => i.PaymentState)
+                .Include(i => i.Project)
+                .Include(i => i.User.AspNetUserInformations);
             return View(await workTimeContext.ToListAsync());
         }
 
