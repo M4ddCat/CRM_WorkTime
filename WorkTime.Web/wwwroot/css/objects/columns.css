@@ -6,8 +6,9 @@
     float: right;
 }
 
+
+
 .start-screen-card {
-    background-color: #A8F489;
     border-radius: 10px;
 }
 
@@ -16,6 +17,11 @@
         color: #232E36;
         font-size: 26px;
         float: right;
+    }
+
+    .start-screen-card .btn {
+        border-color: #d3f3f7;
+        background-color: #d3f3f7;
     }
 
     .start-screen-card b {
@@ -32,6 +38,25 @@
         font-size: 48px;
         color: #232E36;
     }
+
+.tasks {
+    background-color: #97dae3;
+    background-image: url('../../resources/waves/wave1.svg');
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.invoices {
+    background-color: #A8F489;
+    background-image: url('../../resources/waves/wave2.svg');
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.invoice-button {
+    border-color: #d1edc5!important;
+    background-color: #d1edc5!important;
+}
 
 .task-column {
     width: 250pt;

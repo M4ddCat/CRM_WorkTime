@@ -9,42 +9,55 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="container row" id="start-screen-container" style="position: relative">
-        <div class="w-50 p-10 m-10">
-            <div class="w-100 h-100 p-4 start-screen-card">
-                <img style="height: 115px;" class="float-end" src="~/resources/ruble.svg">
-                <b class="h2 fs-1">За этот месяц <br> Вы заработали</b>
-                <br>
-                <b class="h1 h1 card-text">@UserInfo.GetUserMounthlyMoney()</b> <b class="ps-3 h1 card-text">₽</b>
-                <div>
-                    <a class="float-end text-decoration-none" href="#"><b class="h3" style="color: #47522c;">Перейти к счетам</b></a>
+    <div class="container" id="start-screen-container" style="position: relative">
+        <div class="row">
+            <div class="w-50 p-0 col">
+                <div class="w-100 h-100 p-4 start-screen-card invoices">
+                    <img style="height: 115px;" class="float-end" src="~/resources/ruble.svg">
+                    <b class="h2 fs-1">За этот месяц <br> Вы заработали</b>
                     <br>
-                </div>
+                    <b class="h1 h1 card-text">@UserInfo.GetUserMounthlyMoney()</b> <b class="ps-3 h1 card-text">₽</b>
+                    <div>
+                        <a class="float-end text-decoration-none btn btn-primary mb-4 invoice-button" href="#"><b class="h4" style="color: #47522c;">Перейти к счетам</b></a>
+                        <br>
+                    </div>
                 
+                </div>
             </div>
-        </div>
-        <div class="w-50 p-10 m-10">
-            <div style="background-color: #97dae3" class="w-100 h-100 p-4 start-screen-card">
-                <img class="float-end" src="~/resources/laptop.svg">
-                <b class="h2 fs-1">Для Вас доступно <br> к выполнению</b>
-                <br>
-                @{
-                    int c = @UserInfo.GetUserCountOfTasks();
-                    string task = "задач";
-                    if (c == 1)
-                        task = "задача";
-                    else if (c > 1 && c <= 4)
-                        task = "задачи";
-                }
-                <b class="h1 h1 card-text">@c</b><b class="ps-3 h1 card-text">@task</b>
-                <div>
-                    <a class="float-end text-decoration-none" href="#"><b class="h3" style="color: #2f425e;">Перейти к задачам</b></a>
+            <div class="w-50 p-0 ms-4 col">
+                <div class="w-100 h-100 p-4 start-screen-card tasks">
+                
+                    <img class="float-end" src="~/resources/laptop.svg">
+                    <b class="h2 fs-1">Для Вас доступно <br>⠀</b>
+                
                     <br>
+                    @{
+                        int c = @UserInfo.GetUserCountOfTasks();
+                        string task = "задач";
+                        if (c == 1)
+                            task = "задача";
+                        else if (c > 1 && c <= 4)
+                            task = "задачи";
+                    }
+                    <b class="h1 h1 card-text">@c</b><b class="ps-3 h1 card-text">@task</b>
+                    <div>
+                        <a class="float-end text-decoration-none btn btn-primary mb-4" type="button" href="#"><b class="h4" style="color: #2f425e;">Перейти к задачам</b></a>
+                        <br>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="w-100 h-100 start-screen-card p-10 m-10">
-            <canvas class="w-50 h-50 p-10" id="line-chart" width="200"></canvas>
+        
+        <div class="row">
+            <div class="h-100 start-screen-card p-4 mt-4 col" style="background-color: #dde5dc;">
+                <b class="h2">Статистика заработанных денег из последнего счёта</b>
+                <canvas class="mt-4 pb-3 pt-2" id="doughnut-chart" width="175"></canvas>
+            </div>
+            <div class="h-100 start-screen-card p-4 mt-4 ms-4 col-8" style="background-color: #f1eff0;">
+                <b class="h2">Статистика выполненных задач за пол года</b>
+                <canvas class="mt-4 pb-3 pt-2" id="line-chart" width="175"></canvas>
+            </div>
+            
         </div>
     </div>
     @section Scripts {
@@ -87,6 +100,26 @@
                     }
             }
         });
+
+        new Chart(document.getElementById("doughnut-chart"), {
+            type: 'doughnut',
+            data: {
+                labels: ["Чистая прибыль", "Уплачено налогов", "Премия"],
+                datasets: [{
+                    data: [10000, 1500, 1000],
+                    label: "₽",
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(54, 162, 235)',
+                      'rgb(255, 205, 86)'
+                    ],  
+                }
+                ]
+            }
+        });
+
         </script>
     }
 }
