@@ -10,7 +10,27 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="container" id="start-screen-container" style="position: relative">
-        <div class="row">
+        @{
+            int hour = DateTime.Now.Hour;
+            string hi = "";
+            if (hour > 5 && hour <= 11)
+            {
+                hi = "Доброе утро";
+            } else if (hour >= 11 && hour <= 16)
+            {
+                hi = "Добрый день";
+            }
+            else if (hour >= 17 && hour <= 21) {
+                hi = "Добрый вечер";
+            } else
+            {
+                hi = "Доброй ночи";
+            }
+        }
+        <b class="h3 mt-2">@hi, @UserInfo.GetUserName()</b>
+        <br>
+        <b class="h1 mt-4">Добро пожаловать, снова!</b>
+        <div class="row mt-5">
             <div class="w-50 p-0 col">
                 <div class="w-100 h-100 p-4 start-screen-card invoices">
                     <img style="height: 115px;" class="float-end" src="~/resources/ruble.svg">
@@ -28,8 +48,7 @@
                 <div class="w-100 h-100 p-4 start-screen-card tasks">
                 
                     <img class="float-end" src="~/resources/laptop.svg">
-                    <b class="h2 fs-1">Для Вас доступно <br>⠀</b>
-                
+                    <b class="h2 fs-1">Для Вас сейчас<br>доступно</b>
                     <br>
                     @{
                         int c = @UserInfo.GetUserCountOfTasks();

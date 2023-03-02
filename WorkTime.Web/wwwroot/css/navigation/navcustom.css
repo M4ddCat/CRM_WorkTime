@@ -1,6 +1,7 @@
 ﻿header {
     /*background-color: #549ff0;*/
-    background-color: #FFF;
+    background-color: #fafdfd;
+    
 }
 
 .light-element {
@@ -22,3 +23,7 @@
     height: 26pt;
 }
 
+.nav-container {
+    background-color: #FFF;
+    border-radius: 10px;
+}
