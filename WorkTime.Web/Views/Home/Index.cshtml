@@ -125,7 +125,11 @@
             data: {
                 labels: ["Чистая прибыль", "Уплачено налогов", "Премия"],
                 datasets: [{
-                    data: [10000, 1500, 1000],
+                    @{
+                        var inv = UserInfo.GetUserLastInvoce();
+                        double tax = inv.SumWithTax - inv.Bonus - inv.SumByHours;
+                    }
+                    data: [@inv.SumByHours, @tax, @inv.Bonus],
                     label: "₽",
                     borderColor: "#3e95cd",
                     fill: false,

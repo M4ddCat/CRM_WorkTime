@@ -6,63 +6,43 @@
     float: right;
 }
 
-
-
-.start-screen-card {
-    border-radius: 10px;
-}
-
-    .start-screen-card a {
-        text-decoration: none;
-        color: #232E36;
-        font-size: 26px;
-        float: right;
-    }
-
-    .start-screen-card .btn {
-        border-color: #d3f3f7;
-        background-color: #d3f3f7;
-    }
-
-    .start-screen-card b {
-        color: #232E36;
-    }
-
-    .start-screen-card img {
-        height: 130px; 
-        position:relative; 
-        right: 0;
-    }
-
-    .start-screen-card .card-text {
-        font-size: 48px;
-        color: #232E36;
-    }
-
-.tasks {
-    background-color: #97dae3;
-    background-image: url('../../resources/waves/wave1.svg');
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
-
-.invoices {
-    background-color: #A8F489;
-    background-image: url('../../resources/waves/wave2.svg');
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
-
-.invoice-button {
-    border-color: #d1edc5!important;
-    background-color: #d1edc5!important;
-}
-
 .task-column {
     width: 250pt;
     vertical-align: top;
-    border: 1px solid #dadce0;
-    border-radius: 12px;
+}
+
+.task-column-formed .column-head {
+    background-color: #d8f1ff;
+}
+
+.task-column-inprocess .column-head {
+    background-color: #e2d8ff;
+}
+
+.task-column-inprocess a {
+    color: #5c3bbb;
+}
+
+.task-column-waitforcheck .column-head {
+    background-color: #fff7d8;
+}
+
+.task-column-waitforcheck a {
+    color: #cfb550;
+}
+
+.task-column-ended .column-head {
+    background-color: #d9ffd8;
+}
+
+.task-column-ended a {
+    color: #20a31d;
+}
+
+dd a {
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .column-content {
@@ -74,8 +54,7 @@
     }
 
 .column-head {
-    background-color: #d8f1ff;
-    border-radius: 8pt 8pt 0 0;
+    border-radius: 8pt ;
     text-align: center;
 }
 

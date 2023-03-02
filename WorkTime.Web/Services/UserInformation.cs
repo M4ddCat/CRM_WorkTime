@@ -98,6 +98,20 @@ namespace WorkTime.Web.Services
             return monthTasks;
         }
 
+        public Invoice GetUserLastInvoce()
+        {
+            Invoice? uInv = _context.Invoices.Where(i => i.UserId == GetUId())
+                .OrderByDescending(i => i.Date).FirstOrDefault();
+            if (uInv == null)
+            {
+                uInv = new Invoice() { Bonus = 0, Date = null, Debt = 0, HourlyWage = 0, HoursWorked = 0, Id = "0"
+                , Issued = 0, PaymentStateId = 0, ProjectId = null, SumByHours = 0, Remainder = 0, Total = 0, RemWdebtAndBonus =0
+                , SumWithTax = 0, UserId = "0"};
+            }
+            uInv.SumWithTax = Math.Round(uInv.SumWithTax, 0);
+            return uInv;
+        }
+
         private string GetUId()
         {
             string? uName = _httpContext.HttpContext?.User.Identity?.Name;

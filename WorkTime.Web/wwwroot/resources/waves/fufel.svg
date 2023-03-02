@@ -2,7 +2,7 @@
 	<defs>
 		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="uundulate-grad">
 			<stop stop-color="hsl(200, 3%, 97%)" stop-opacity="1" offset="45%"></stop>
-			<stop stop-color="hsl(226, 5%, 93%)" stop-opacity="1" offset="100%"></stop>
+			<stop stop-color="hsl(226, 5%, 94%)" stop-opacity="1" offset="100%"></stop>
 		</linearGradient>
 	</defs>
 	<g stroke-width="2" stroke="url(#uundulate-grad)" fill="none">

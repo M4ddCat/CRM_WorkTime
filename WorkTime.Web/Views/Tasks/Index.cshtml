@@ -61,7 +61,9 @@
 }
 <div class="container-fluid">
     <div class="pb-3" style="white-space: nowrap; overflow-x: auto;">
-        <div class="task-column mx-3 d-inline-block" style="float: none">
+        <div hidden id="arrow-slide-right" style="position:absolute; top:50%; left: 90%; z-index:999">roflan</div>
+        <div hidden id="arrow-slide-left" style="position:absolute; top:50%; left: 90%; z-index:999">roflan</div>
+        <div class="task-column mx-3 d-inline-block task-column-formed" style="float: none">
             <div class="column-head">
                 <p>Сформированы</p>
             </div>
@@ -100,7 +102,7 @@
                 }
             </div>
         </div>
-        <div class="task-column mx-3 d-inline-block" style="float: none">
+        <div class="task-column mx-3 d-inline-block task-column-inprocess" style="float: none">
             <div class="column-head">
                 <p>Выполняются</p>
             </div>
@@ -139,7 +141,7 @@
                 }
             </div>
         </div>
-        <div class="task-column mx-3 d-inline-block">
+        <div class="task-column mx-3 d-inline-block task-column-waitforcheck">
             <div class="column-head">
                 <p>Ожидают проверки</p>
             </div>
@@ -178,7 +180,7 @@
                 }
             </div>
         </div>
-        <div class="task-column mx-3 d-inline-block">
+        <div class="task-column mx-3 d-inline-block task-column-ended">
             <div class="column-head">
                 <p>Завершены</p>
             </div>
@@ -222,6 +224,14 @@
 
 @section Scripts {
     <script>
+        function checkWindow(){
+            if (window.screen.width < 1620) {
+                document.getElementById("arrow-slide")
+            }
+            else {
+
+            }
+        }
 
         function deleteTask(id, name) {
             if (confirm('Вы хотите удалить задачу "' + name + '"?')) {
@@ -240,6 +250,7 @@
             }
         }
 
+        //1625
         function gettoken() {
             let token = '@Html.AntiForgeryToken()';
             token = $(token).val();
