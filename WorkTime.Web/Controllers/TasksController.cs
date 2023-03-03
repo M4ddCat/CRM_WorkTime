@@ -177,7 +177,7 @@ namespace WorkTime.Web.Controllers
             {
                 return "";
             }
-            var commentaries = _context.TaskCommentaries.Where(t => t.TaskId == id);
+            var commentaries = _context.TaskCommentaries.Where(t => t.TaskId == id).OrderBy(c => c.CommentDate);
             var usersId = commentaries.Select(c => c.UserId);
             var users = _context.AspNetUserInformations.Where(t => usersId.Contains(t.UserId))
                 .Select(u => new { UserId = u.UserId, Name = $"{u.Name} {u.Surname}" });

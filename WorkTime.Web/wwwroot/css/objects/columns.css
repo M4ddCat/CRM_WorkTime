@@ -52,6 +52,9 @@ dd a {
     .column-content > .card {
         border-radius: 6pt;
     }
+        .carddtext {
+            font-size: 0.9rem!important;
+        }
 
 .column-head {
     border-radius: 8pt ;

@@ -5,27 +5,28 @@
 }
 
 <h1>Создание счёта</h1>
-
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group m-2">
                 <label asp-for="ProjectId" class="control-label">Проект</label>
+                <br />
                 <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="getUsers()">
                     <option value="0">Без проекта</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group m-2">
                 <label asp-for="UserId" class="control-label">Сотрудник</label>
+                <br />
                 <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId" onchange="getAtributes()"></select>
             </div>
-            <div class="form-grooup">
+            <div class="form-grooup m-2">
                 <label>Отобрать задачи в диапазоне дат</label>
                 <input onchange="useDates()" type="checkbox" />
             </div>
-            <div id="dateInput" class="form-group" hidden>
+            <div id="dateInput" class="form-group m-2" hidden>
                 <label class="control-label">Период дат для отбора задач</label>
                 <table>
                     <tr>
@@ -44,16 +45,16 @@
                     </tr>
                 </table>
             </div>
-            <div class="form-group">
+            <div class="form-group m-2">
                 <label asp-for="Bonus" class="control-label"></label>
                 <input asp-for="Bonus" class="form-control" onchange="refreshValues()" />
                 <span asp-validation-for="Bonus" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group m-2">
                 <a href="#" type="button" value="Сформировать" class="btn btn-primary" onclick="getTasks()">Сформировать счёт</a>
             </div>
             <div id="invoiceAttributes" hidden>
-                <div class="form-group" id="Tasks">
+                <div class="form-group m-2" id="Tasks">
                     <label class="control-label">Добавить задачу</label>
                     <table>
                         <tr>
@@ -71,7 +72,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="form-group">
+                <div class="form-group m-2">
                     <table class="table" style="width:300pt">
                         <thead>
                             <tr>
@@ -90,7 +91,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="sum" class="form-group">
+                <div id="sum" class="form-group m-2">
                     <label class="row">Итого:</label>
                     <div class="row">
                         <div class="col-lg-4">
@@ -107,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group m-2">
                     <a id="createBtn" value="Создать" class="btn btn-primary" onclick="createInvoice()">Создать</a>
                 </div>
             </div>
@@ -129,6 +130,10 @@
         $(document).ready(function () {
             $("#ProjectId").select2();
             $("#UserId").select2();
+            $(".select2-selection").css({'border': 'none'});
+            $(".select2-container--default").addClass('form-control');
+            $(".select2-selection__arrow").css({'top': '6px', 'right': "6px"});
+            $(".select2-container .select2-selection--single .select2-selection__rendered").css({ 'padding-left': 0 });
         });
 
         let hours = 0, wage = 0, tasksArray = [], bonus = 0;

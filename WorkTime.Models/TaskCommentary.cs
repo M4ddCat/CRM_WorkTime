@@ -13,6 +13,8 @@ public partial class TaskCommentary
 
     public string Text { get; set; } = null!;
 
+    public DateTime CommentDate { get; set; }
+
     public byte[]? AttachedFile { get; set; }
 
     public virtual WorkTask Task { get; set; } = null!;
@@ -22,5 +24,6 @@ public partial class TaskCommentary
     public TaskCommentary()
     {
         Id = Guid.NewGuid().ToString();
+        CommentDate = DateTime.Now;
     }
 }
