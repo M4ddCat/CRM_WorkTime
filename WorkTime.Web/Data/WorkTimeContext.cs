@@ -31,6 +31,12 @@ public partial class WorkTimeContext : DbContext
 
     public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
 
+    public virtual DbSet<BankInformation> BankInformation { get; set; }
+
+    public virtual DbSet<Companies> Companies { get; set; }
+
+    public virtual DbSet<Contracts> Contracts { get; set; }
+
     public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
 
     public virtual DbSet<Invoice> Invoices { get; set; }
@@ -50,6 +56,8 @@ public partial class WorkTimeContext : DbContext
     public virtual DbSet<TypeOfEmployment> TypeOfEmployments { get; set; }
 
     public virtual DbSet<UserProject> UserProjects { get; set; }
+
+    public virtual DbSet<UserType> UserTypes { get; set; }
 
     public virtual DbSet<WorkTask> WorkTasks { get; set; }
 
@@ -130,6 +138,11 @@ public partial class WorkTimeContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AspNetUserInformation_AspNetUsers");
+
+            entity.HasOne(d => d.BankInformation).WithMany(p => p.UserInfo)
+                .HasForeignKey(d => d.Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BankInformation_AspNetUserInformation");
         });
 
         modelBuilder.Entity<AspNetUserLogin>(entity =>
@@ -152,6 +165,19 @@ public partial class WorkTimeContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(128);
 
             entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<BankInformation>(entity =>
+        {
+            entity.Property(e => e.Id).HasMaxLength(450);
+            entity.Property(e => e.BankAccount).HasMaxLength(20);
+            entity.Property(e => e.BIK).HasMaxLength(9);
+            entity.Property(e => e.CorInv).HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<Companies>(entity =>
+        {
+            entity.Property(e => e.Id).HasMaxLength(450);
         });
 
         modelBuilder.Entity<DeviceCode>(entity =>
