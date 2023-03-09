@@ -33,9 +33,9 @@ public partial class WorkTimeContext : DbContext
 
     public virtual DbSet<BankInformation> BankInformation { get; set; }
 
-    public virtual DbSet<Companies> Companies { get; set; }
+    public virtual DbSet<Company> Company { get; set; }
 
-    public virtual DbSet<Contracts> Contracts { get; set; }
+    public virtual DbSet<Contract> Contract { get; set; }
 
     public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
 
@@ -133,16 +133,30 @@ public partial class WorkTimeContext : DbContext
             entity.Property(e => e.Photography).HasColumnType("image");
             entity.Property(e => e.Surname).HasMaxLength(100);
             entity.Property(e => e.UserId).HasMaxLength(450);
+            entity.Property(e => e.BankInfoId).HasMaxLength(450);
+            entity.Property(e => e.CompanyId).HasMaxLength(450);
+            entity.Property(e => e.ContactEmail).HasMaxLength(50);
+            entity.Property(e => e.ContactPhone).HasMaxLength(20);
+            entity.Property(e => e.PassportNum).HasMaxLength(200);
+            entity.Property(e => e.PersonalAddress).HasMaxLength(200);
+            entity.Property(e => e.SocialNetworkContact).HasMaxLength(50);
 
             entity.HasOne(d => d.User).WithMany(p => p.AspNetUserInformations)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AspNetUserInformation_AspNetUsers");
 
-            entity.HasOne(d => d.BankInformation).WithMany(p => p.UserInfo)
-                .HasForeignKey(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BankInformation_AspNetUserInformation");
+            entity.HasOne(d => d.BankInfo).WithMany(p => p.AspNetUserInformations)
+                .HasForeignKey(d => d.BankInfoId)
+                .HasConstraintName("FK_AspNetUserInformation_BankInformation");
+
+            entity.HasOne(d => d.Company).WithMany(p => p.AspNetUserInformations)
+                .HasForeignKey(d => d.CompanyId)
+                .HasConstraintName("FK_AspNetUserInformation_Companies");
+
+            entity.HasOne(d => d.UserType).WithMany(p => p.AspNetUserInformations)
+                .HasForeignKey(d => d.UserTypeId)
+                .HasConstraintName("FK_AspNetUserInformation_UserType");
         });
 
         modelBuilder.Entity<AspNetUserLogin>(entity =>
@@ -169,15 +183,60 @@ public partial class WorkTimeContext : DbContext
 
         modelBuilder.Entity<BankInformation>(entity =>
         {
-            entity.Property(e => e.Id).HasMaxLength(450);
+            entity.ToTable("BankInformation");
+
             entity.Property(e => e.BankAccount).HasMaxLength(20);
-            entity.Property(e => e.BIK).HasMaxLength(9);
+            entity.Property(e => e.BankLocation).HasMaxLength(150);
+            entity.Property(e => e.BankName).HasMaxLength(100);
+            entity.Property(e => e.Bik)
+                .HasMaxLength(9)
+                .HasColumnName("BIK");
             entity.Property(e => e.CorInv).HasMaxLength(20);
         });
 
-        modelBuilder.Entity<Companies>(entity =>
+        modelBuilder.Entity<Company>(entity =>
         {
-            entity.Property(e => e.Id).HasMaxLength(450);
+            entity.Property(e => e.BankInfoId).HasMaxLength(450);
+            entity.Property(e => e.CompanyPlace).HasMaxLength(100);
+            entity.Property(e => e.DirectorFullName).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(100);
+
+            entity.HasOne(d => d.BankInfo).WithMany(p => p.Companies)
+                .HasForeignKey(d => d.BankInfoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Companies_BankInformation");
+        });
+
+        modelBuilder.Entity<Contract>(entity =>
+        {
+            entity.Property(e => e.ContractDate).HasColumnType("date");
+            entity.Property(e => e.ContractNumber).HasMaxLength(100);
+            entity.Property(e => e.CustomerCompanyId).HasMaxLength(450);
+            entity.Property(e => e.CustomerPersonId).HasMaxLength(450);
+            entity.Property(e => e.PerformerCompanyId).HasMaxLength(450);
+            entity.Property(e => e.PerformerPersonId).HasMaxLength(450);
+            entity.Property(e => e.UserProjectId).HasMaxLength(450);
+
+            entity.HasOne(d => d.CustomerCompany).WithMany(p => p.ContractCustomerCompanies)
+                .HasForeignKey(d => d.CustomerCompanyId)
+                .HasConstraintName("FK_Contracts_Companies1");
+
+            entity.HasOne(d => d.CustomerPerson).WithMany(p => p.ContractCustomerPeople)
+                .HasForeignKey(d => d.CustomerPersonId)
+                .HasConstraintName("FK_Contracts_AspNetUsers1");
+
+            entity.HasOne(d => d.PerformerCompany).WithMany(p => p.ContractPerformerCompanies)
+                .HasForeignKey(d => d.PerformerCompanyId)
+                .HasConstraintName("FK_Contracts_Companies");
+
+            entity.HasOne(d => d.PerformerPerson).WithMany(p => p.ContractPerformerPeople)
+                .HasForeignKey(d => d.PerformerPersonId)
+                .HasConstraintName("FK_Contracts_AspNetUsers");
+
+            entity.HasOne(d => d.UserProject).WithMany(p => p.Contracts)
+                .HasForeignKey(d => d.UserProjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Contracts_UserProjects");
         });
 
         modelBuilder.Entity<DeviceCode>(entity =>
@@ -322,6 +381,15 @@ public partial class WorkTimeContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserProjects_AspNetUsers");
+        });
+
+        modelBuilder.Entity<UserType>(entity =>
+        {
+            entity.ToTable("UserType");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.PersonType).HasMaxLength(100);
+            entity.Property(e => e.Type).HasMaxLength(100);
         });
 
         modelBuilder.Entity<WorkTask>(entity =>

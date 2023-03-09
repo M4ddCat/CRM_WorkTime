@@ -43,6 +43,10 @@ public partial class AspNetUser
 
     public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; } = new List<AspNetUserToken>();
 
+    public virtual ICollection<Contract> ContractCustomerPeople { get; } = new List<Contract>();
+
+    public virtual ICollection<Contract> ContractPerformerPeople { get; } = new List<Contract>();
+
     public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();
 
     public virtual ICollection<TaskCommentary> TaskCommentaries { get; } = new List<TaskCommentary>();
@@ -54,4 +58,9 @@ public partial class AspNetUser
     public virtual ICollection<WorkTask> WorkTaskPerformers { get; } = new List<WorkTask>();
 
     public virtual ICollection<AspNetRole> Roles { get; } = new List<AspNetRole>();
+
+    public AspNetUser()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

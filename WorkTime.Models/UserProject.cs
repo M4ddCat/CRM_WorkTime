@@ -13,9 +13,11 @@ public partial class UserProject
 
     public double HourlyWage { get; set; }
 
+    public string EmpTypeId { get; set; } = null!;
+
     public double Bonus { get; set; }
 
-    public string EmpTypeId { get; set; } = null!;
+    public virtual ICollection<Contract> Contracts { get; } = new List<Contract>();
 
     public virtual TypeOfEmployment EmpType { get; set; } = null!;
 

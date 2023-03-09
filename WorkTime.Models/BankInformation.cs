@@ -1,4 +1,7 @@
-﻿namespace WorkTime.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace WorkTime.Models;
 
 public partial class BankInformation
 {
@@ -10,13 +13,13 @@ public partial class BankInformation
 
     public string BankLocation { get; set; } = null!;
 
-    public string BIK { get; set; } = null!;
-
     public string CorInv { get; set; } = null!;
 
-    public virtual AspNetUserInformation? UserInfo { get; set; }
+    public string Bik { get; set; } = null!;
 
-    public virtual Companies? Companies { get; set; }
+    public virtual ICollection<AspNetUserInformation> AspNetUserInformations { get; } = new List<AspNetUserInformation>();
+
+    public virtual ICollection<Company> Companies { get; } = new List<Company>();
 
     public BankInformation()
     {

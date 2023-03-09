@@ -9,10 +9,6 @@ public partial class AspNetUserInformation
 
     public string UserId { get; set; } = null!;
 
-    public string UserTypeId { get; set;} = null!;
-
-    public string BankInformationId { get; set; } = null!;
-
     public string Name { get; set; } = null!;
 
     public string Surname { get; set; } = null!;
@@ -23,11 +19,29 @@ public partial class AspNetUserInformation
 
     public byte[]? Photography { get; set; }
 
+    public string? ContactPhone { get; set; }
+
+    public string? ContactEmail { get; set; }
+
+    public string? SocialNetworkContact { get; set; }
+
+    public int? UserTypeId { get; set; }
+
+    public string? BankInfoId { get; set; }
+
+    public string? PassportNum { get; set; }
+
+    public string? PersonalAddress { get; set; }
+
+    public string? CompanyId { get; set; }
+
+    public virtual BankInformation? BankInfo { get; set; }
+
+    public virtual Company? Company { get; set; }
+
     public virtual AspNetUser User { get; set; } = null!;
 
-    public virtual UserType UserType { get; set; } = null!;
-
-    public virtual BankInformation BankInformation { get; set; } = null!;
+    public virtual UserType? UserType { get; set; }
 
     public AspNetUserInformation()
     {
