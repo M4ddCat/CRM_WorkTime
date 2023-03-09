@@ -33,9 +33,9 @@ public partial class WorkTimeContext : DbContext
 
     public virtual DbSet<BankInformation> BankInformation { get; set; }
 
-    public virtual DbSet<Company> Company { get; set; }
+    public virtual DbSet<Company> Companies { get; set; }
 
-    public virtual DbSet<Contract> Contract { get; set; }
+    public virtual DbSet<Contract> Contracts { get; set; }
 
     public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
 

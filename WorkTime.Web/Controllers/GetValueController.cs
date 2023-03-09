@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using WorkTime.Data;
 
 namespace WorkTime.Web.Controllers
@@ -104,17 +103,5 @@ namespace WorkTime.Web.Controllers
             }
             return JsonSerializer.Serialize(":(");
         }
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public string GetUserTasks(string userId, string projectId, DateTime date)
-        //{
-        //    var tasks = _context.WorkTasks.Where(t => t.IssuerId == userId &&
-        //    (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) &&
-        //    t.InvoiceId == null &&
-        //    t.DateOfCompletion >= date).AsEnumerable();
-        //    return JsonSerializer.Serialize(new { data = tasks });
-        //}
     }
 }

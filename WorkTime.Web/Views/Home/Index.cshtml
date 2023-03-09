@@ -38,7 +38,10 @@
                     <br>
                     <b class="h1 h1 card-text">@UserInfo.GetUserMounthlyMoney()</b> <b class="ps-3 h1 card-text">₽</b>
                     <div>
-                        <a class="float-end text-decoration-none btn btn-primary mb-4 invoice-button" href="#"><b class="h4" style="color: #47522c;">Перейти к счетам</b></a>
+                        <a class="float-end text-decoration-none btn btn-primary mb-4 invoice-button" asp-area=""
+                       asp-controller="Invoices" asp-action="MyInvoices" asp-route-id="@UserInfo.GetUserId()">
+                            <b class="h4" style="color: #47522c;">Перейти к счетам</b>
+                        </a>
                         <br>
                     </div>
                 
@@ -60,7 +63,10 @@
                     }
                     <b class="h1 h1 card-text">@c</b><b class="ps-3 h1 card-text">@task</b>
                     <div>
-                        <a class="float-end text-decoration-none btn btn-primary mb-4" type="button" href="#"><b class="h4" style="color: #2f425e;">Перейти к задачам</b></a>
+                        <a class="float-end text-decoration-none btn btn-primary mb-4" type="button" asp-area=""
+                       asp-controller="Tasks" asp-action="MyTasks" asp-route-id="@UserInfo.GetUserId()">
+                            <b class="h4" style="color: #2f425e;">Перейти к задачам</b>
+                       </a>
                         <br>
                     </div>
                 </div>

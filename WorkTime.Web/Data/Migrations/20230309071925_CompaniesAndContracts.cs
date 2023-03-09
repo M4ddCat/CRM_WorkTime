@@ -94,7 +94,7 @@ namespace WorkTime.Web.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Company",
+                name: "Companies",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -114,7 +114,7 @@ namespace WorkTime.Web.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contract",
+                name: "Contracts",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -221,6 +221,26 @@ namespace WorkTime.Web.Data.Migrations
                 column: "UserTypeId",
                 principalTable: "UserType",
                 principalColumn: "Id");
+
+            migrationBuilder.InsertData(
+                table: "UserType",
+                columns: new[] { "Id", "Type", "PersonType" },
+                values: new object[] { 1, "Исполнитель", "Физическое лицо" });
+
+            migrationBuilder.InsertData(
+                table: "UserType",
+                columns: new[] { "Id", "Type", "PersonType" },
+                values: new object[] { 2, "Исполнитель", "Юридическое лицо" });
+
+            migrationBuilder.InsertData(
+                table: "UserType",
+                columns: new[] { "Id", "Type", "PersonType" },
+                values: new object[] { 3, "Заказчик", "Физическое лицо" });
+
+            migrationBuilder.InsertData(
+                table: "UserType",
+                columns: new[] { "Id", "Type", "PersonType" },
+                values: new object[] { 4, "Заказчик", "Юридическое лицо" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -238,13 +258,13 @@ namespace WorkTime.Web.Data.Migrations
                 table: "AspNetUserInformation");
 
             migrationBuilder.DropTable(
-                name: "Contract");
+                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "UserType");
 
             migrationBuilder.DropTable(
-                name: "Company");
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "BankInformation");
