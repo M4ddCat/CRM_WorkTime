@@ -3,7 +3,11 @@
 @inject ProjectInformation ProjectInfo
 @model IEnumerable<WorkTime.Models.WorkTask>
 
-<h1>Задачи</h1>
+@{
+    ViewData["Title"] = "Список моих задач";
+}
+
+<h1>Список моих задач</h1>
 
 <div class="container-fluid" style="white-space: nowrap; overflow-x: auto;">
     <div class="pb-3" style="white-space: nowrap; overflow-x: auto;">

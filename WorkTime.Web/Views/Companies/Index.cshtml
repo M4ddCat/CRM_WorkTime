@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<WorkTime.Models.Company>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Список компаний";
 }
 
-<h1>Index</h1>
+<h1>Список компаний</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Название
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DirectorFullName)
+                ФИО директора
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CompanyPlace)
+                Расположение компании
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BankInfo)

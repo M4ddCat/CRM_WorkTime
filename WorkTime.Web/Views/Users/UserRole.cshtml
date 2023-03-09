@@ -1,7 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model WorkTime.Web.Views.Users.ChangeRoleViewModel
 
-<h2>Изменение ролей для пользователя @Model.UserEmail</h2>
+@{
+    ViewData["Title"] = "Редактирование ролей для пользователя";
+}
+
+<h2>Редактирование ролей для пользователя @Model.UserEmail</h2>
 
 <form asp-action="UserRole" method="post">
     <input type="hidden" name="userId" value="@Model.UserId" />

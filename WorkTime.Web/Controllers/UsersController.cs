@@ -148,8 +148,7 @@ namespace WorkTime.Web.Controllers
         }
 
         // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        /*
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.AspNetUsers == null)
@@ -165,6 +164,7 @@ namespace WorkTime.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
 
         public async Task<IActionResult> UserRole(string id)
         {
