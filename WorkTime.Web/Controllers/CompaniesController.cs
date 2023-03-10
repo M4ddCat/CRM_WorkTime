@@ -57,16 +57,29 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BankInfoId,Name,DirectorFullName,CompanyPlace")] Company company)
+        public async Task<IActionResult> Create(string name, string companyPlace, string directorFullName, 
+            string bankAccount, string bankName, string corInv, string bik, string bankLocation)
         {
-            if (ModelState.IsValid)
+            BankInformation bankinfo = new BankInformation()
             {
-                _context.Add(company);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BankInfoId"] = new SelectList(_context.BankInformation, "Id", "Id", company.BankInfoId);
-            return View(company);
+                BankAccount = bankAccount,
+                BankLocation = bankLocation,
+                Bik = bik,
+                BankName = bankName,
+                CorInv = corInv
+            };
+            Company comp = new Company()
+            {
+                Name = name,
+                BankInfo = bankinfo,
+                BankInfoId = bankinfo.Id,
+                CompanyPlace = companyPlace,
+                DirectorFullName = directorFullName
+            };
+            await _context.AddAsync(bankinfo);
+            await _context.AddAsync(comp);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Companies/Edit/5

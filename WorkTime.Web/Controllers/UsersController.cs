@@ -65,7 +65,12 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string email, string name, string surname, string? patronymic, double hourlyWage, string password)
+        public async Task<IActionResult> Create(string email, string name, 
+            string surname, string? patronymic, 
+            double hourlyWage, string contactPhone, string contactEmail, string socialNetworkContact,
+            string passportNum, string password, 
+            string? bankAccount, string? personalAddress, string? bankName, 
+            string? corInv, string? Bik, string? bankLocation)
         {
             var user = CreateUser();
             await _userStore.SetUserNameAsync(user, email, CancellationToken.None);
@@ -86,7 +91,13 @@ namespace WorkTime.Web.Controllers
                     Surname = surname,
                     Patronymic = patronymic,
                     HourlyWage = hourlyWage,
-                    UserId = await _userManager.GetUserIdAsync(user)
+                    UserId = await _userManager.GetUserIdAsync(user),
+                    PassportNum = passportNum,
+                    ContactEmail = contactEmail,
+                    ContactPhone = contactPhone,
+                    PersonalAddress = personalAddress,
+                    SocialNetworkContact = socialNetworkContact,
+                    
                 });
 
                 await _context.SaveChangesAsync();

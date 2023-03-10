@@ -59,6 +59,8 @@ public partial class WorkTimeContext : DbContext
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
+    public virtual DbSet<LegalUserType> LegalUserTypes { get; set; }
+
     public virtual DbSet<WorkTask> WorkTasks { get; set; }
 
     public virtual DbSet<WorkTaskStatus> WorkTaskStatuses { get; set; }
@@ -157,6 +159,10 @@ public partial class WorkTimeContext : DbContext
             entity.HasOne(d => d.UserType).WithMany(p => p.AspNetUserInformations)
                 .HasForeignKey(d => d.UserTypeId)
                 .HasConstraintName("FK_AspNetUserInformation_UserType");
+
+            entity.HasOne(d => d.LegalUserType).WithMany(p => p.AspNetUserInformations)
+                .HasForeignKey(d => d.LegalUserTypeId)
+                .HasConstraintName("FK_AspNetUserInformation_LegalUserType");
         });
 
         modelBuilder.Entity<AspNetUserLogin>(entity =>
@@ -388,8 +394,15 @@ public partial class WorkTimeContext : DbContext
             entity.ToTable("UserType");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.PersonType).HasMaxLength(100);
             entity.Property(e => e.Type).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<LegalUserType>(entity =>
+        {
+            entity.ToTable("LegalUserType");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.LegalType).HasMaxLength(100);
         });
 
         modelBuilder.Entity<WorkTask>(entity =>

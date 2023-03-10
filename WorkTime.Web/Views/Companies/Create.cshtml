@@ -1,40 +1,55 @@
 ﻿@model WorkTime.Models.Company
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Добавление компании";
 }
 
-<h1>Create</h1>
+<h1>Добавление компании</h1>
 
-<h4>Company</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BankInfoId" class="control-label"></label>
-                <select asp-for="BankInfoId" class ="form-control" asp-items="ViewBag.BankInfoId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label">Название</label>
+                <input asp-for="Name" class="form-control" name="name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DirectorFullName" class="control-label"></label>
-                <input asp-for="DirectorFullName" class="form-control" />
+                <label asp-for="DirectorFullName" class="control-label">ФИО директора</label>
+                <input asp-for="DirectorFullName" class="form-control" name="directorFullName"/>
                 <span asp-validation-for="DirectorFullName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CompanyPlace" class="control-label"></label>
-                <input asp-for="CompanyPlace" class="form-control" />
+                <label asp-for="CompanyPlace" class="control-label">Расположение компании</label>
+                <input asp-for="CompanyPlace" class="form-control" name="companyPlace"/>
                 <span asp-validation-for="CompanyPlace" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="BankAccount" name="bankAccount" />
+                <label>Счёт в банке</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="BankName" name="bankName" />
+                <label>Наименование банка</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="CorInv" name="corInv" />
+                <label>Корректирующий счёт</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="bik" name="bik" />
+                <label>БИК</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" autocomplete="bankLocation" name="bankLocation" />
+                <label>Город</label>
+                <span class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -27,6 +27,8 @@ public partial class AspNetUserInformation
 
     public int? UserTypeId { get; set; }
 
+    public int? LegalUserTypeId { get; set; }
+
     public string? BankInfoId { get; set; }
 
     public string? PassportNum { get; set; }
@@ -42,6 +44,8 @@ public partial class AspNetUserInformation
     public virtual AspNetUser User { get; set; } = null!;
 
     public virtual UserType? UserType { get; set; }
+
+    public virtual LegalUserType? LegalUserType { get; set; }
 
     public AspNetUserInformation()
     {
