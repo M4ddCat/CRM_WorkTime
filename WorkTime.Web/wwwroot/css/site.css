@@ -2,6 +2,7 @@
 @import 'navigation/navcustom.css';
 @import 'objects/columns.css';
 @import 'objects/login-form.css';
+@import 'objects/form-background.css';
 @import 'objects/start-screen-objects.css';
 @import 'objects/chart.css';
 @import 'controls/buttons.css';
