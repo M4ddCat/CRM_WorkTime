@@ -1,7 +1,7 @@
 ﻿@model WorkTime.Models.Project
 
 @{
-    ViewData["Title"] = "Добавление проекта";
+    ViewData["Title"] = "Добавить проект";
 }
 
 <h1>Добавление проекта</h1>
@@ -17,7 +17,27 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Bonus" class="control-label">Бонус</label>
+                <label asp-for="Name" class="control-label">Заказчик</label>
+                <input type="radio" name="CustomerType" id="company-radio" onclick="checkRadio()"/>
+                <label for="company">Компания</label>
+                <input type="radio" name="CustomerType" id="person-radio" onclick="checkRadio()" />
+                <label for="person">Физ./Юр. лицо</label>
+                <select hidden class="form-control" id="company-select">
+                    @foreach (var company in ViewBag.CustomerCompany)
+                    {
+                        <option id="@company.Id">@company.Name</option>
+                    }
+                </select>
+                <select hidden class="form-control" id="person-select">
+                    @foreach (var company in ViewBag.CustomerPerson)
+                    {
+                        <option id="@company.Id">@company.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bonus" class="control-label">Бонус (премия для исполнителей)</label>
                 <input asp-for="Bonus" class="form-control" />
                 <span asp-validation-for="Bonus" class="text-danger"></span>
             </div>
@@ -43,4 +63,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function checkRadio() {
+            if (document.getElementById('company-radio').checked) {
+                document.getElementById('company-select').toggleAttribute("hidden");
+                document.getElementById('person-select').setAttribute("hidden", "");
+            }
+            else {
+                document.getElementById('person-select').toggleAttribute("hidden");
+                document.getElementById('company-select').setAttribute("hidden", "");
+            }
+        }
+    </script>
 }

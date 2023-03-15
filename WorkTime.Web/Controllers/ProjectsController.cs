@@ -108,8 +108,10 @@ namespace WorkTime.Web.Controllers
 
         // GET: Projects/Create
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.CustomerCompany = await _context.Companies.Select(c => new { c.Id, c.Name }).ToListAsync();
+            ViewBag.CustomerPerson = await _context.AspNetUserInformations.Select(c => new { c.Id, c.Name }).ToListAsync();
             return View();
         }
 
