@@ -70,7 +70,7 @@ namespace WorkTime.Web.Controllers
             double hourlyWage, string contactPhone, string contactEmail, string socialNetworkContact,
             string passportNum, string password, 
             string? bankAccount, string? personalAddress, string? bankName, 
-            string? corInv, string? Bik, string? bankLocation)
+            string? corInv, string? bik, string? bankLocation, string userType)
         {
             var user = CreateUser();
             await _userStore.SetUserNameAsync(user, email, CancellationToken.None);
@@ -85,19 +85,33 @@ namespace WorkTime.Web.Controllers
 
                 _user.EmailConfirmed = true;
 
+                BankInformation bankinfo = new BankInformation() {
+                    BankAccount = bankAccount,
+                    BankLocation = bankLocation,
+                    Bik = bik,
+                    BankName = bankName,
+                    CorInv = corInv
+                };
+
+                int typeId = _context.UserTypes.Where(u => u.Type == userType).FirstOrDefault().Id;
+
+                await _context.AddAsync(bankinfo);
+
                 await _context.AspNetUserInformations.AddAsync(new AspNetUserInformation()
                 {
                     Name = name,
                     Surname = surname,
                     Patronymic = patronymic,
                     HourlyWage = hourlyWage,
-                    UserId = await _userManager.GetUserIdAsync(user),
+                    UserId = userId,
                     PassportNum = passportNum,
                     ContactEmail = contactEmail,
                     ContactPhone = contactPhone,
                     PersonalAddress = personalAddress,
                     SocialNetworkContact = socialNetworkContact,
-                    
+                    BankInfo = bankinfo,
+                    BankInfoId = bankinfo.Id,
+                    UserTypeId = typeId
                 });
 
                 await _context.SaveChangesAsync();

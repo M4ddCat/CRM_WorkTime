@@ -49,6 +49,6 @@ public partial class AspNetUserInformation
 
     public AspNetUserInformation()
     {
-        Id = UserId;
+        Id = Guid.NewGuid().ToString();
     }
 }

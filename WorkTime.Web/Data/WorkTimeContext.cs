@@ -338,6 +338,14 @@ public partial class WorkTimeContext : DbContext
         modelBuilder.Entity<Project>(entity =>
         {
             entity.Property(e => e.Name).HasMaxLength(100);
+
+            entity.HasOne(d => d.CustomerCompany).WithMany(p => p.ProjectCustomerCompanies)
+                .HasForeignKey(d => d.CustomerCompanyId)
+                .HasConstraintName("FK_Project_Companies");
+
+            entity.HasOne(d => d.CustomerPerson).WithMany(p => p.ProjectCustomerPeople)
+                .HasForeignKey(d => d.CustomerPersonId)
+                .HasConstraintName("FK_Project_Persons");
         });
 
         modelBuilder.Entity<TaskCommentary>(entity =>

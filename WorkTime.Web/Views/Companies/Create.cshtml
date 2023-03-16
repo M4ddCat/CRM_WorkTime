@@ -11,19 +11,21 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Название</label>
+            <div class="form-floating mt-2">
                 <input asp-for="Name" class="form-control" name="name" />
+                <label asp-for="Name" class="control-label">Название</label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DirectorFullName" class="control-label">ФИО директора</label>
+            <div class="form-floating mt-2">
                 <input asp-for="DirectorFullName" class="form-control" name="directorFullName"/>
+                <label asp-for="DirectorFullName" class="control-label">ФИО директора</label>
+
                 <span asp-validation-for="DirectorFullName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompanyPlace" class="control-label">Расположение компании</label>
+            <div class="form-floating mt-2">
                 <input asp-for="CompanyPlace" class="form-control" name="companyPlace"/>
+                <label asp-for="CompanyPlace" class="control-label">Расположение компании</label>
+
                 <span asp-validation-for="CompanyPlace" class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
@@ -51,7 +53,7 @@
                 <label>Город</label>
                 <span class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

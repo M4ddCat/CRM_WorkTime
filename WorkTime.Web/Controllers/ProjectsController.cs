@@ -119,10 +119,13 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> Create(Models.Project project)
+        public async Task<IActionResult> Create(string name, string customerType, 
+            string? companySelect, string? personSelect, double bonus, 
+            DateTime startDate, DateTime endDate)
         {
-            _context.Add(project);
-            await _context.SaveChangesAsync();
+            Models.Project project = new Models.Project() { Name = name, Bonus = bonus, StartDate = startDate };
+            //_context.Add(project);
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

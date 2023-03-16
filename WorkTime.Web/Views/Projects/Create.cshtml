@@ -13,42 +13,42 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Название</label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" name="name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Заказчик</label>
-                <input type="radio" name="CustomerType" id="company-radio" onclick="checkRadio()"/>
+                <input type="radio" name="customerType" id="company-radio" onclick="checkRadio()"/>
                 <label for="company">Компания</label>
-                <input type="radio" name="CustomerType" id="person-radio" onclick="checkRadio()" />
+                <input type="radio" name="customerType" id="person-radio" onclick="checkRadio()" />
                 <label for="person">Физ./Юр. лицо</label>
-                <select hidden class="form-control" id="company-select">
+                <select hidden class="form-control" name="companySelect" id="company-select">
                     @foreach (var company in ViewBag.CustomerCompany)
                     {
-                        <option id="@company.Id">@company.Name</option>
+                        <option value="@company.Id">@company.Name</option>
                     }
                 </select>
-                <select hidden class="form-control" id="person-select">
+                <select hidden class="form-control" name="personSelect" id="person-select">
                     @foreach (var company in ViewBag.CustomerPerson)
                     {
-                        <option id="@company.Id">@company.Name</option>
+                        <option value="@company.Id">@company.Name</option>
                     }
                 </select>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Bonus" class="control-label">Бонус (премия для исполнителей)</label>
-                <input asp-for="Bonus" class="form-control" />
+                <input asp-for="Bonus" name="bonus" class="form-control" />
                 <span asp-validation-for="Bonus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label">Дата начала</label>
-                <input type="date" asp-for="StartDate" class="form-control" />
+                <input type="date" name="startDate" asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label">Дата Окончания</label>
-                <input type="date" asp-for="EndDate" class="form-control" />
+                <input type="date" name="endDate" asp-for="EndDate" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Создать" class="btn btn-primary" />

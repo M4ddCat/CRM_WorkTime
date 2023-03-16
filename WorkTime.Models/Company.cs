@@ -19,6 +19,8 @@ public partial class Company
 
     public virtual BankInformation BankInfo { get; set; } = null!;
 
+    public virtual ICollection<Project> ProjectCustomerCompanies { get; } = new List<Project>();
+
     public virtual ICollection<Contract> ContractCustomerCompanies { get; } = new List<Contract>();
 
     public virtual ICollection<Contract> ContractPerformerCompanies { get; } = new List<Contract>();

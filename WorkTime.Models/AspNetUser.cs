@@ -45,6 +45,8 @@ public partial class AspNetUser
 
     public virtual ICollection<Contract> ContractCustomerPeople { get; } = new List<Contract>();
 
+    public virtual ICollection<Project> ProjectCustomerPeople { get; } = new List<Project>();
+
     public virtual ICollection<Contract> ContractPerformerPeople { get; } = new List<Contract>();
 
     public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();

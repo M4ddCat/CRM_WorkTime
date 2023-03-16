@@ -11,9 +11,17 @@ public partial class Project
 
     public double? Bonus { get; set; }
 
+    public string? CustomerPersonId { get; set; }
+
+    public string? CustomerCompanyId { get; set; }
+
     public DateTime StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }
+
+    public virtual Company? CustomerCompany { get; set; }
+
+    public virtual AspNetUser? CustomerPerson { get; set; }
 
     public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();
 
