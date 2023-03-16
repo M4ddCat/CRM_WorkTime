@@ -12,10 +12,10 @@
     <div class="col-md-4">
         <form asp-action="AddUserInProject">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProjectId" value="@ViewBag.Project.Id" />
+            <input type="hidden" asp-for="ProjectId" name="projectId" value="@ViewBag.Project.Id" />
             <div class="form-group">
                 <label asp-for="UserId" class="control-label">Сотрудник</label>
-                <select asp-for="UserId" class="form-control">
+                <select asp-for="UserId" name="userId" class="form-control">
                     @{
                         foreach (var user in ViewBag.Users)
                         {
@@ -26,12 +26,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="HourlyWage" class="control-label">Ставка</label>
-                <input asp-for="HourlyWage" class="form-control" />
+                <input asp-for="HourlyWage" name="hourlyWage" class="form-control" />
                 <span asp-validation-for="HourlyWage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmpTypeId" class="control-label">Вид занятости</label>
-                <select asp-for="EmpTypeId" class="form-control">
+                <select asp-for="EmpTypeId" name="empTypeId" class="form-control">
                     @{
                         foreach (var type in ViewBag.EmpType)
                         {
@@ -39,6 +39,16 @@
                         }
                     }
                 </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Дата подписания контракта</label>
+                <input type="date" name="contractDate" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Номер контракта</label>
+                <input name="contractNumber" class="form-control" />
+                <span class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Добавить" class="btn btn-primary" />

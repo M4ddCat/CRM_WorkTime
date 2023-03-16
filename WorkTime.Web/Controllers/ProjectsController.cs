@@ -67,23 +67,51 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> AddUserInProject(UserProject userProject)
+        public async Task<IActionResult> AddUserInProject(string userId, 
+            string projectId, double hourlyWage, string empTypeId, DateTime? contractDate,
+            string contractNumber)
         {
-            await _context.UserProjects.AddAsync(new UserProject()
+            UserProject userProj = new UserProject()
             {
-                UserId = userProject.UserId,
-                ProjectId = userProject.ProjectId,
-                HourlyWage = userProject.HourlyWage,
-                EmpTypeId = userProject.EmpTypeId
-            });
+                UserId = userId,
+                ProjectId = projectId,
+                HourlyWage = hourlyWage,
+                EmpTypeId = empTypeId,
+            };
+            await _context.UserProjects.AddAsync(userProj);
+
+            DateTime? contrDate = contractDate == null ? DateTime.Now : contractDate;
+
+            Contract contract = new Contract()
+            {
+                ContractDate = contrDate,
+                PerformerPersonId = userId,
+                UserProjectId = userProj.Id,
+                UserProject = userProj,
+                ContractNumber = contractNumber
+            };
+
+            Models.Project proj = _context.Projects.Find(projectId);
+
+            if (proj.CustomerCompanyId != null)
+            {
+                contract.CustomerCompanyId = proj.CustomerCompanyId;
+            } 
+            else if (proj.CustomerPersonId != null)
+            {
+                contract.CustomerPersonId = proj.CustomerPersonId;
+            }
+            await _context.AddAsync(contract);
+
             await _context.SaveChangesAsync();
-            return RedirectToAction($"ProjectDetails/{userProject.ProjectId}", "Projects");
+            return RedirectToAction($"ProjectDetails/{projectId}", "Projects");
         }
 
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> ProjectDetails(string id)
         {
             ViewBag.Project = await _context.Projects.FindAsync(id);
+            ViewBag.Contract = await _context.Contracts.Where(c => c.UserProject.ProjectId == id).ToListAsync();
             return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
         }
 
@@ -121,12 +149,18 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Create(string name, string customerType, 
             string? companySelect, string? personSelect, double bonus, 
-            DateTime startDate, DateTime endDate)
+            DateTime startDate, DateTime? endDate)
         {
-            Models.Project project = new Models.Project() { Name = name, Bonus = bonus, StartDate = startDate };
-            //_context.Add(project);
-            //await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Models.Project project = new Models.Project() { Name = name, Bonus = bonus, StartDate = startDate, EndDate = endDate };
+
+            if (customerType == "company")
+                project.CustomerCompanyId = companySelect;
+            else if (customerType == "person")
+                project.CustomerPersonId = personSelect;
+            _context.Add(project);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Projects", "Details", project.Id);
         }
 
         // GET: Projects/Edit/5

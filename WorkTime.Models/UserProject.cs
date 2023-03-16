@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WorkTime.Models;
+﻿namespace WorkTime.Models;
 
 public partial class UserProject
 {

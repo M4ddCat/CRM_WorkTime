@@ -1,5 +1,6 @@
 ﻿@using WorkTime.Web.Services
 @inject UserInformation UserInfo
+@inject ProjectInformation ProjectInfo
 @model IEnumerable<WorkTime.Models.UserProject>
 
 
@@ -38,6 +39,7 @@
             <th>
                 Сотрудник
             </th>
+            <th>№ договора</th>
             <th></th>
         </tr>
     </thead>
@@ -54,7 +56,10 @@
                 @UserInfo.GetUserName(item.UserId)
             </td>
             <td>
-                    <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetUserName(item.UserId))"><i class="bx bxs-trash"></i></a>
+                @ProjectInfo.GetContract(item.Id)
+            </td>
+            <td>
+                <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetUserName(item.UserId))"><i class="bx bxs-trash"></i></a>
             </td>
         </tr>
 }

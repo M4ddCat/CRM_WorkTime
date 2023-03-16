@@ -1,4 +1,5 @@
 ﻿using WorkTime.Data;
+using WorkTime.Models;
 
 namespace WorkTime.Web.Services
 {
@@ -11,11 +12,21 @@ namespace WorkTime.Web.Services
         }
         public string GetName(string id)
         {
-            if (id == null)
+            if (String.IsNullOrWhiteSpace(id))
             {
                 return "";
             }
             return _context.Projects.FirstOrDefault(u => u.Id == id).Name;
+        }
+
+        public string GetContract(string userProjectId)
+        {
+            if (String.IsNullOrWhiteSpace(userProjectId))
+            {
+                throw (new InvalidOperationException());
+            }
+            string? contractId = _context.Contracts.Where(c => c.UserProjectId == userProjectId).FirstOrDefault()?.Id;
+            return contractId == null ? "Без договора" : contractId;
         }
     }
 }
