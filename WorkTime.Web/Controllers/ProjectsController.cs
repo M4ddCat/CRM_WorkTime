@@ -4,9 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using WorkTime.Data;
 using WorkTime.Models;
 using Microsoft.CodeAnalysis;
-using PdfSharp.Pdf;
-using PdfSharp;
-using TheArtOfDev.HtmlRenderer.PdfSharp;
+using SelectPdf;
+using System.Drawing.Printing;
 
 namespace WorkTime.Web.Controllers
 {
@@ -179,8 +178,18 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> CreateUserContract(string htmlCode)
         {
-            PdfDocument pdf = PdfGenerator.GeneratePdf("<p><h1>hello world</h1></p>", PageSize.A4);
-            pdf.Save("document.pdf");
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // create a new pdf document converting an url
+            PdfMargins margins = new PdfMargins(20.0f);
+            PdfDocument doc = converter.ConvertHtmlString(htmlCode);
+            
+            doc.Margins = margins;
+            // save pdf document
+            doc.Save("Name.pdf");
+
+            // close pdf document
+            doc.Close();
 
             return RedirectToAction($"Index", "Projects");
             
