@@ -21,6 +21,8 @@ public partial class Contract
 
     public DateTime? ContractDate { get; set; }
 
+    public byte[]? ContractFile { get; set; }
+
     public virtual Company? CustomerCompany { get; set; }
 
     public virtual AspNetUser? CustomerPerson { get; set; }

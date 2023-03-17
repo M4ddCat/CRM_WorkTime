@@ -81,9 +81,9 @@ public partial class WorkTimeContext : DbContext
             entity.Property(e => e.NormalizedName).HasMaxLength(256);
 
             entity.HasData(
-                new AspNetRole { Id = $"{Guid.NewGuid()}", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
-                new AspNetRole { Id = $"{Guid.NewGuid()}", Name = "Manager", NormalizedName = "MANAGER" },
-                new AspNetRole { Id = $"{Guid.NewGuid()}", Name = "Bookkeeper", NormalizedName = "BOOKKEEPER" }
+                new AspNetRole { Id = "056e0329-d444-46ae-8c2a-8ab12c9ed73e", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+                new AspNetRole { Id = "1cdf34cd-2bbe-4498-82c1-7c577fb958a0", Name = "Manager", NormalizedName = "MANAGER" },
+                new AspNetRole { Id = "a76ef69d-5ffb-49a3-8ff6-85774a24cb89", Name = "Bookkeeper", NormalizedName = "BOOKKEEPER" }
                 );
         });
 

@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlRenderer.Core" Version="1.5.0.6" />
+    <PackageReference Include="HtmlRenderer.PdfSharp" Version="1.5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
@@ -25,6 +27,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
+    <PackageReference Include="PdfSharp" Version="1.50.5147" />
   </ItemGroup>
 
   <ItemGroup>

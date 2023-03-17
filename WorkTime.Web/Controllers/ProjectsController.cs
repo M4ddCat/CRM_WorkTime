@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using WorkTime.Data;
 using WorkTime.Models;
 using Microsoft.CodeAnalysis;
+using PdfSharp.Pdf;
+using PdfSharp;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace WorkTime.Web.Controllers
 {
@@ -159,8 +162,28 @@ namespace WorkTime.Web.Controllers
                 project.CustomerPersonId = personSelect;
             _context.Add(project);
 
+            
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Projects", "Details", project.Id);
+        }
+
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<IActionResult> CreateUserContract()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<IActionResult> CreateUserContract(string htmlCode)
+        {
+            PdfDocument pdf = PdfGenerator.GeneratePdf("<p><h1>hello world</h1></p>", PageSize.A4);
+            pdf.Save("document.pdf");
+
+            return RedirectToAction($"Index", "Projects");
+            
         }
 
         // GET: Projects/Edit/5
