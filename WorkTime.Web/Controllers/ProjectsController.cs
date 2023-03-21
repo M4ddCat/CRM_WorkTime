@@ -168,27 +168,29 @@ namespace WorkTime.Web.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> CreateUserContract()
+        public async Task<IActionResult> CreateUserContract(string userprojid)
         {
+            UserProject up = _context.UserProjects.Find(userprojid);
+            Models.Project proj = _context.Projects.Find(up.Id);
+
+            Contract contract = new Contract() { UserProjectId = up.Id, UserProject = up, 
+                PerformerPersonId = up.UserId, CustomerCompanyId = proj.CustomerCompanyId, 
+            CustomerPersonId = proj.CustomerPersonId };
+
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> CreateUserContract(string htmlCode)
+        public async Task<IActionResult> CreateUserContract(string htmlCode, string userprojid)
         {
             HtmlToPdf converter = new HtmlToPdf();
 
-            // create a new pdf document converting an url
-            PdfMargins margins = new PdfMargins(20.0f);
             PdfDocument doc = converter.ConvertHtmlString(htmlCode);
             
-            doc.Margins = margins;
-            // save pdf document
             doc.Save("Name.pdf");
-
-            // close pdf document
             doc.Close();
 
             return RedirectToAction($"Index", "Projects");
