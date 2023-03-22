@@ -36,6 +36,13 @@ namespace WorkTime.Web.Services
             return $"{userInfo.Name} {userInfo.Surname}";
         }
 
+        public string GetUserFullName(string id)
+        {
+            AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == id);
+            if (userInfo == null) throw new ArgumentNullException();
+            return $"{userInfo.Surname} {userInfo.Name} {userInfo.Patronymic}";
+        }
+
         public string GetUserId()
         {
             return GetUId();

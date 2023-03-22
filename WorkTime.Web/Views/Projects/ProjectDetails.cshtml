@@ -56,7 +56,11 @@
                 @UserInfo.GetUserName(item.UserId)
             </td>
             <td>
-                @ProjectInfo.GetContract(item.Id)
+                 @if (ProjectInfo.GetContract(item.Id) == "Без договора")
+                 {
+                        <a asp-controller="Projects"
+                   asp-action="CreateUserContract" asp-route-id="@item.Id">Создать договор</a>
+                    }
             </td>
             <td>
                 <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetUserName(item.UserId))"><i class="bx bxs-trash"></i></a>

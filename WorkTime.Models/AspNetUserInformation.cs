@@ -31,7 +31,11 @@ public partial class AspNetUserInformation
 
     public string? BankInfoId { get; set; }
 
+    public string? INN { get; set; }
+
     public string? PassportNum { get; set; }
+
+    public string? PassportGived { get; set; }
 
     public string? PersonalAddress { get; set; }
 

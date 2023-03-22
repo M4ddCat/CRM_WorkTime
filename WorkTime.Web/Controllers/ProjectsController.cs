@@ -6,6 +6,7 @@ using WorkTime.Models;
 using Microsoft.CodeAnalysis;
 using SelectPdf;
 using System.Drawing.Printing;
+using System.Runtime.Intrinsics.Arm;
 
 namespace WorkTime.Web.Controllers
 {
@@ -106,7 +107,7 @@ namespace WorkTime.Web.Controllers
             await _context.AddAsync(contract);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction($"ProjectDetails/{projectId}", "Projects");
+            return RedirectToAction($"CreateUserContract/{contract.Id}", "Projects");
         }
 
         [Authorize(Roles = "Administrator,Manager")]
@@ -168,15 +169,11 @@ namespace WorkTime.Web.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> CreateUserContract(string userprojid)
+        public async Task<IActionResult> CreateUserContract(string id)
         {
-            UserProject up = _context.UserProjects.Find(userprojid);
-            Models.Project proj = _context.Projects.Find(up.Id);
+            Contract contract = _context.Contracts.Find(id);
 
-            Contract contract = new Contract() { UserProjectId = up.Id, UserProject = up, 
-                PerformerPersonId = up.UserId, CustomerCompanyId = proj.CustomerCompanyId, 
-            CustomerPersonId = proj.CustomerPersonId };
-
+            ViewBag.Contract = contract;
 
             return View();
         }
@@ -184,11 +181,11 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> CreateUserContract(string htmlCode, string userprojid)
+        public async Task<IActionResult> CreateUserContract(string htmlCode, string contractId)
         {
             HtmlToPdf converter = new HtmlToPdf();
 
-            PdfDocument doc = converter.ConvertHtmlString(htmlCode);
+            PdfDocument doc = converter.ConvertHtmlString($"<div style='padding:3rem!important'>{htmlCode}</div>");
             
             doc.Save("Name.pdf");
             doc.Close();
