@@ -11,6 +11,8 @@ public partial class Project
 
     public double? Bonus { get; set; }
 
+    public string? CustomerPersonPostInCompany { get; set; }
+
     public string? CustomerPersonId { get; set; }
 
     public string? CustomerCompanyId { get; set; }
@@ -28,6 +30,8 @@ public partial class Project
     public virtual ICollection<UserProject> UserProjects { get; } = new List<UserProject>();
 
     public virtual ICollection<WorkTask> WorkTasks { get; } = new List<WorkTask>();
+
+    public virtual ICollection<ContractTemplate> ContractTemplates { get; } = new List<ContractTemplate>();
 
     public Project()
     {

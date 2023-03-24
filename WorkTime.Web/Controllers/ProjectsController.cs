@@ -181,8 +181,14 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> CreateUserContract(string htmlCode, string contractId)
+        public async Task<IActionResult> CreateUserContract(string htmlCode, string contractId, 
+            string contractNumber)
         {
+            Contract contract = _context.Contracts.Find(contractId);
+
+            contract.ContractNumber = contractNumber;
+            //contract.ContractDate = contractDate;
+
             HtmlToPdf converter = new HtmlToPdf();
 
             PdfDocument doc = converter.ConvertHtmlString($"<div style='padding:3rem!important'>{htmlCode}</div>");
@@ -191,7 +197,6 @@ namespace WorkTime.Web.Controllers
             doc.Close();
 
             return RedirectToAction($"Index", "Projects");
-            
         }
 
         // GET: Projects/Edit/5
