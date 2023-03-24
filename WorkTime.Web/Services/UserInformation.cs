@@ -39,9 +39,18 @@ namespace WorkTime.Web.Services
         public string GetUserFullName(string id)
         {
             AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == id);
-            if (userInfo == null) throw new ArgumentNullException();
+            if (userInfo == null) return "";
             return $"{userInfo.Surname} {userInfo.Name} {userInfo.Patronymic}";
         }
+
+        public string GetUserPhone(string id)
+        {
+            AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == id);
+            if (userInfo == null) return "";
+            return $"{userInfo.ContactPhone}";
+        }
+
+        
 
         public string GetUserId()
         {

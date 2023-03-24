@@ -199,6 +199,13 @@ namespace WorkTime.Web.Controllers
             return RedirectToAction($"Index", "Projects");
         }
 
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CreateContractTemplateInProject(string id)
+        {
+            ViewBag.Project = _context.Projects.Find(id);
+            return View();
+        }
+
         // GET: Projects/Edit/5
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(string id)
