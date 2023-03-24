@@ -203,6 +203,21 @@ namespace WorkTime.Web.Controllers
         public async Task<IActionResult> CreateContractTemplateInProject(string id)
         {
             ViewBag.Project = _context.Projects.Find(id);
+            if (ViewBag.Project.CustomerCompanyId == null)
+            {
+                string uId = ViewBag.Project.CustomerPersonId;
+                if (uId == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == uId);
+                ViewBag.BankInfo = userInfo.BankInfo;
+            }
+            else
+            {
+                Company company = _context.Companies.Find(ViewBag.Project.CustomerCompanyId);
+                ViewBag.BankInfo = company.BankInfo;
+            }
             return View();
         }
 
