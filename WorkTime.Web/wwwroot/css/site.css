@@ -6,6 +6,7 @@
 @import 'objects/start-screen-objects.css';
 @import 'objects/chart.css';
 @import 'controls/buttons.css';
+@import 'objects/switch.css';
 /*@import 'objects/yseditor.min.css';*/
 
 html {

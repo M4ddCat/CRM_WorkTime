@@ -2,6 +2,17 @@
 @inject UserInformation UserInfo
 
 <link rel="stylesheet" href="/css/objects/yseditor.min.css" />
+<div style="
+    display: flex;
+    margin: 5pt;
+">
+    <label>Отобразить как HTML разметку</label>
+    <label class="switch ms-3">
+        <input id="documentCheckBox" type="checkbox"/>
+        <span class="sliderSwitch round"></span>
+    </label>
+</div>
+
 
 <form method="post" onsubmit="return send();">
     <input hidden name="projectId" value="@ViewBag.Project.Id" />
@@ -48,7 +59,7 @@
                 }
                 else
                 {
-                    <b><span style='font-size:12.0pt'> Общество с ограниченной ответственностью @ViewBag.Project.CustomerCompanyId</span></b>
+                    <b><span style='font-size:12.0pt'> Общество с ограниченной ответственностью @ViewBag.Company.Name</span></b>
                 <span style='font-size:12.0pt'>, именуемое в дальнейшем «Заказчик», в лице @ViewBag.Project.CustomerPersonPostInCompany @UserInfo.GetUserFullName(ViewBag.Project.CustomerPersonId) с одной стороны</span>
                 }
             <span style='font-size:12.0pt'>
@@ -737,40 +748,36 @@
                 </p>
 
                 <p>
-                    Адрес: Adress
+                Адрес: @ViewBag.UserInfo.PersonalAddress
                 </p>
 
-                <p>ИНН ViewBag.BankInfo.</p>
+            <p>ИНН: @ViewBag.UserInfo.INN</p>
 
-                <p>Счёт (&#8381;) 40802810902500112055</p>
+            <p>Счёт: @ViewBag.BankInfo.BankAccount </p>
 
-                <p>Банк: ТОЧКА ПАО БАНКА &quot;ФК ОТКРЫТИЕ&quot;</p>
+            <p>Банк: @ViewBag.BankInfo.BankName </p>
 
-                <p>Город г. Москва</p>
+            <p>Город:  @ViewBag.BankInfo.BankLocation </p>
 
-                <p>БИК 044525999 Корр. Счёт 30101810845250000999</p>
+            <p>БИК @ViewBag.BankInfo.Bik Корр. Счёт @ViewBag.BankInfo.CorInv</p>
             }
             else
             {
                 <p>
                     <b>
-                        Общество с ограниченной ответственностью @ViewBag.Project.CustomerCompanyId
+                        Общество с ограниченной ответственностью @ViewBag.Company.Name
                     </b>
                 </p>
 
-                <p>
-                    Адрес: CompanyPlace
-                </p>
+                <p>Адрес: @ViewBag.Company.CompanyPlace</p>
 
-                <p>ИНН 662300552040</p>
+                <p>Счёт: @ViewBag.BankInfo.BankAccount</p>
 
-                <p>Счёт (&#8381;) 40802810902500112055</p>
+                <p>Банк: @ViewBag.BankInfo.BankName</p>
 
-                <p>Банк: ТОЧКА ПАО БАНКА &quot;ФК ОТКРЫТИЕ&quot;</p>
+                <p>Город:  @ViewBag.BankInfo.BankLocation</p>
 
-                <p>Город г. Москва</p>
-
-                <p>БИК 044525999 Корр. Счёт 30101810845250000999</p>
+                <p>БИК @ViewBag.BankInfo.Bik Корр. Счёт @ViewBag.BankInfo.CorInv</p>
             }
 
         <p class=MsoNormal style='text-align:justify'>
@@ -843,14 +850,14 @@
                     <span>                                                                                    </span>
                 </span>
             </b><span style='font-size:12.0pt'>
-                _________________ <span> </span><span id="performerFullName"></span>
+                _________________ <span> </span><span id="performerFullName">ИМЯИСПОЛНИТЕЛЯ</span>
             </span>
             <b>
                 <span style='font-size:12.0pt'><o:p></o:p></span>
             </b>
         </p>
     </div>
-    <input type="hidden" name="htmlCode" id="hidden" />
+    <input type="hidden" name="htmlCode" id="htmlCode" />
     <input type="submit" />
 </form>
 @section Scripts {
@@ -866,14 +873,27 @@
             footer: false
         });
 
-        document.querySelector(".yseditor-content").addClass('px-5');
-        document.querySelector(".yseditor-content").addClass('py-5');
+        //document.querySelector(".yseditor-content").addClass('px-5');
+        //document.querySelector(".yseditor-content").addClass('py-5');
+
+        const checkDoc = document.getElementById('documentCheckBox');
+
+        checkDoc.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                let docHtml = myEditor.getHTML();
+                myEditor.setText(docHtml);
+            } else {
+                myEditor.setHTML(myEditor.getText());
+            }
+        })
 
         function send() {
-            let contractNumberField = document.querySelector("#contNumbInput");
-            contractNumberField.toggleAttribute("hidden");
-            document.querySelector("#contNum").textContent = contractNumberField.value;
-            document.querySelector("#hidden").value = myEditor.getHTML();
+            if (checkDoc.checked){
+                document.getElementById("htmlCode").value = myEditor.getText();
+            } else {
+                document.getElementById("htmlCode").value = myEditor.getHTML();
+            }
+
             return true;
         };
     </script>

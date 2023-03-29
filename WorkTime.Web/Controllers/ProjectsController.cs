@@ -7,6 +7,9 @@ using Microsoft.CodeAnalysis;
 using SelectPdf;
 using System.Drawing.Printing;
 using System.Runtime.Intrinsics.Arm;
+using Newtonsoft.Json;
+using System.Text;
+using Microsoft.Build.Evaluation;
 
 namespace WorkTime.Web.Controllers
 {
@@ -107,7 +110,7 @@ namespace WorkTime.Web.Controllers
             await _context.AddAsync(contract);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction($"CreateUserContract/{contract.Id}", "Projects");
+            return RedirectToRoute($"CreateUserContract/{contract.Id}");
         }
 
         [Authorize(Roles = "Administrator,Manager")]
@@ -162,16 +165,32 @@ namespace WorkTime.Web.Controllers
                 project.CustomerPersonId = personSelect;
             _context.Add(project);
 
-            
-
             await _context.SaveChangesAsync();
-            return RedirectToAction("Projects", "Details", project.Id);
+            return RedirectToAction($"Details/{project.Id}", "Projects");
         }
 
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> CreateUserContract(string id)
         {
-            Contract contract = _context.Contracts.Find(id);
+            Contract? contract = await _context.Contracts.FindAsync(id);
+            if (contract == null) throw new ArgumentNullException();
+
+            string? projId = _context.UserProjects.FindAsync(contract.UserProjectId).Result?.ProjectId;
+            if (projId == null) throw new ArgumentNullException();
+
+            byte[]? ct = _context.ContractTemplates.FirstOrDefaultAsync(c => c.ProjectId == projId).Result?.TemplateFile;
+            if (ct == null) throw new ArgumentNullException();
+
+            string template = Encoding.UTF8.GetString(ct);
+
+            ViewBag.Template = template;
+
+            AspNetUserInformation? userInfo = _context.AspNetUserInformations.Find(contract.PerformerPersonId);
+            if (userInfo == null) throw new ArgumentNullException();
+
+            ViewBag.UserInfo = userInfo;
+
+            ViewBag.BankInfo = _context.BankInformation.Find(userInfo.BankInfoId);
 
             ViewBag.Contract = contract;
 
@@ -211,14 +230,34 @@ namespace WorkTime.Web.Controllers
                     throw new ArgumentNullException();
                 }
                 AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == uId);
-                ViewBag.BankInfo = userInfo.BankInfo;
+                BankInformation? bankInfo = _context.BankInformation.FirstOrDefault(b => b.Id == userInfo.BankInfoId);
+                ViewBag.BankInfo = bankInfo;
+                ViewBag.UserInfo = userInfo;
+
             }
             else
             {
-                Company company = _context.Companies.Find(ViewBag.Project.CustomerCompanyId);
-                ViewBag.BankInfo = company.BankInfo;
+                Company? company = _context.Companies.Find(ViewBag.Project.CustomerCompanyId);
+                BankInformation? bankInfo = _context.BankInformation.FirstOrDefault(b => b.Id == company.BankInfoId);
+                ViewBag.BankInfo = bankInfo;
+                ViewBag.Company = company;
             }
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CreateContractTemplateInProject(string projectId, string htmlCode)
+        {
+            byte[] template = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(htmlCode));
+            ContractTemplate contractTemplate = new ContractTemplate() 
+            { 
+                ProjectId =  projectId, 
+                TemplateFile = template
+            };
+            _context.AddAsync(contractTemplate);
+            return RedirectToAction($"Details/{projectId}", "Projects");
         }
 
         // GET: Projects/Edit/5
