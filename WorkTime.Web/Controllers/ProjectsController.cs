@@ -118,6 +118,9 @@ namespace WorkTime.Web.Controllers
         {
             ViewBag.Project = await _context.Projects.FindAsync(id);
             ViewBag.Contract = await _context.Contracts.Where(c => c.UserProject.ProjectId == id).ToListAsync();
+
+            ViewBag.HaveTemplate = _context.ContractTemplates.Where(c => c.ProjectId == id).Any();
+
             return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
         }
 
@@ -166,7 +169,7 @@ namespace WorkTime.Web.Controllers
             _context.Add(project);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction($"Details/{project.Id}", "Projects");
+            return LocalRedirect($"~/Projects/Details/{project.Id}");
         }
 
         [Authorize(Roles = "Administrator,Manager")]
@@ -178,12 +181,12 @@ namespace WorkTime.Web.Controllers
             string? projId = _context.UserProjects.FindAsync(contract.UserProjectId).Result?.ProjectId;
             if (projId == null) throw new ArgumentNullException();
 
-            byte[]? ct = _context.ContractTemplates.FirstOrDefaultAsync(c => c.ProjectId == projId).Result?.TemplateFile;
-            if (ct == null) throw new ArgumentNullException();
+            //byte[]? ct = _context.ContractTemplates.FirstOrDefaultAsync(c => c.ProjectId == projId).Result?.TemplateFile;
+            //if (ct == null) throw new ArgumentNullException();
 
-            string template = Encoding.UTF8.GetString(ct);
+            //string template = Encoding.UTF8.GetString(ct);
 
-            ViewBag.Template = template;
+            //ViewBag.Template = template;
 
             AspNetUserInformation? userInfo = _context.AspNetUserInformations.Find(contract.PerformerPersonId);
             if (userInfo == null) throw new ArgumentNullException();
@@ -250,14 +253,54 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateContractTemplateInProject(string projectId, string htmlCode)
         {
-            byte[] template = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(htmlCode));
+            byte[] template = Encoding.UTF32.GetBytes(JsonConvert.SerializeObject(htmlCode));
             ContractTemplate contractTemplate = new ContractTemplate() 
             { 
                 ProjectId =  projectId, 
-                TemplateFile = template
+                //TemplateFile = template
             };
-            _context.AddAsync(contractTemplate);
-            return RedirectToAction($"Details/{projectId}", "Projects");
+            await _context.AddAsync(contractTemplate);
+
+            await _context.SaveChangesAsync();
+
+            return LocalRedirect($"~/Projects/ProjectDetails/{projectId}");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditContractTemplateInProject(string id)
+        {
+            ContractTemplate? ct = _context.ContractTemplates.FirstOrDefault(c => c.ProjectId == id);
+            if (ct == null) return NotFound();
+
+            //string htmlCode = Encoding.UTF8.GetString(ct.TemplateFile);
+
+            ViewBag.Id = ct.Id;
+            //ViewBag.Template = htmlCode;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditContractTemplateInProject(string id, string htmlCode)
+        {
+            byte[] template = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(htmlCode));
+            //ContractTemplate contractTemplate = new ContractTemplate()
+            //{
+            //    ProjectId = projectId,
+            //    TemplateFile = template
+            //};
+
+            ContractTemplate? contractTemplate = await _context.ContractTemplates.FindAsync(id);
+            if (contractTemplate == null) return NotFound();
+            //contractTemplate.TemplateFile = template;
+
+            _context.Update(contractTemplate);
+
+            await _context.SaveChangesAsync();
+
+            return LocalRedirect($"~/Projects/Details/{contractTemplate.ProjectId}");
         }
 
         // GET: Projects/Edit/5

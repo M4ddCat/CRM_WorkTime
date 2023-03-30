@@ -250,6 +250,12 @@ public partial class WorkTimeContext : DbContext
         modelBuilder.Entity<ContractTemplate>(entity =>
         {
             entity.Property(e => e.ProjectId).HasMaxLength(450);
+            entity.Property(e => e.EmpTypeId).HasMaxLength(450);
+
+            entity.HasOne(d => d.TypeOfEmployment).WithMany(p => p.ContractTemplates)
+                .HasForeignKey(d => d.EmpTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ContractTemplates_EmpTypes");
 
             entity.HasOne(d => d.Project).WithMany(p => p.ContractTemplates)
                 .HasForeignKey(d => d.ProjectId)

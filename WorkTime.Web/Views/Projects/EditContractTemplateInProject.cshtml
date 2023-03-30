@@ -1,0 +1,63 @@
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+
+<link rel="stylesheet" href="/css/objects/yseditor.min.css" />
+<div style="
+    display: flex;
+    margin: 5pt;
+">
+    <label>Отобразить как HTML разметку</label>
+    <label class="switch ms-3">
+        <input id="documentCheckBox" type="checkbox" />
+        <span class="sliderSwitch round"></span>
+    </label>
+</div>
+
+
+<form method="post" onsubmit="return send();">
+    <input hidden name="projectId" value="@ViewBag.Id" />
+    <div id="yseditor" style="width: 297mm">
+        @ViewBag.Template
+    </div>
+    <input type="hidden" name="htmlCode" id="htmlCode" />
+    <input type="submit" />
+</form>
+@section Scripts {
+
+    <script src="/js/yseditor.min.js"></script>
+
+    <script>
+        var myEditor = new ysEditor();
+
+        myEditor.init({
+            height: 700,
+            scroll: true,
+            footer: false
+        });
+
+        //document.querySelector(".yseditor-content").addClass('px-5');
+        //document.querySelector(".yseditor-content").addClass('py-5');
+
+        const checkDoc = document.getElementById('documentCheckBox');
+
+        checkDoc.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                let docHtml = myEditor.getHTML();
+                myEditor.setText(docHtml);
+            } else {
+                myEditor.setHTML(myEditor.getText());
+            }
+        })
+
+        function send() {
+            if (checkDoc.checked) {
+                document.getElementById("htmlCode").value = myEditor.getText();
+            } else {
+                document.getElementById("htmlCode").value = myEditor.getHTML();
+            }
+
+            return true;
+        };
+    </script>
+
+}

@@ -13,6 +13,8 @@ public partial class TypeOfEmployment
 
     public virtual ICollection<UserProject> UserProjects { get; } = new List<UserProject>();
 
+    public virtual ICollection<ContractTemplate> ContractTemplates { get; } = new List<ContractTemplate>();
+
     public TypeOfEmployment()
     {
         Id = Guid.NewGuid().ToString();

@@ -6,9 +6,13 @@ public partial class ContractTemplate
 
     public string ProjectId { get; set; }
 
-    public byte[]? TemplateFile { get; set; }
+    public string EmpTypeId { get; set; }
+
+    public string Template { get; set; }
 
     public virtual Project? Project { get; set; }
+
+    public virtual TypeOfEmployment? TypeOfEmployment { get; set; }
 
     public ContractTemplate()
     {

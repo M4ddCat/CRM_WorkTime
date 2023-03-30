@@ -142,34 +142,58 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] AspNetUser aspNetUser)
+        public async Task<IActionResult> Edit(string id, string email, string name,
+            string surname, string? patronymic,
+            double hourlyWage, string contactPhone, string contactEmail, string socialNetworkContact,
+            string passportNum, string password,
+            string? bankAccount, string? personalAddress, string? bankName,
+            string? corInv, string? bik, string? bankLocation, string userType)
         {
-            if (id != aspNetUser.Id)
+            AspNetUser? aspNetUser = _context.AspNetUsers.Find(id);
+            if (aspNetUser == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                aspNetUser.Email = email;
+                AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefault(u => u.UserId == id);
+                if(userInfo == null) { return NotFound(); }
+                userInfo.Name = name;
+                userInfo.Surname = surname;
+                userInfo.Patronymic = patronymic;
+                userInfo.HourlyWage = hourlyWage;
+                userInfo.ContactPhone = contactPhone;
+                userInfo.ContactEmail = contactEmail;
+                userInfo.SocialNetworkContact = socialNetworkContact;
+                userInfo.PassportNum = passportNum;
+
+                BankInformation? bankInformation = _context.BankInformation.FirstOrDefault(b => b.Id == userInfo.BankInfoId);
+                if (bankInformation != null)
                 {
-                    _context.Update(aspNetUser);
-                    await _context.SaveChangesAsync();
+                    bankInformation.BankAccount = bankAccount;
+                    bankInformation.BankName = bankName;
+                    bankInformation.CorInv = corInv;
+                    bankInformation.Bik = bik;
+                    bankInformation.BankLocation = bankLocation;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AspNetUserExists(aspNetUser.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                _context.Update(aspNetUser);
+                await _context.SaveChangesAsync();
             }
-            return View(aspNetUser);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AspNetUserExists(aspNetUser.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Users/Delete/5

@@ -27,6 +27,18 @@
 <p>
     <a type="button" class="btn btn-primary" asp-action="AddUserInProject" asp-route-id="@ViewBag.Project.Id">Добавить пользователя в проект</a>
 </p>
+@if (ViewBag.HaveTemplate == true)
+{
+    <p>
+        <a type="button" class="btn btn-primary" asp-action="EditContractTemplateInProject" asp-route-id="@ViewBag.Project.Id">Редактировать шаблон договора</a>
+    </p>
+}
+else
+{
+    <p>
+        <a type="button" class="btn btn-primary" asp-action="CreateContractTemplateInProject" asp-route-id="@ViewBag.Project.Id">Создать шаблон договора</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
