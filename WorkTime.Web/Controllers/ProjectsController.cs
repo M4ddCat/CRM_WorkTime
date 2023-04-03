@@ -118,8 +118,8 @@ namespace WorkTime.Web.Controllers
         {
             ViewBag.Project = await _context.Projects.FindAsync(id);
             ViewBag.Contract = await _context.Contracts.Where(c => c.UserProject.ProjectId == id).ToListAsync();
-
-            ViewBag.HaveTemplate = _context.ContractTemplates.Where(c => c.ProjectId == id).Any();
+            ViewBag.ContractTemplates = await _context.ContractTemplates.Where(c => c.ProjectId == id).ToListAsync();
+            ViewBag.HaveTemplate = await _context.ContractTemplates.Where(c => c.ProjectId == id).AnyAsync();
 
             return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
         }
@@ -181,12 +181,7 @@ namespace WorkTime.Web.Controllers
             string? projId = _context.UserProjects.FindAsync(contract.UserProjectId).Result?.ProjectId;
             if (projId == null) throw new ArgumentNullException();
 
-            //byte[]? ct = _context.ContractTemplates.FirstOrDefaultAsync(c => c.ProjectId == projId).Result?.TemplateFile;
-            //if (ct == null) throw new ArgumentNullException();
-
-            //string template = Encoding.UTF8.GetString(ct);
-
-            //ViewBag.Template = template;
+            ViewBag.Template = _context.ContractTemplates.FirstOrDefaultAsync(c => c.ProjectId == projId).Result?.Template;
 
             AspNetUserInformation? userInfo = _context.AspNetUserInformations.Find(contract.PerformerPersonId);
             if (userInfo == null) throw new ArgumentNullException();
@@ -209,7 +204,6 @@ namespace WorkTime.Web.Controllers
             Contract contract = _context.Contracts.Find(contractId);
 
             contract.ContractNumber = contractNumber;
-            //contract.ContractDate = contractDate;
 
             HtmlToPdf converter = new HtmlToPdf();
 
@@ -236,7 +230,6 @@ namespace WorkTime.Web.Controllers
                 BankInformation? bankInfo = _context.BankInformation.FirstOrDefault(b => b.Id == userInfo.BankInfoId);
                 ViewBag.BankInfo = bankInfo;
                 ViewBag.UserInfo = userInfo;
-
             }
             else
             {
@@ -245,21 +238,39 @@ namespace WorkTime.Web.Controllers
                 ViewBag.BankInfo = bankInfo;
                 ViewBag.Company = company;
             }
+
+            ViewBag.EmpTypes = await _context.TypeOfEmployments.ToListAsync();
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> CreateContractTemplateInProject(string projectId, string htmlCode)
+        public async Task<IActionResult> CreateContractTemplateInProject(string projectId, 
+            string htmlCode, string empTypeId)
         {
-            byte[] template = Encoding.UTF32.GetBytes(JsonConvert.SerializeObject(htmlCode));
-            ContractTemplate contractTemplate = new ContractTemplate() 
-            { 
-                ProjectId =  projectId, 
-                //TemplateFile = template
-            };
-            await _context.AddAsync(contractTemplate);
+            if(_context.ContractTemplates.Where(c => c.ProjectId == projectId).Any(c => c.EmpTypeId == empTypeId))
+            {
+                ContractTemplate? ct = await _context.ContractTemplates
+                    .Where(c => c.ProjectId == projectId && c.EmpTypeId == empTypeId)
+                    .FirstOrDefaultAsync();
+                if (ct == null) return NotFound();
+                ct.Template = htmlCode;
+                
+            }
+            else
+            {
+                ContractTemplate contractTemplate = new ContractTemplate()
+                {
+                    ProjectId = projectId,
+                    Template = htmlCode,
+                    EmpTypeId = empTypeId,
+                    TypeOfEmployment = await _context.TypeOfEmployments.FindAsync(empTypeId)
+                };
+
+                await _context.AddAsync(contractTemplate);
+            }
 
             await _context.SaveChangesAsync();
 
@@ -269,13 +280,10 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> EditContractTemplateInProject(string id)
         {
-            ContractTemplate? ct = _context.ContractTemplates.FirstOrDefault(c => c.ProjectId == id);
+            ContractTemplate? ct = await _context.ContractTemplates.FindAsync(id);
             if (ct == null) return NotFound();
 
-            //string htmlCode = Encoding.UTF8.GetString(ct.TemplateFile);
-
-            ViewBag.Id = ct.Id;
-            //ViewBag.Template = htmlCode;
+            ViewBag.Template = ct.Template;
 
             return View();
         }
@@ -283,18 +291,11 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> EditContractTemplateInProject(string id, string htmlCode)
+        public async Task<IActionResult> EditContractTemplateInProject(string id, string htmlCode, string contractId)
         {
-            byte[] template = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(htmlCode));
-            //ContractTemplate contractTemplate = new ContractTemplate()
-            //{
-            //    ProjectId = projectId,
-            //    TemplateFile = template
-            //};
-
             ContractTemplate? contractTemplate = await _context.ContractTemplates.FindAsync(id);
             if (contractTemplate == null) return NotFound();
-            //contractTemplate.TemplateFile = template;
+            contractTemplate.Template = htmlCode;
 
             _context.Update(contractTemplate);
 

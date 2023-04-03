@@ -7,38 +7,59 @@
 @{
     ViewData["Title"] = "Детали проекта";
 }
+<div class="row">
+    <div class="col">
+        <h1>Детали проекта</h1>
 
-<h1>Детали проекта</h1>
-
-<h4>Название: @ViewBag.Project.Name</h4>
-<h4>Бонус проекта: @ViewBag.Project.Bonus</h4>
-<h4>
-    Сроки проекта: @if (ViewBag.Project.EndDate != null)
+        <h4>Название: @ViewBag.Project.Name</h4>
+        <h4>Бонус проекта: @ViewBag.Project.Bonus</h4>
+        <h4>
+            Сроки проекта: @if (ViewBag.Project.EndDate != null)
+            {
+                <span>С @ViewBag.Project.StartDate.ToShortDateString() по @ViewBag.Project.EndDate.ToShortDateString()</span>
+            }
+            else
+            {
+                <span>Бессрочный</span>
+            }
+        </h4>
+    </div>
+    @if (ViewBag.HaveTemplate == true)
     {
-        <span>С @ViewBag.Project.StartDate.ToShortDateString() по @ViewBag.Project.EndDate.ToShortDateString()</span>
+        <div class="col-4">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Шаблоны контрактов
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var template in ViewBag.ContractTemplates)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="EditContractTemplateInProject" asp-route-id="@template.Id">template.TypeOfEmployment.Name</a>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
-    else
-    {
-        <span>Бессрочный</span>
-    }
-</h4>
+</div>
 <br/>
 <h4>Список пользователей в проекте</h4>
 <p>
     <a type="button" class="btn btn-primary" asp-action="AddUserInProject" asp-route-id="@ViewBag.Project.Id">Добавить пользователя в проект</a>
 </p>
-@if (ViewBag.HaveTemplate == true)
-{
-    <p>
-        <a type="button" class="btn btn-primary" asp-action="EditContractTemplateInProject" asp-route-id="@ViewBag.Project.Id">Редактировать шаблон договора</a>
-    </p>
-}
-else
-{
-    <p>
-        <a type="button" class="btn btn-primary" asp-action="CreateContractTemplateInProject" asp-route-id="@ViewBag.Project.Id">Создать шаблон договора</a>
-    </p>
-}
+<p>
+    <a type="button" class="btn btn-primary" asp-action="CreateContractTemplateInProject" asp-route-id="@ViewBag.Project.Id">Создать шаблон договора</a>
+</p>
 <table class="table">
     <thead>
         <tr>

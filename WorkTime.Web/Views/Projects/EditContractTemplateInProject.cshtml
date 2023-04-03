@@ -17,7 +17,7 @@
 <form method="post" onsubmit="return send();">
     <input hidden name="projectId" value="@ViewBag.Id" />
     <div id="yseditor" style="width: 297mm">
-        @ViewBag.Template
+        @Html.Raw(ViewBag.Template)
     </div>
     <input type="hidden" name="htmlCode" id="htmlCode" />
     <input type="submit" />
@@ -25,7 +25,6 @@
 @section Scripts {
 
     <script src="/js/yseditor.min.js"></script>
-
     <script>
         var myEditor = new ysEditor();
 
@@ -34,6 +33,8 @@
             scroll: true,
             footer: false
         });
+        
+            //myEditor.setHTML(  );
 
         //document.querySelector(".yseditor-content").addClass('px-5');
         //document.querySelector(".yseditor-content").addClass('py-5');
