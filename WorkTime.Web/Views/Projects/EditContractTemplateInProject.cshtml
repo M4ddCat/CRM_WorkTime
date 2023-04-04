@@ -16,11 +16,11 @@
 
 <form method="post" onsubmit="return send();">
     <input hidden name="projectId" value="@ViewBag.Id" />
-    <div id="yseditor" style="width: 297mm">
+    <div id="yseditor" style="width: 297mm; background-color: white;">
         @Html.Raw(ViewBag.Template)
     </div>
     <input type="hidden" name="htmlCode" id="htmlCode" />
-    <input type="submit" />
+    <input type="submit" class="btn btn-primary ps-2 m-3" />
 </form>
 @section Scripts {
 

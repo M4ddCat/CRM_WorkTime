@@ -28,5 +28,15 @@ namespace WorkTime.Web.Services
             string? contractId = _context.Contracts.Where(c => c.UserProjectId == userProjectId).FirstOrDefault()?.Id;
             return contractId == null ? "Без договора" : contractId;
         }
+
+        public string GetEmployeeName(string id)
+        {
+            if (String.IsNullOrWhiteSpace(id))
+            {
+                throw new InvalidOperationException();
+            }
+            string? name = _context.TypeOfEmployments.Find(id)?.Name;
+            return name == null ? "Имя не найдено" : name;
+        }
     }
 }

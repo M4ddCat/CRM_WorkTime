@@ -31,7 +31,7 @@
                 <thead>
                     <tr>
                         <th>
-                            Шаблоны контрактов
+                            Шаблоны договоров
                         </th>
                         <th></th>
                     </tr>
@@ -41,7 +41,7 @@
                     {
                         <tr>
                             <td>
-                                <a asp-action="EditContractTemplateInProject" asp-route-id="@template.Id">template.TypeOfEmployment.Name</a>
+                                <a asp-action="EditContractTemplateInProject" asp-route-id="@template.Id">@ProjectInfo.GetEmployeeName(template.EmpTypeId)</a>
                             </td>
                             <td>
                             </td>

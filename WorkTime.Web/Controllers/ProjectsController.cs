@@ -178,10 +178,12 @@ namespace WorkTime.Web.Controllers
             Contract? contract = await _context.Contracts.FindAsync(id);
             if (contract == null) throw new ArgumentNullException();
 
-            string? projId = _context.UserProjects.FindAsync(contract.UserProjectId).Result?.ProjectId;
-            if (projId == null) throw new ArgumentNullException();
+            UserProject? up = await _context.UserProjects.FindAsync(contract.UserProjectId);
+            if (up == null) throw new ArgumentNullException();
 
-            ViewBag.Template = _context.ContractTemplates.FirstOrDefaultAsync(c => c.ProjectId == projId).Result?.Template;
+            ViewBag.Template = _context.ContractTemplates
+                .FirstOrDefaultAsync(c => c.ProjectId == up.ProjectId && c.EmpTypeId == up.EmpTypeId)
+                .Result?.Template;
 
             AspNetUserInformation? userInfo = _context.AspNetUserInformations.Find(contract.PerformerPersonId);
             if (userInfo == null) throw new ArgumentNullException();
@@ -247,13 +249,13 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> CreateContractTemplateInProject(string projectId, 
+        public async Task<IActionResult> CreateContractTemplateInProject(string id, 
             string htmlCode, string empTypeId)
         {
-            if(_context.ContractTemplates.Where(c => c.ProjectId == projectId).Any(c => c.EmpTypeId == empTypeId))
+            if(_context.ContractTemplates.Where(c => c.ProjectId == id).Any(c => c.EmpTypeId == empTypeId))
             {
                 ContractTemplate? ct = await _context.ContractTemplates
-                    .Where(c => c.ProjectId == projectId && c.EmpTypeId == empTypeId)
+                    .Where(c => c.ProjectId == id && c.EmpTypeId == empTypeId)
                     .FirstOrDefaultAsync();
                 if (ct == null) return NotFound();
                 ct.Template = htmlCode;
@@ -263,10 +265,9 @@ namespace WorkTime.Web.Controllers
             {
                 ContractTemplate contractTemplate = new ContractTemplate()
                 {
-                    ProjectId = projectId,
+                    ProjectId = id,
                     Template = htmlCode,
-                    EmpTypeId = empTypeId,
-                    TypeOfEmployment = await _context.TypeOfEmployments.FindAsync(empTypeId)
+                    EmpTypeId = empTypeId
                 };
 
                 await _context.AddAsync(contractTemplate);
@@ -274,7 +275,7 @@ namespace WorkTime.Web.Controllers
 
             await _context.SaveChangesAsync();
 
-            return LocalRedirect($"~/Projects/ProjectDetails/{projectId}");
+            return LocalRedirect($"~/Projects/ProjectDetails/{id}");
         }
 
         [Authorize(Roles = "Administrator")]

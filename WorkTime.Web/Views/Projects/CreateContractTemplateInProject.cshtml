@@ -14,10 +14,10 @@
 </div>
 
 <form method="post" onsubmit="return send();">
-    <input hidden name="ProjectId" value="ViewBag.Project.Id" />
-    <div class="form-group">
+    <input hidden name="projectId" value="ViewBag.Project.Id" />
+    <div class="form-group ps-2">
         <label class="control-label">Шаблон для -</label>
-        <select name="empTypeId">
+        <select class="form-select w-25 d-inline-block m-3 " name="empTypeId">
             @foreach (var item in ViewBag.EmpTypes)
             {
                 <option value="@item.Id">@item.Name</option>
@@ -25,7 +25,7 @@
         </select>
     </div>
     
-    <div id="yseditor" style="width: 297mm">
+    <div id="yseditor" style="width: 297mm; background-color: white;">
         <p class=MsoNormal align=center style='text-align:center'>
             <b>
                 <span style='font-size:12.0pt'>
@@ -867,7 +867,7 @@
         </p>
     </div>
     <input type="hidden" name="htmlCode" id="htmlCode" />
-    <input type="submit" />
+    <input type="submit" class="btn btn-primary ps-2 m-3"/>
 </form>
 @section Scripts {
 
