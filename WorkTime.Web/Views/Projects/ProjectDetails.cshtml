@@ -44,6 +44,7 @@
                                 <a asp-action="EditContractTemplateInProject" asp-route-id="@template.Id">@ProjectInfo.GetEmployeeName(template.EmpTypeId)</a>
                             </td>
                             <td>
+
                             </td>
                         </tr>
                     }
@@ -72,12 +73,12 @@
             <th>
                 Сотрудник
             </th>
-            <th>№ договора</th>
+            <th>Договор</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.HourlyWage)
@@ -91,15 +92,20 @@
             <td>
                  @if (ProjectInfo.GetContract(item.Id) == "Без договора")
                  {
-                        <a asp-controller="Projects"
-                   asp-action="CreateUserContract" asp-route-id="@item.Id">Создать договор</a>
-                    }
-            </td>
+                    <a asp-controller="Projects"
+                        asp-action="CreateUserContract" asp-route-id="@item.Id">Создать договор</a>
+                 }
+                 else
+                 {
+                        <a asp-action="UserContract" 
+                        asp-route-id="@item.Id">Файлы договора</a>
+                 }
+                </td>
             <td>
                 <a type="button" title="Удалить" href="#" onclick="deleteUser(@item.Id, @UserInfo.GetUserName(item.UserId))"><i class="bx bxs-trash"></i></a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
 

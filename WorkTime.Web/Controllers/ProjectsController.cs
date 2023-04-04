@@ -305,6 +305,21 @@ namespace WorkTime.Web.Controllers
             return LocalRedirect($"~/Projects/Details/{contractTemplate.ProjectId}");
         }
 
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<IActionResult> UserContract(string id)
+        {
+            UserProject? userProject = await _context.UserProjects.FindAsync(id);
+            if (userProject == null) return NotFound();
+
+            Contract? contract = await _context.Contracts.FirstOrDefaultAsync(c => c.UserProjectId == id);
+            if (contract == null) return NotFound();
+
+            ViewBag.UserProject = userProject;
+            ViewBag.Contract = contract;
+
+            return View();
+        }
+
         // GET: Projects/Edit/5
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(string id)

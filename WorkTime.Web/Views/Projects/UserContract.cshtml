@@ -1,0 +1,34 @@
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+@inject ProjectInformation ProjectInfo
+
+@{
+    ViewData["Title"] = "Контракт сотрудника";
+}
+
+<h1>Контракт сотрудника</h1>
+
+<h4>ФИО Сотрудника: @UserInfo.GetUserFullName(ViewBag.UserProject.UserId)</h4>
+<h4>Проект: @ProjectInfo.GetName(ViewBag.UserProject.ProjectId)</h4>
+
+<h4>Файл договора (не подписанный):</h4>
+<a type="button"
+   title="Скачать файл" asp-action=""
+   asp-route-id="">Скачать</a>
+<br />
+<h4>Скачать все файлы (доп соглашения, подписанные договоры)</h4>
+<a type="button"
+       title="Скачать все файлы" asp-action="" 
+       asp-route-id="">Скачать архив</a>
+<br />
+<h4>Добавить файлы (доп соглашения, подписанные договоры)</h4>
+<form asp-controller="Projects" asp-action="UploadContractFiles" method="post">
+    <input name="userProjectId" value="@ViewBag.UserProject.Id" hidden />
+    <input type="file" name="uploadedFile" />
+    <button type="submit" hidden>Загрузить</button>
+</form>
+
+@section Scripts 
+{
+
+}

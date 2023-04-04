@@ -248,7 +248,11 @@
                                 <span class="torightside">Выплачено: @item.Issued р.</span>
                             </dd>
                             <dd>
-                                <a style="background-color: #20a31d; border-color: #20a31d;" class="torightside btn btn-primary" type="button" title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id"><span style="color: #FFF">Скачать файлы</span></a>
+                                <a style="background-color: #20a31d; border-color: #20a31d;" 
+                                class="torightside btn btn-primary" type="button" 
+                                title="Скачать все файлы" asp-action="GetInvoiceFiles" asp-route-id="@item.Id">
+                                    <span style="color: #FFF">Скачать файлы</span>
+                                </a>
                             </dd>
                         </dl>
                     </div>

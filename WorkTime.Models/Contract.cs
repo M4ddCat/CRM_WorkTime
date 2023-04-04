@@ -28,6 +28,8 @@ public partial class Contract
 
     public virtual AspNetUser? PerformerPerson { get; set; }
 
+    public virtual ICollection<ContractFile> ContractFiles { get; } = new List<ContractFile>();
+
     public virtual UserProject UserProject { get; set; } = null!;
 
     public Contract()

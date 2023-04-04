@@ -37,6 +37,8 @@ public partial class WorkTimeContext : DbContext
 
     public virtual DbSet<Contract> Contracts { get; set; }
 
+    public virtual DbSet<ContractFile> ContractFiles { get; set; }
+
     public virtual DbSet<ContractTemplate> ContractTemplates { get; set; }
 
     public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
@@ -245,6 +247,16 @@ public partial class WorkTimeContext : DbContext
                 .HasForeignKey(d => d.UserProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Contracts_UserProjects");
+        });
+
+        modelBuilder.Entity<ContractFile>(entity =>
+        {
+            entity.Property(e => e.ContractId).HasMaxLength(450);
+
+            entity.HasOne(d => d.Contract).WithMany(p => p.ContractFiles)
+                .HasForeignKey(d => d.ContractId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Contract_ContractFiles");
         });
 
         modelBuilder.Entity<ContractTemplate>(entity =>
