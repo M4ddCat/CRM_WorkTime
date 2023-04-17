@@ -6,7 +6,9 @@ public partial class ContractFile
 
     public string ContractId { get; set; } = null!;
 
-    public byte[]? File { get; set; }
+    public string Name {get; set; } = null!;
+
+    public byte[] File { get; set; }
 
     public virtual Contract? Contract { get; set; }
 

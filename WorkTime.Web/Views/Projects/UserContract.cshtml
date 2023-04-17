@@ -3,32 +3,38 @@
 @inject ProjectInformation ProjectInfo
 
 @{
-    ViewData["Title"] = "Контракт сотрудника";
+    ViewData["Title"] = "Договор сотрудника";
 }
 
-<h1>Контракт сотрудника</h1>
+<h1>Договор сотрудника</h1>
 
 <h4>ФИО Сотрудника: @UserInfo.GetUserFullName(ViewBag.UserProject.UserId)</h4>
 <h4>Проект: @ProjectInfo.GetName(ViewBag.UserProject.ProjectId)</h4>
 
 <h4>Файл договора (не подписанный):</h4>
-<a type="button"
-   title="Скачать файл" asp-action=""
-   asp-route-id="">Скачать</a>
+<a type="button" class="btn btn-primary"
+   title="Скачать файл" asp-action="GetUserContract"
+   asp-route-id="@ViewBag.Contract.Id">Скачать</a>
 <br />
 <h4>Скачать все файлы (доп соглашения, подписанные договоры)</h4>
 <a type="button"
-       title="Скачать все файлы" asp-action="" 
-       asp-route-id="">Скачать архив</a>
+   title="Скачать все файлы" asp-action="GetContractFiles"
+   asp-route-id="@ViewBag.Contract.Id"
+   class="btn btn-primary">Скачать архив</a>
 <br />
 <h4>Добавить файлы (доп соглашения, подписанные договоры)</h4>
-<form asp-controller="Projects" asp-action="UploadContractFiles" method="post">
-    <input name="userProjectId" value="@ViewBag.UserProject.Id" hidden />
-    <input type="file" name="uploadedFile" />
-    <button type="submit" hidden>Загрузить</button>
+<form enctype="multipart/form-data" asp-controller="Projects" asp-action="UploadContractFiles" method="post">
+    <input name="contractId" value="@ViewBag.Contract.Id" hidden />
+    <input type="file" id="uploadedFile" name="uploadedFile" />
+    <br />
+    <button class="btn btn-primary hidden" id="submitFile" type="submit">Загрузить</button>
 </form>
 
 @section Scripts 
 {
-
+    <script>
+        $("input#uploadedFile").change(function () {
+            $("#submitFile").toggleClass('hidden');
+        });
+    </script>
 }

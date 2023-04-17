@@ -30,7 +30,10 @@ namespace WorkTime.Web.Controllers
 
         public async Task<IActionResult> MyInvoices(string id)
         {
-            var workTimeContext = _context.Invoices.Where(i => i.UserId == id).Include(i => i.PaymentState).Include(i => i.Project).Include(i => i.User);
+            var workTimeContext = _context.Invoices.Where(i => i.UserId == id)
+                .Include(i => i.PaymentState)
+                .Include(i => i.Project)
+                .Include(i => i.User);
             return View(await workTimeContext.ToListAsync());
         }
 

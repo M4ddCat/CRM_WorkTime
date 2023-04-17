@@ -10,6 +10,8 @@ using System.Runtime.Intrinsics.Arm;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.Build.Evaluation;
+using System.IO.Compression;
+using System.Security.Authentication;
 
 namespace WorkTime.Web.Controllers
 {
@@ -122,6 +124,74 @@ namespace WorkTime.Web.Controllers
             ViewBag.HaveTemplate = await _context.ContractTemplates.Where(c => c.ProjectId == id).AnyAsync();
 
             return View(await _context.UserProjects.Where(u => u.ProjectId == id).ToListAsync());
+        }
+
+        //POST Projects/UploadContractFiles/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<string> UploadContractFiles(string contractId, IFormFile uploadedFile)
+        {
+            byte[] fileByte;
+            using (var ms = new MemoryStream())
+            {
+                uploadedFile.CopyTo(ms);
+                fileByte = ms.ToArray();
+            }
+            _context.ContractFiles.Add(new ContractFile()
+            {
+                File = fileByte,
+                ContractId = contractId,
+                Name = uploadedFile.FileName
+            });
+
+            await _context.SaveChangesAsync();
+            return "success";
+        }
+
+        //GET: Project/DownloadContractFiles/contractId
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<FileResult> GetContractFiles(string id)
+        {
+            List<ContractFile> files = _context.ContractFiles.Where(i => i.ContractId == id).ToList();
+
+            if (!Directory.Exists($"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/"))
+            {
+                Directory.CreateDirectory($"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/");
+            }
+
+            string path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}/Temp/{id}";
+
+            Directory.CreateDirectory(path);
+
+            foreach (ContractFile file in files)
+            {
+                System.IO.File.WriteAllBytes($"{path}/{file.Name}", file.File);
+            }
+
+            ZipFile.CreateFromDirectory(path, $"{path}.zip");
+
+            byte[] archive = System.IO.File.ReadAllBytes($"{path}.zip");
+
+            Directory.Delete(path, true);
+            System.IO.File.Delete($"{path}.zip");
+
+            return File(archive, "application/zip");
+        }
+
+        
+
+        //GET: Project/DownloadContractFiles/contractId
+        [Authorize(Roles = "Administrator,Manager")]
+        public async Task<FileResult> GetUserContract(string id)
+        {
+            Contract? userContract = _context.Contracts.Where(i => i.UserProjectId == id)?.FirstOrDefault();
+            if(userContract == null)
+            {
+                return null;
+            }
+
+            return File(userContract.ContractFile, "application/pdf");
         }
 
         // GET: Projects/Details/5

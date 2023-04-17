@@ -1,0 +1,18 @@
+﻿@using WorkTime.Web.Services
+@inject UserInformation UserInfo
+@inject ProjectInformation ProjectInfo
+
+@{
+    ViewData["Title"] = "Договоры с компаниями";
+}
+
+<h1>Договоры с компаниями"</h1>
+
+<h4>Проект: @ProjectInfo.GetName(ViewBag.UserProject.ProjectId)</h4>
+
+
+
+@section Scripts
+{
+
+}
