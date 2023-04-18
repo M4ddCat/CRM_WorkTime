@@ -144,18 +144,22 @@ namespace WorkTime.Web.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            byte[] fileBytes;
-            using (var ms = new MemoryStream())
+            byte[]? fileBytes = null;
+            if (uploadedFile != null)
             {
-                uploadedFile.CopyTo(ms);
-                fileBytes = ms.ToArray();
+                using (var ms = new MemoryStream())
+                {
+                    uploadedFile.CopyTo(ms);
+                    fileBytes = ms.ToArray();
+                }
             }
+
             _context.Add(new InvoiceFile()
             {
                 InvoiceId = invoiceId,
                 File = fileBytes,
-                Name = uploadedFile.FileName
-            });
+                Name = uploadedFile == null ? "" : uploadedFile.FileName
+            }) ;
             var inv = await _context.Invoices.FindAsync(invoiceId);
             inv.Issued = issued;
             inv.Remainder = inv.SumWithTax - issued;
