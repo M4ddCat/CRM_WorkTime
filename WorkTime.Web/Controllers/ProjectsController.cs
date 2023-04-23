@@ -29,6 +29,7 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Index()
         {
+            ViewBag.EmpTypes = await _context.TypeOfEmployments.ToListAsync();
               return View(await _context.Projects.ToListAsync());
         }
 
@@ -373,6 +374,42 @@ namespace WorkTime.Web.Controllers
             await _context.SaveChangesAsync();
 
             return LocalRedirect($"~/Projects/Details/{contractTemplate.ProjectId}");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditStandartContractTemplate(string id)
+        {
+            ContractTemplate? ct = await _context.ContractTemplates.FindAsync(id);
+
+            if (ct == null) ct = await _context.ContractTemplates.FindAsync("0");
+
+            if (ct == null) return NotFound();
+
+            ViewBag.Template = ct.Template;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditStandartContractTemplate(string id, string htmlCode)
+        {
+            ContractTemplate? contractTemplate = await _context.ContractTemplates.FindAsync(id);
+            if (contractTemplate == null)
+            {
+                contractTemplate = new ContractTemplate() { Id = id, EmpTypeId = id, Template = htmlCode };
+                await _context.AddAsync(contractTemplate);
+            }
+            else
+            {
+                contractTemplate.Template = htmlCode;
+                _context.Update(contractTemplate);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return LocalRedirect("~/Projects/");
         }
 
         [Authorize(Roles = "Administrator,Manager")]

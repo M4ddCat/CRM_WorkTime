@@ -1,8 +1,13 @@
-﻿@using WorkTime.Web.Services
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using WorkTime.Web.Services
 @inject UserInformation UserInfo
 
 @{
-    ViewData["Title"] = "Редактирование шаблон договора";
+    ViewData["Title"] = "Редактирование стандартного шаблона договора";
 }
 
 <link rel="stylesheet" href="/css/objects/yseditor.min.css" />
@@ -19,7 +24,6 @@
 
 
 <form method="post" onsubmit="return send();">
-    <input hidden name="projectId" value="@ViewBag.Id" />
     <div id="yseditor" style="width: 297mm; background-color: white;">
         @Html.Raw(ViewBag.Template)
     </div>
