@@ -246,7 +246,7 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> CreateUserContract(string id)
         {
-            Contract? contract = await _context.Contracts.FindAsync(id);
+            Contract? contract = _context.Contracts.Find(id);
             if (contract == null) throw new ArgumentNullException();
 
             UserProject? up = await _context.UserProjects.FindAsync(contract.UserProjectId);
@@ -256,7 +256,7 @@ namespace WorkTime.Web.Controllers
                 .FirstOrDefaultAsync(c => c.ProjectId == up.ProjectId && c.EmpTypeId == up.EmpTypeId)
                 .Result?.Template;
 
-            AspNetUserInformation? userInfo = _context.AspNetUserInformations.Find(contract.PerformerPersonId);
+            AspNetUserInformation? userInfo = _context.AspNetUserInformations.FirstOrDefaultAsync(ui => ui.UserId == contract.PerformerPersonId)?.Result;
             if (userInfo == null) throw new ArgumentNullException();
 
             ViewBag.UserInfo = userInfo;

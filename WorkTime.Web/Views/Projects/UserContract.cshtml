@@ -11,6 +11,11 @@
 <h4>ФИО Сотрудника: @UserInfo.GetUserFullName(ViewBag.UserProject.UserId)</h4>
 <h4>Проект: @ProjectInfo.GetName(ViewBag.UserProject.ProjectId)</h4>
 
+<h4>Сформировать договор:</h4>
+<a type="button" class="btn btn-primary"
+   title="Сформировать договор" asp-action="CreateUserContract"
+   asp-route-id="@ViewBag.Contract.Id">Сформировать</a>
+<br />
 <h4>Файл договора (не подписанный):</h4>
 <a type="button" class="btn btn-primary"
    title="Скачать файл" asp-action="GetUserContract"

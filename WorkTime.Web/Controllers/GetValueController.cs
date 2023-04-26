@@ -101,7 +101,16 @@ namespace WorkTime.Web.Controllers
                 .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
                 });
             }
+
             return JsonSerializer.Serialize(":(");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string GetContractTemplate(string empTypeId)
+        {
+            string? template = _context.ContractTemplates.FirstOrDefault(ct => ct.Id == empTypeId)?.Template;
+            return JsonSerializer.Serialize(new { data = template == null ? " " : template });
         }
     }
 }

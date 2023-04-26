@@ -1,7 +1,7 @@
 ﻿@using WorkTime.Web.Services
 @inject UserInformation UserInfo
 @{
-    ViewData["Title"] = "Создание договора";
+    ViewData["Title"] = "Формирование договора";
 }
 
 <link rel="stylesheet" href="/css/objects/yseditor.min.css" />
@@ -9,7 +9,7 @@
 <form method="post" onsubmit="return send();">
     <input hidden name="contractId" value="@ViewBag.Contract.Id"/>
     <div id="yseditor" style="width: 297mm; background-color: white;">
-        @ViewBag.Template
+        @Html.Raw(ViewBag.Template)
     </div>
     <input type="hidden" name="htmlCode" id="hidden" />
     <input type="submit" />
