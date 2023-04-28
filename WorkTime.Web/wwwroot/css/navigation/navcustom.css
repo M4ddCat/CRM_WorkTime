@@ -1,7 +1,6 @@
 ﻿header {
     /*background-color: #549ff0;*/
-    background-color: #fafdfd;
-    
+    background-color: #fffffe;
 }
 
 .light-element {
@@ -29,5 +28,5 @@
 }
 
 .box-shadow {
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 3px hsl(226, 5%, 94%);
 }

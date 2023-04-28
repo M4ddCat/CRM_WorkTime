@@ -134,6 +134,25 @@ namespace WorkTime.Web.Controllers
             {
                 return NotFound();
             }
+
+            AspNetUserInformation? userInfo = await _context.AspNetUserInformations.FirstOrDefaultAsync(x => x.UserId == id);
+
+            if (userInfo == null)
+            {
+                return NotFound();
+            }
+            BankInformation? bankInfo = await _context.BankInformation.FirstOrDefaultAsync(x => x.Id == userInfo.BankInfoId);
+            if (bankInfo == null)
+            {
+                bankInfo = new BankInformation() { BankAccount = "", BankLocation = "", BankName = "", Bik = "", CorInv = "" };
+                userInfo.BankInfoId = bankInfo.Id;
+                _context.Add(bankInfo);
+                _context.Update(userInfo);
+                _context.SaveChanges();
+            }
+            ViewBag.UserInfo = userInfo;
+            ViewBag.BankInfo = bankInfo;
+
             return View(aspNetUser);
         }
 

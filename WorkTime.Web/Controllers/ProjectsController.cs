@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.Build.Evaluation;
 using System.IO.Compression;
 using System.Security.Authentication;
+using System.IO;
 
 namespace WorkTime.Web.Controllers
 {
@@ -186,7 +187,7 @@ namespace WorkTime.Web.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public async Task<FileResult> GetUserContract(string id)
         {
-            Contract? userContract = _context.Contracts.Where(i => i.UserProjectId == id)?.FirstOrDefault();
+            Contract? userContract = _context.Contracts.Find(id);
             if(userContract == null)
             {
                 return null;
@@ -274,16 +275,24 @@ namespace WorkTime.Web.Controllers
         public async Task<IActionResult> CreateUserContract(string htmlCode, string contractId, 
             string contractNumber)
         {
-            Contract contract = _context.Contracts.Find(contractId);
+            Contract? contract = _context.Contracts.Find(contractId);
+
+            if (contract == null)
+            {
+
+            }
 
             contract.ContractNumber = contractNumber;
 
             HtmlToPdf converter = new HtmlToPdf();
 
             PdfDocument doc = converter.ConvertHtmlString($"<div style='padding:3rem!important'>{htmlCode}</div>");
-            
-            doc.Save("Name.pdf");
+
+            doc.Save($"{contractId}.pdf");
             doc.Close();
+
+            contract.ContractFile = System.IO.File.ReadAllBytes($"{contractId}.pdf");
+            System.IO.File.Delete($"{contractId}.pdf");
 
             return RedirectToAction($"Index", "Projects");
         }

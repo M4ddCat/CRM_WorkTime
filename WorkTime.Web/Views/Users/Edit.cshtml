@@ -18,91 +18,86 @@
                 <label asp-for="Email" class="control-label"></label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-floating mt-2">
-                <input name="password" class="form-control" />
-                <label class="control-label">Пароль</label>
-                <span asp-validation-for="PasswordHash" class="text-danger"></span>
-            </div>
             <h5 class="mt-2">Рабочая информация</h5>
             <div class="form-floating mt-2">
-                <input class="form-control" name="hourlyWage" />
+                <input class="form-control" name="hourlyWage" value="@ViewBag.UserInfo.HourlyWage" />
                 <label>Почасовая ставка (по умолчанию)</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" name="contactPhone" />
+                <input class="form-control" name="contactPhone" value="@ViewBag.UserInfo.ContactPhone" />
                 <label>Контактный телефон</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" name="contactEmail" />
+                <input class="form-control" name="contactEmail" value="@ViewBag.UserInfo.ContactEmail" />
                 <label>Контактный Email</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" name="socialNetworkContact" />
+                <input class="form-control" name="socialNetworkContact" value="@ViewBag.UserInfo.SocialNetworkContact" />
                 <label>Контакт в соц. сети</label>
                 <span class="text-danger"></span>
             </div>
             <h5 class="mt-2">Персональная информация</h5>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="Name" aria-required="true" name="name" />
+                <input class="form-control" autocomplete="Name" aria-required="true" name="name" value="@ViewBag.UserInfo.Name" />
                 <label>Имя</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="Surname" aria-required="true" name="surname" />
+                <input class="form-control" autocomplete="Surname" aria-required="true" name="surname" value="@ViewBag.UserInfo.Surname" />
                 <label>Фамилия</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="Patronymic" name="patronymic" />
+                <input class="form-control" autocomplete="Patronymic" name="patronymic" value="@ViewBag.UserInfo.Patronymic" />
                 <label>Отчество</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" name="passportNum" />
+                <input class="form-control" name="passportNum" value="@ViewBag.UserInfo.PassportNum" />
                 <label>Серия паспорта</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" name="personalAddress" />
+                <input class="form-control" name="personalAddress" value="@ViewBag.UserInfo.PersonalAddress" />
                 <label>Адрес</label>
                 <span class="text-danger"></span>
             </div>
             <h5 class="mt-2">Банковские реквизиты</h5>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="BankAccount" name="bankAccount" />
+                <input class="form-control" autocomplete="BankAccount" name="bankAccount" value="@ViewBag.BankInfo.BankAccount" />
                 <label>Счёт в банке</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="BankName" name="bankName" />
+                <input class="form-control" autocomplete="BankName" name="bankName" value="@ViewBag.BankInfo.BankName" />
                 <label>Наименование банка</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="CorInv" name="corInv" />
+                <input class="form-control" autocomplete="CorInv" name="corInv" value="@ViewBag.BankInfo.CorInv" />
                 <label>Корректирующий счёт</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="bik" name="bik" />
+                <input class="form-control" autocomplete="bik" name="bik" value="@ViewBag.BankInfo.Bik" />
                 <label>БИК</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-floating mt-2">
-                <input class="form-control" autocomplete="bankLocation" name="bankLocation" />
+                <input class="form-control" autocomplete="bankLocation" name="bankLocation" value="@ViewBag.BankInfo.BankLocation" />
                 <label>Город</label>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EmailConfirmed" /> @Html.DisplayNameFor(model => model.EmailConfirmed)
+                    <input class="form-check-input" asp-for="EmailConfirmed" /> Email подтверждён
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
