@@ -11,7 +11,7 @@
     <div id="yseditor" style="width: 297mm; background-color: white;">
         @Html.Raw(ViewBag.Template)
     </div>
-    <input type="hidden" name="htmlCode" id="hidden" />
+    <input type="hidden" name="htmlCode" id="htmlCode" />
     <input type="submit" />
 </form>
 @section Scripts {
@@ -43,18 +43,18 @@
         performerSocialNetworkContract
         */
 
-        document.getElementById("performerFullName").value = "@ViewBag.UserInfo.Surname @ViewBag.UserInfo.Name @ViewBag.UserInfo.Patronymic";
-        document.getElementById("performerCorrAcc").value = "@ViewBag.BankInfo.CorInv";
-        document.getElementById("performerBIK").value = "@ViewBag.BankInfo.Bik";
-        document.getElementById("perfromerBankName").value = "@ViewBag.BankInfo.BankName";
-        document.getElementById("performerBankAccount").value = "@ViewBag.BankInfo.BankAccount";
-        document.getElementById("performerAddres").value = "@ViewBag.UserInfo.PersonalAddress";
-        document.getElementById("performerPassGived").value = "@ViewBag.UserInfo.PassportGived";
-        document.getElementById("performerPassNum").value = "@ViewBag.UserInfo.PassportNum";
-        document.getElementById("performerINN").value = "@ViewBag.UserInfo.INN";
-        document.getElementById("performerPhone").value = "@ViewBag.UserInfo.ContactPhone";
-        document.getElementById("performerEmail").value = "@ViewBag.UserInfo.ContactEmail";
-        document.getElementById("performerSocialNetworkContract").value = "@ViewBag.UserInfo.SocialNetworkContact";
+        document.getElementById("performerFullName").innerHTML = "@ViewBag.UserInfo.Surname @ViewBag.UserInfo.Name @ViewBag.UserInfo.Patronymic";
+        document.getElementById("performerCorrAcc").innerHTML  = "@ViewBag.BankInfo.CorInv";
+        document.getElementById("performerBIK").innerHTML = "@ViewBag.BankInfo.Bik";
+        document.getElementById("perfromerBankName").innerHTML = "@ViewBag.BankInfo.BankName";
+        document.getElementById("performerBankAccount").innerHTML = "@ViewBag.BankInfo.BankAccount";
+        document.getElementById("performerAddres").innerHTML = "@ViewBag.UserInfo.PersonalAddress";
+        document.getElementById("performerPassGived").innerHTML = "@ViewBag.UserInfo.PassportGived";
+        document.getElementById("performerPassNum").innerHTML = "@ViewBag.UserInfo.PassportNum";
+        document.getElementById("performerINN").innerHTML = "@ViewBag.UserInfo.INN";
+        document.getElementById("performerPhone").innerHTML  = "@ViewBag.UserInfo.ContactPhone";
+        document.getElementById("performerEmail").innerHTML = "@ViewBag.UserInfo.ContactEmail";
+        document.getElementById("performerSocialNetworkContract").innerHTML = "@ViewBag.UserInfo.SocialNetworkContact";
 
         myEditor.init({
             height: 700,
@@ -66,10 +66,9 @@
         document.querySelector(".yseditor-content").addClass('py-5');
 
         function send() {
-            let contractNumberField = document.querySelector("#contNumbInput");
-            contractNumberField.toggleAttribute("hidden");
-            document.querySelector("#contNum").textContent = contractNumberField.value;
-            document.querySelector("#hidden").value = myEditor.getHTML();
+                document.getElementById("htmlCode").value = myEditor.getHTML();
+            
+
             return true;
         };
     </script>

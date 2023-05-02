@@ -272,17 +272,16 @@ namespace WorkTime.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<IActionResult> CreateUserContract(string htmlCode, string contractId, 
-            string contractNumber)
+        public async Task<IActionResult> CreateUserContract(string htmlCode, string contractId)
         {
             Contract? contract = _context.Contracts.Find(contractId);
 
             if (contract == null)
             {
-
+                return new NotFoundResult();
             }
 
-            contract.ContractNumber = contractNumber;
+            //contract.ContractNumber = contractNumber;
 
             HtmlToPdf converter = new HtmlToPdf();
 
@@ -294,7 +293,10 @@ namespace WorkTime.Web.Controllers
             contract.ContractFile = System.IO.File.ReadAllBytes($"{contractId}.pdf");
             System.IO.File.Delete($"{contractId}.pdf");
 
-            return RedirectToAction($"Index", "Projects");
+            _context.Contracts.Update(contract);
+            _context.SaveChanges();
+
+            return LocalRedirect($"~/Projects/UserContract/{contract.UserProjectId}");
         }
 
         [Authorize(Roles = "Administrator")]
