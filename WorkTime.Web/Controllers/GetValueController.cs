@@ -70,9 +70,9 @@ namespace WorkTime.Web.Controllers
             if (dateFrom == null && dateTo == null)
             {
                 return JsonSerializer.Serialize(new { data = 
-                     _context.WorkTasks.Where(t => t.IssuerId == userId &&
+                     _context.WorkTasks.Where(t => t.PerformerId == userId &&
             (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && t.InvoiceId == null)
-                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
+                .Select(t => new { t.Id, t.CountOfHours, t.PerformerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
             });
             }
             if (dateFrom != null && dateTo == null)
@@ -81,11 +81,11 @@ namespace WorkTime.Web.Controllers
                 {
                     data =
                      _context.WorkTasks.Where(t => 
-                        t.IssuerId == userId &&
+                        t.PerformerId == userId &&
                         (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && 
                         t.InvoiceId == null &&
                         t.DateOfCompletion >= dateFrom)
-                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
+                .Select(t => new { t.Id, t.CountOfHours, t.PerformerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
                 });
             }
             if (dateFrom != null && dateTo != null)
@@ -94,11 +94,11 @@ namespace WorkTime.Web.Controllers
                 {
                     data =
                      _context.WorkTasks.Where(t => 
-                        t.IssuerId == userId &&
+                        t.PerformerId == userId &&
                         (projectId == "0" ? t.ProjectId == null : t.ProjectId == projectId) && 
                         t.InvoiceId == null &&
                         t.DateOfCompletion >= dateFrom && t.DateOfCompletion <= dateTo)
-                .Select(t => new { t.Id, t.CountOfHours, t.IssuerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
+                .Select(t => new { t.Id, t.CountOfHours, t.PerformerId, t.TaskName, t.TaskStatusId }).AsEnumerable()
                 });
             }
 

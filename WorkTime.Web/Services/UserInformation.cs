@@ -74,7 +74,7 @@ namespace WorkTime.Web.Services
                 .Select(t => t.CountOfHours).ToArray();
             if (mas.Length == 0)
             {
-                return "0";
+                return "0,00 ₽";
             }
             double countOfHours = 0;
             for (int i = 0; i != mas.Length; i++)

@@ -3,11 +3,7 @@
 @{
     ViewData["Title"] = "Добавление нового пользователя";
 }
-<div class="mx-auto col-md-8 form-background">
-    <div>
-        <a class="torightside" asp-action="Index">Вернуться к списку</a>
-    </div>
-    <h1 class="text-center">Добавление нового пользователя</h1>
+    <h1>Добавление нового пользователя</h1>
 
     <hr />
     <div class="row">
@@ -109,9 +105,11 @@
                     <input type="submit" value="Создать" class="btn btn-primary" />
                 </div>
             </form>
+            <div>
+                <a asp-action="Index">Вернуться к списку</a>
+            </div>
         </div>
     </div>
-</div>
 
 @section Scripts {
     @{

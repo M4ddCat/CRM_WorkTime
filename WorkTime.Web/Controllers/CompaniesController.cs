@@ -95,7 +95,19 @@ namespace WorkTime.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["BankInfoId"] = new SelectList(_context.BankInformation, "Id", "Id", company.BankInfoId);
+            
+            var bankInfo = await _context.BankInformation.FindAsync(company.BankInfoId);
+            if (bankInfo == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["BankAccount"] = bankInfo.BankAccount;
+            ViewData["BankName"] = bankInfo.BankName;
+            ViewData["CorInv"] = bankInfo.CorInv;
+            ViewData["Bik"] = bankInfo.Bik;
+            ViewData["BankLocation"] = bankInfo.BankLocation;
+
             return View(company);
         }
 
@@ -104,18 +116,27 @@ namespace WorkTime.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,BankInfoId,Name,DirectorFullName,CompanyPlace")] Company company)
+        public async Task<IActionResult> Edit(string id, Company company, 
+            BankInformation bankInfo)
         {
             if (id != company.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Update(company);
+                    BankInformation bankInformation = await _context.BankInformation.FindAsync(bankInfo.Id);
+                    bankInformation.CorInv = bankInfo.CorInv;
+                    bankInformation.BankName = bankInfo.BankName;
+                bankInformation.BankLocation = bankInfo.BankLocation;
+                bankInformation.BankAccount = bankInfo.BankAccount;
+                bankInformation.Bik = bankInfo.Bik;
+
+                    _context.Update(bankInformation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -130,7 +151,7 @@ namespace WorkTime.Web.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["BankInfoId"] = new SelectList(_context.BankInformation, "Id", "Id", company.BankInfoId);
             return View(company);
         }

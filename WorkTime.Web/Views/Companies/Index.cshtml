@@ -7,7 +7,7 @@
 <h1>Список компаний</h1>
 
 <p>
-    <a asp-action="Create">Добавить компанию</a>
+    <a class="btn btn-primary" asp-action="Create">Добавить компанию</a>
 </p>
 <table class="table">
     <thead>
@@ -20,9 +20,6 @@
             </th>
             <th>
                 Расположение компании
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BankInfo)
             </th>
             <th></th>
         </tr>
@@ -40,12 +37,9 @@
                 @Html.DisplayFor(modelItem => item.CompanyPlace)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BankInfo.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class='bx bxs-edit'></i></a> 
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class='bx bxs-detail'></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class='bx bxs-trash'></i></a>
             </td>
         </tr>
 }

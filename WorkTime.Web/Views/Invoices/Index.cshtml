@@ -114,9 +114,10 @@
                     <div id="@item.Id" class="card card-wp mb-3">
                         <dl class="row mx-2 mt-3">
                             <dd>
+                                <!--
                                 <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
                                     <i class='bx bxs-edit-alt'></i>
-                                </a>
+                                </a> -->
                                 <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
                                     <i class='bx bxs-detail'></i>
                                 </a>
@@ -165,9 +166,11 @@
                         <dl class="row mx-2 mt-3">
                             <dt>№@item.Id</dt>
                             <dd>
+                                @{ /*
                                 <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
-                                    <i class='bx bxs-edit-alt'></i>
-                                </a>
+                                <i class='bx bxs-edit-alt'></i>
+                                    </a>*/
+                                }
                                 <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
                                     <i class='bx bxs-detail'></i>
                                 </a>
@@ -215,9 +218,10 @@
                     <div id="@item.Id" class="card card-s mb-3">
                         <dl class="row mx-2 mt-3">
                             <dd>
+                                <!--
                                 <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
                                     <i class='bx bxs-edit-alt'></i>
-                                </a>
+                                </a> -->
                                 <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
                                     <i class='bx bxs-detail'></i>
                                 </a>

@@ -217,6 +217,8 @@
                     dateTo: getDateTo()
                 },
                 success: function (result) {
+                    console.log('succ');
+                    console.log(result);
                     let array = $.parseJSON(result);
                     hours = 0;
                     clearTasks();

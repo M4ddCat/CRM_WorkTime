@@ -1,47 +1,69 @@
 ﻿@model WorkTime.Models.Company
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование компании";
 }
 
-<h1>Edit</h1>
+<h1>Редактирование компании</h1>
 
-<h4>Company</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="BankInfoId" class="control-label"></label>
-                <select asp-for="BankInfoId" class="form-control" asp-items="ViewBag.BankInfoId"></select>
-                <span asp-validation-for="BankInfoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mt-2">
+                <input asp-for="Name" class="form-control" name="name" />
+                <label asp-for="Name" class="control-label">Название</label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DirectorFullName" class="control-label"></label>
-                <input asp-for="DirectorFullName" class="form-control" />
+            <div class="form-floating mt-2">
+                <input asp-for="DirectorFullName" class="form-control" name="directorFullName" />
+                <label asp-for="DirectorFullName" class="control-label">ФИО директора</label>
+
                 <span asp-validation-for="DirectorFullName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompanyPlace" class="control-label"></label>
-                <input asp-for="CompanyPlace" class="form-control" />
+            <div class="form-floating mt-2">
+                <input asp-for="CompanyPlace" class="form-control" name="companyPlace" />
+                <label asp-for="CompanyPlace" class="control-label">Расположение компании</label>
+
                 <span asp-validation-for="CompanyPlace" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <input hidden asp-for="BankInfo.Id" value="@Model.BankInfoId"/>
+            <div class="form-floating mt-2">
+                <input class="form-control" asp-for="BankInfo.BankAccount" autocomplete="BankAccount" />
+                <label>Счёт в банке</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" asp-for="BankInfo.BankName" autocomplete="BankName" />
+                <label>Наименование банка</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" asp-for="BankInfo.CorInv" autocomplete="CorInv" />
+                <label>Корректирующий счёт</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" asp-for="BankInfo.Bik" autocomplete="bik" />
+                <label>БИК</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-2">
+                <input class="form-control" asp-for="BankInfo.BankLocation" autocomplete="bankLocation" />
+                <label>Город</label>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Вернуться к списку</a>
 </div>
 
 @section Scripts {

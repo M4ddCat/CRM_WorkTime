@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using pozitive.Helper;
 using WorkTime.Data;
 using WorkTime.Web.Services;
 using WT_CRM.Data;
@@ -15,7 +16,8 @@ builder.Services.AddScoped<WorkTimeContext>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddErrorDescriber<RussianIdentityErrorDescriber>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<UserInformation>();

@@ -36,7 +36,7 @@
                     <img style="height: 115px;" class="float-end" src="~/resources/ruble.svg">
                     <b class="h2 fs-1">За этот месяц <br> Вы заработали</b>
                     <br>
-                    <b class="h1 h1 card-text">@UserInfo.GetUserMounthlyMoney()</b> <b class="ps-3 h1 card-text">₽</b>
+                    <b class="h1 h1 card-text">@UserInfo.GetUserMounthlyMoney()</b>
                     <div>
                         <a class="float-end text-decoration-none btn btn-primary mb-4 invoice-button" asp-area=""
                        asp-controller="Invoices" asp-action="MyInvoices" asp-route-id="@UserInfo.GetUserId()">
@@ -157,12 +157,12 @@ else
 {
     <div class="text-center" style="margin-top: 100pt">
         <h1>Добро пожаловать</h1>
-        <p>Войдите в систему, или зарегестрируйтесь</p>
+        <p>Войдите в систему, или зарегистрируйтесь</p>
         <div>
             <a class="btn btn-outline-primary btn-lg btn-tr transition-2s" role="button" aria-pressed="true" style="width: 220px"
            asp-area="Identity" asp-page="/Account/Login">Войти</a>
             <a class="btn btn-primary btn-lg btn-tr transition-2s" role="button" aria-pressed="true" style="width: 220px"
-           asp-area="Identity" asp-page="/Account/Register">Зарегестрироваться</a>
+           asp-area="Identity" asp-page="/Account/Register">Зарегистрироваться</a>
             
         </div>
     </div>

@@ -29,10 +29,10 @@
                         <dl class="row mx-2 mt-3">
                             <dd>
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Bookkeeper"))
-                                {
+                                {/*
                                     <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
                                         <i class='bx bxs-edit-alt'></i>
-                                    </a>
+                                    </a>*/
                                 }
                                 <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
                                     <i class='bx bxs-detail'></i>
@@ -90,9 +90,11 @@
                             <dd>
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Bookkeeper"))
                                 {
+                                    /*
                                     <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
                                         <i class='bx bxs-edit-alt'></i>
                                     </a>
+                                    */
                                 }
                                 <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
                                     <i class='bx bxs-detail'></i>
@@ -146,9 +148,11 @@
                             <dd>
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Bookkeeper"))
                                 {
+                                    /*
                                     <a type="button" title="Редактировать" asp-action="Edit" asp-route-id="@item.Id">
                                         <i class='bx bxs-edit-alt'></i>
                                     </a>
+                                    */
                                 }
                                 <a type="button" title="Информация о счёте" asp-action="Details" asp-route-id="@item.Id">
                                     <i class='bx bxs-detail'></i>
