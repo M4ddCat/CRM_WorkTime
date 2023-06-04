@@ -85,7 +85,7 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Необходимо ввести Email")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -94,10 +94,10 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Необходимо ввести пароль")]
+            [StringLength(100, ErrorMessage = "Пароль должен быть больше {2} и меньше {1} символов в длинну.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
 
             /// <summary>
@@ -105,23 +105,23 @@ namespace WorkTime.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Подтвеждение пароля")]
+            [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Необходимо ввести имя")]
             [StringLength(50, MinimumLength =3)]
-            [Display(Name = "Name")]
+            [Display(Name = "Имя")]
             public string Name { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Необходимо ввести фамилию")]
             [StringLength(50, MinimumLength = 3)]
-            [Display(Name = "Surname")]
+            [Display(Name = "Фамилия")]
             public string Surname { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Необходимо ввести отчество")]
             [StringLength(50, MinimumLength = 3)]
-            [Display(Name = "Patronymic")]
+            [Display(Name = "Отчество")]
             public string Patronymic { get; set; }
         }
 

@@ -1,8 +1,14 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = "Регистрация завершена";
 }
 
 <h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<h3>Спасибо за завершение регистрации!</h3>
+<h3>Теперь вы можете войти в систему под ранее введёнными данными.</h3>
+<a class="btn btn-outline-primary btn-lg btn-tr transition-2s" role="button" aria-pressed="true" style="width: 220px"
+   asp-area="Identity" asp-page="/Account/Login">Войти</a>
+@{
+    //<partial name="_StatusMessage" model="Model.StatusMessage" />
+ }
